@@ -1,0 +1,139 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body{
+  overflow: hidden;
+}
+
+.loginPage{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  padding: 30px;
+  overflow: hidden;
+  background-color: #F8F9FF;
+}
+
+.textAnimated{
+  width: 768px;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  gap: 20px;
+}
+
+.logo{
+  display: flex;
+  align-items: center;
+  font-size: 34px;
+}
+
+.icon{
+  background-color: #2563EB;
+  color: #F8F9FF;
+  padding: 5px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.LogoText{
+  font-size: 38px;
+  font-weight: bold;
+  color: #004AC6;
+  margin-left: 10px;
+}
+
+.Heading{
+  width: 100%;
+  line-height: 60px;
+  letter-spacing: -0.96px;
+  color: #0B1C30;
+  font-weight: 800;
+  margin-top: 20px;
+}
+
+.Heading h1{
+  font-family: 'Inter', sans-serif;
+  font-size: 62px;
+  line-height: 70px;
+  letter-spacing: -0.04em;
+  color: #0B1C30;
+  font-weight: 700;
+  margin: 0;
+}
+
+#gst-compliant{
+  display: inline-block;
+  background: linear-gradient(90deg, #004AC6 0%, #4B41E1 50%, #4B41E1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.supports{
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 12px 40px;
+  align-items: center;
+  font-size: 18px;
+  color: #071425;
+  font-weight: 600;
+  padding: 12px 12px;
+  border-radius: 24px;
+  justify-items: start;
+}
+
+@media (max-width: 900px) {
+  .supports {
+    grid-template-columns: repeat(2, max-content);
+  }
+}
+
+@media (max-width: 480px) {
+  .supports {
+    grid-template-columns: repeat(1, max-content);
+  }
+}
+
+.items{
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 18px rgba(11,28,48,0.06);
+}
+
+.checkIcon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #3ED48A 0%, #2FBF6B 100%);
+}
+
+.checkIcon svg,
+.checkIcon svg *{
+  width: 18px;
+  height: 18px;
+  fill: #fff;
+}
+
+.itemText{
+  font-size: 16px;
+  font-weight: 700;
+  color: #071425;
+  white-space: nowrap;
+}

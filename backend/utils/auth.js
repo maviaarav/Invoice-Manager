@@ -5,6 +5,7 @@ const secretKey = process.env.secretKey
 const setUser = (user)=>{
     return jwt.sign({
         _id : user._id,
+        name: user.name,
         email: user.email
     },secretKey)
 }
