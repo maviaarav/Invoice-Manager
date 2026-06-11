@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fluentui/react-icons": "^2.0.329",
+    "@fortawesome/react-fontawesome": "^3.3.1",
     "axios": "^1.17.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

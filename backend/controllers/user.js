@@ -24,7 +24,7 @@ const SignUpHandler = async (req,res) =>{
         email,
         password : hashPass
     })
-    return res.status(200).json({Msg: "Successfull"})
+    return res.status(200).json({success: true})
    }catch(error){
     return res.status(401).json({
             message: error.message
@@ -41,19 +41,23 @@ const HandlerLogin = async (req,res) =>{
         return res.status(401).json({Msg: "Fill all the details"})
     }
     const user = await userModel.findOne({email})
+    if(!user){
+        return res.status(401).json({
+                Msg: "User not found"
+            });
+    }
     const isMatch = await bcrypt.compare(password, user.password)
     if(!isMatch){
         return res.status(401).json({
-                message: "Invalid credentials"
+                Msg: "email or password is incorrect"
             });
     }
     const token = setUser(user)
     res.cookie("UUID", token,{
         httpOnly: true,
-        sameSite: "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000
     })
-    res.status(200).redirect("/")
+    return res.status(200).json({success: true})
     }
     catch(error){
          return res.status(401).json({

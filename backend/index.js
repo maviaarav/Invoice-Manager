@@ -1,17 +1,21 @@
 require('dotenv').config()
 const express = require('express')
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
+
 const { restrictToLogin } = require('./middlewares/auth')
 const UserRouter = require('./routes/user')
 const mongoose = require('./connections/server')
 const app = express()
+
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.get('/',restrictToLogin,(req,res)=>{
-    res.send(
-        `<h1>Dashboard</h1>`
-    )
-})
+
 app.use('/user', UserRouter)
 app.listen(3000,()=>{
     console.log("Working at port: http://localhost:3000")
