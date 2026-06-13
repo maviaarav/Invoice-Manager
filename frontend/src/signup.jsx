@@ -1,25 +1,26 @@
 import { useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 import instance from './api/axios'
-import './App.css'
-import { WalletCreditCard48Regular,MailAllUnreadRegular,Password32Regular,Eye32Regular,EyeOff32Regular } from '@fluentui/react-icons';
+import './signUp.css'
+import { WalletCreditCard48Regular,MailAllUnreadRegular,Password32Regular,Eye32Regular,EyeOff32Regular,Person32Regular } from '@fluentui/react-icons';
 import { Routes, Route }
 from "react-router-dom";
-import loginImage from './images/login.png'
 
-const Login =  (e) =>{
+const SignUp =  (e) =>{
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
 
-    const handlerLogin =  async (e) =>{
+    const handleSignUp =  async (e) =>{
         e.preventDefault();
         try{
 
             const response = await instance.post(
-                '/user/login',
+                '/user/signup',
                 {
+                    name,
                     email,
                     password
                 }
@@ -72,11 +73,10 @@ const navigate = useNavigate();
                     </div>
                 </div>
                 <div className="Heading">
-                    <h1>Generate <span id="gst-compliant">GST-Compliant</span> Invoices in Seconds</h1>
+                    <h1>Start Billing Like a <span id="gst-compliant">Professional</span></h1>
 
                 </div>
-                <p>Manage clients, invoices, taxes, payments, and reports from one powerful
-                    platform. <br />Built for Indian businesses who value precision and speed.</p>
+                <p>Create GST-compliant invoices, track payments, and grow your <br /> business with India's most advanched Financial Toolkit.</p>
                 <div className="supports">
                     <div className="items">
                         <span className="checkIcon">
@@ -111,20 +111,26 @@ const navigate = useNavigate();
                         <span className="itemText">Invoice Tracking</span>
                     </div>
                 </div>
-                <div className="animatedImage"></div>
+                <div className="animatedImage-2"></div>
             </div>
             <div className="loginForm">
                 <div className="login">
-                    <h2>Welcome Back 👋</h2>
-                    <p>Sign in to manage your invoices and clients.</p>
+                    <h2>Create Your Account</h2>
+                    <p>Get started in less than a minute.</p>
                     <div className="inputFields">
-                        <form onSubmit={handlerLogin}>
+                        <form onSubmit={handleSignUp}>
                             <label >Email Address</label>
                             <div className="inputbox">
                                 <MailAllUnreadRegular className='inputIcon'/>
                                     <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder= 'name@company.com' required/>
                             </div>
-                            
+
+                            <label >Name</label>
+                            <div className="inputbox">
+                                <Person32Regular className='inputIcon'/>
+                                <input type="text" value={name} onChange={(e)=>setName(e.target.value)} placeholder='Enter your name' required/>
+                            </div>
+
                             <label >Password</label>
                             <div className="inputbox">
                                 <Password32Regular className='inputIcon'
@@ -141,15 +147,15 @@ const navigate = useNavigate();
                                 cursor: isValidform ? 'pointer' : 'not-allowed'
                             }}
                             >
-                                Login
+                                Create Account 
                             </button>
                         </form>
                         
 
                     </div>
                    <div className="signUpLink">
-                        <span>Don't have an account?</span>
-                        <span className="link" onClick={()=>navigate('/signUp')}>Sign Up</span>
+                        <span>Already have an account?</span>
+                        <span className="link" onClick={()=>navigate('/login')}>Sign In</span>
                     </div>
                     <div className="errorMessage">
                         {error && <p>{error}</p>}
@@ -160,4 +166,4 @@ const navigate = useNavigate();
     </>
 
 }
-export default Login
+export default SignUp

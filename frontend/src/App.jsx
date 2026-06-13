@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Login from "./logIn";
+import SignUp from "./signup";
 import Home from "./home";
 import instance from "./api/axios";
 import ProtectedRoute from "./components/protech";
@@ -48,6 +49,11 @@ function App() {
             <Route
                 path="/login"
                 element={<Login />}
+            />
+
+            <Route
+                path="/signUp"
+                element={<SignUp />}
             />
 
             <Route
