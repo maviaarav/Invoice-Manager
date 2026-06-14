@@ -4,7 +4,10 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 
 const { restrictToLogin } = require('./middlewares/auth')
+const { getCompany }  = require('./controllers/company')
 const UserRouter = require('./routes/user')
+const CompanyRouter = require('./routes/company')
+const ClientRouter = require('./routes/client')
 const mongoose = require('./connections/server')
 const app = express()
 
@@ -15,8 +18,9 @@ app.use(cors({
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-
 app.use('/user', UserRouter)
+app.use('/company', CompanyRouter)
+app.use('/client', ClientRouter)
 app.listen(3000,()=>{
     console.log("Working at port: http://localhost:3000")
 })

@@ -17,4 +17,10 @@ router.get('/me',restrictToLogin,(req,res)=>{
         user: req.user
     })
 })
+router.get('/logout', (req, res) => {
+    res.clearCookie('UUID');
+    return res.json({
+        success: true
+    });
+});
 module.exports = router

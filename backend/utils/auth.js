@@ -13,6 +13,7 @@ const getUser = (token) =>{
     if(!token) return null
     return jwt.verify(token,secretKey)
 }
+console.log("SECRET:", secretKey);
 module.exports = {
     setUser,
     getUser
