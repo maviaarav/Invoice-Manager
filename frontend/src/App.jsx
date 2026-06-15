@@ -4,8 +4,13 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./logIn";
 import SignUp from "./signup";
 import Home from "./home";
+import SideMenu from "./sideMenu";
+import Client from "./customer";
+import Setting from "./setting";
+import Invoices from "./invoices";
 import instance from "./api/axios";
 import ProtectedRoute from "./components/protech";
+import "./App-2.css";
 
 function App() {
 
@@ -44,7 +49,8 @@ function App() {
     }
 
     return (
-        <Routes>
+        <div className="app">
+            <Routes>
 
             <Route
                 path="/login"
@@ -60,12 +66,50 @@ function App() {
                 path="/"
                 element={
                     <ProtectedRoute user={user}>
+                        <div className="layout">
+                            <SideMenu />
                         <Home user={user} />
+                        </div>
+                         
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/clients"
+                element={
+                    <ProtectedRoute user={user}>
+                        <div className="layout">
+                            <SideMenu />
+                            <Client />
+                        </div>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/settings"
+                element={
+                    <ProtectedRoute user={user}>
+                        <div className="layout">
+                            <SideMenu />
+                            <Setting />
+                        </div>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/invoices"
+                element={
+                    <ProtectedRoute user={user}>
+                        <div className="layout">
+                            <SideMenu />
+                            <Invoices />
+                        </div>
                     </ProtectedRoute>
                 }
             />
 
         </Routes>
+        </div>
     );
 }
 

@@ -65,7 +65,21 @@ const HandlerLogin = async (req,res) =>{
         });
     }
 }
+const getUserName = async (req,res) =>{
+    try{
+        const user = await userModel.findById(req.user._id)
+        if(!user){
+            return res.status(404).json({Msg: "User not found"})
+        }
+        return res.status(200).json({success: true, name: user.name})
+    }catch(error){
+         return res.status(500).json({
+            message: error.message
+        });
+    }
+}
 module.exports = {
     SignUpHandler,
-    HandlerLogin
+    HandlerLogin,
+    getUserName
 }

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { HandlerLogin , SignUpHandler } = require('../controllers/user')
+const { HandlerLogin , SignUpHandler, getUserName } = require('../controllers/user')
 const { restrictToLogin } = require('../middlewares/auth')
 
 router.post('/signUp', SignUpHandler)
@@ -17,6 +17,7 @@ router.get('/me',restrictToLogin,(req,res)=>{
         user: req.user
     })
 })
+router.get('/getUserName',restrictToLogin, getUserName)
 router.get('/logout', (req, res) => {
     res.clearCookie('UUID');
     return res.json({

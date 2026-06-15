@@ -7,7 +7,7 @@ const createClient = async (req,res)=>{
             return res.status(400).json({message: 'All fields are required'})
         }
         const userId =  req.user._id
-        const existingClient = await ClientModel.findOne({ userId, clientName });
+        const existingClient = await ClientModel.findOne({ userId, email });
         if(existingClient){
             return res.status(409).json({message: 'Client already exists'})
         }
@@ -30,6 +30,9 @@ const getClient = async (req,res)=>{
  const Client = await ClientModel.findOne({userId: req.user._id, email: req.params.email})
     if(!Client){
         return res.status(404).json({message: 'Client not found'})
+    }
+    if(Client.length === 0){
+        res.status(404).json({message: "Create a Client to proceed."})
     }
     return res.status(200).json({success: true, Client, clientLength: Client.length})
     }
@@ -85,11 +88,22 @@ const getClientAll = async (req,res)=>{
         res.status(500).json({message: 'Error fetching clients', error: error.message})
     }
 }
+const recentClient = async (req,res) =>{
+    try{
+        const recent = await ClientModel.find({userId: req.user._id})
+        .sort({ createdAt: - 1 })
+        .limit(5)
+        return res.status(201).json({recent: recent})
+    }catch(error){
+        return res.status(500).json({Msg: error.Msg})
+    }
+}
 
 module.exports = {
     createClient,
     getClient,
     updateClient,
     deleteClient,
-    getClientAll
+    getClientAll,
+    recentClient
 }

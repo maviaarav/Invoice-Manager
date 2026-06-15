@@ -26,7 +26,7 @@ const clientSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-})
+},{ timestamps : true })
 
 const ClientModel = mongoose.model('clients', clientSchema)
 
