@@ -3,11 +3,11 @@ const ClientModel = require('../models/client');
 const createClient = async (req,res)=>{
     try{
         const { clientName, phoneNumber, gstNumber, address ,email} = req.body;
-        if(!req.body || !clientName || !phoneNumber || !address || !email){
+        if(!req.body || !clientName || !phoneNumber || !address || !email || !gstNumber){
             return res.status(400).json({message: 'All fields are required'})
         }
         const userId =  req.user._id
-        const existingClient = await ClientModel.findOne({ userId, email });
+        const existingClient = await ClientModel.findOne({ userId, email, phoneNumber });
         if(existingClient){
             return res.status(409).json({message: 'Client already exists'})
         }
@@ -48,7 +48,7 @@ const updateClient = async (req,res)=>{
         if(!req.body){
             return res.status(400).json({message: 'All fields are required'})
         }
-        const client = await ClientModel.findOne({userId: req.user._id, email: req.params.email})
+        const client = await ClientModel.findOne({userId: req.user._id, _id: req.params.id})
         if(!client){
             return res.status(404).json({message: 'Client not found'})
         }
@@ -67,7 +67,7 @@ const updateClient = async (req,res)=>{
 
 const deleteClient = async (req,res)=>{
     try{
-        const client = await ClientModel.findOne({userId: req.user._id, email: req.params.email})
+        const client = await ClientModel.findOne({userId: req.user._id, _id: req.params.id})
         if(!client){
             return res.status(404).json({message: 'Client not found'})
         }

@@ -6,8 +6,8 @@ const { restrictToLogin } = require('../middlewares/auth')
 router.post('/create', restrictToLogin, createClient)
 router.get('/get/:email', restrictToLogin, getClient)
 router.get('/get', restrictToLogin, getClientAll)
-router.put('/update/:email', restrictToLogin, updateClient)
-router.delete('/delete/:email', restrictToLogin, deleteClient)
+router.put('/update/:id', restrictToLogin, updateClient)
+router.delete('/delete/:id', restrictToLogin, deleteClient)
 router.get('/recent',restrictToLogin,recentClient)
 
 module.exports = router
