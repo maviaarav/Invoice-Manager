@@ -1,30 +1,79 @@
 const ClientModel = require('../models/client');
 
-const createClient = async (req,res)=>{
-    try{
-        const { clientName, phoneNumber, gstNumber, address ,email} = req.body;
-        if(!req.body || !clientName || !phoneNumber || !address || !email || !gstNumber){
-            return res.status(400).json({message: 'All fields are required'})
-        }
-        const userId =  req.user._id
-        const existingClient = await ClientModel.findOne({ userId, email, phoneNumber });
-        if(existingClient){
-            return res.status(409).json({message: 'Client already exists'})
-        }
-        const userID = await req.user._id
-        await ClientModel.create({
-            userId : userID,
+const createClient = async (req, res) => {
+    try {
+
+        const {
             clientName,
             phoneNumber,
             gstNumber,
             address,
             email
-        })
-        res.status(201).json({success: true, message: 'Client created successfully'}) 
-    }catch(error){
-        res.status(500).json({message: 'Error creating client', error: error.message})
+        } = req.body;
+
+        if (
+            !clientName ||
+            !phoneNumber ||
+            !address ||
+            !email
+        ) {
+            return res.status(400).json({
+                error: "Client Name, Phone, Address and Email are required"
+            });
+        }
+
+        const userId = req.user._id;
+
+        // Check email first
+        const emailExists = await ClientModel.findOne({
+            userId,
+            email: email.trim().toLowerCase()
+        });
+
+        if (emailExists) {
+            return res.status(409).json({
+                error: "Client with this email already exists"
+            });
+        }
+
+        // Check GST only if provided
+        if (gstNumber && gstNumber.trim() !== "") {
+
+            const gstExists = await ClientModel.findOne({
+                userId,
+                gstNumber: gstNumber.trim().toUpperCase()
+            });
+
+            if (gstExists) {
+                return res.status(409).json({
+                    error: "Client with this GST number already exists"
+                });
+            }
+        }
+
+        const client = await ClientModel.create({
+            userId,
+            clientName,
+            phoneNumber,
+            gstNumber: gstNumber?.trim() || "",
+            address,
+            email: email.trim().toLowerCase()
+        });
+
+        return res.status(201).json({
+            success: true,
+            client
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        return res.status(500).json({
+            error: "Error creating client"
+        });
     }
-}
+};
 const getClient = async (req,res)=>{
     try{
  const Client = await ClientModel.findOne({userId: req.user._id, email: req.params.email})

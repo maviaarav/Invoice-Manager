@@ -8,6 +8,7 @@ const Client = () => {
     const [length, setLength] = useState(0);
     const [activeDropdown, setActiveDropdown] = useState(null);
     const [alertMessage, setAlertMessage] = useState("");
+    const [editingClient, setEditingClient] = useState(null);
 
     const fetchClients = async () => {
         try {
@@ -25,20 +26,24 @@ const Client = () => {
         fetchClients();
     }, []);
 
- const deleteClient = async () => {
+const deleteClient = async () => {
     try {
         await instance.delete(`/client/delete/${activeDropdown}`);
 
-        setAlertMessage(`Client ${clients.find(c => c._id === activeDropdown)?.clientName} deleted successfully!`);
+        setClients(prev =>
+            prev.filter(client => client._id !== activeDropdown)
+        );
 
-        fetchClients(); // refresh list
+        setAlertMessage(
+            `Client ${clients.find(c => c._id === activeDropdown)?.clientName} deleted successfully!`
+        );
 
         setTimeout(() => {
             setAlertMessage("");
         }, 3000);
 
     } catch (error) {
-        setAlertMessage(`Failed to delete client ${clients.find(c => c._id === activeDropdown)?.clientName}!`);
+        setAlertMessage("Failed to delete client!");
 
         setTimeout(() => {
             setAlertMessage("");
@@ -99,7 +104,20 @@ const Client = () => {
             ><InfoRegular/></button>
             {activeDropdown === client._id && (
         <div className="dropdown">
-            <div className="dropdown-item">Edit Client</div>
+           <div
+    className="dropdown-item"
+    onClick={() => {
+
+        localStorage.setItem(
+            "editingClient",
+            JSON.stringify(client)
+        );
+
+        window.location.href = "/clientform";
+    }}
+>
+    Edit Client
+</div>
             <div className="dropdown-item delete" onClick={deleteClient}>
                 Delete Client
             </div>
