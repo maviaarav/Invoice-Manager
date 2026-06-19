@@ -38,7 +38,8 @@ const createCompany = async (req,res) =>{
         }
 
         const existCompany = await CompanyModel.findOne({
-            userId: req.user._id
+            userId: req.user._id,
+            phoneNumber
         })
 
         if(existCompany){
@@ -192,10 +193,35 @@ const updateCompany = async (req,res) =>{
         });
     }
 }
+const deleteCompany = async (req,res) =>{
+    try{
+        const email = req.params.email
+        const company = await CompanyModel.findOne({
+            Email: email
+        })
 
+        if(!company){
+            return res.status(404).json({
+                Msg: "Please Create Company"
+            })
+        }
+
+        await company.deleteOne()
+
+        return res.status(200).json({
+            success: true
+        })
+
+    }catch(error){
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+}
 
 module.exports = {
     createCompany,
     getCompany,
-    updateCompany
+    updateCompany,
+    deleteCompany
 }

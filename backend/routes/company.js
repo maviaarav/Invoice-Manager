@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const multer = require('multer');
-const { createCompany, getCompany, updateCompany } = require('../controllers/company')
+const { createCompany, getCompany, updateCompany, deleteCompany } = require('../controllers/company')
 const { restrictToLogin } = require('../middlewares/auth')
 
 const storage = multer.memoryStorage();
@@ -9,7 +9,7 @@ const upload = multer({
     storage
 });
 
-
+router.get('/get', restrictToLogin, getCompany)
 router.post(
     '/create',
     restrictToLogin,
@@ -26,7 +26,7 @@ router.put('/update',
         { name: 'stamp', maxCount: 1 }
     ]),
     updateCompany)
-router.get('/get', restrictToLogin, getCompany)
 
+router.delete('/delete/:email', restrictToLogin, deleteCompany)
 
 module.exports = router

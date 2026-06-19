@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import instance from "./api/axios";
 import "./setting.css";
-import { Gavel32Filled,ContactCard32Filled,BuildingBankFilled,Signature32Regular,Stamp32Light } from "@fluentui/react-icons";
+import { Gavel32Filled,ContactCard32Filled,BuildingBankFilled,Signature32Regular,Stamp32Light,PeopleCommunity24Regular } from "@fluentui/react-icons";
 
 
 
@@ -55,11 +55,22 @@ const Setting = () => {
    useEffect(() => {
     fetchCompanyProfile();
    }, []);
+   const renderCompanyForm = () =>{
+        window.location.href = "/companyForm"
+   }
 
     return (
       <div className="settingContainer">
-
-        <h1 id="text"className="titleSetting">Company Profile</h1>
+        <div className="headerSetting">
+              <h1 id="text"className="titleSetting">Company Profile</h1>
+              {error && (
+                 <button id="setting_btn" onClick={renderCompanyForm}>
+                    <PeopleCommunity24Regular /> Add Company
+                 </button>
+              )}
+            
+        </div>
+      
                 <div className="error">
                 {error && (
                     <p>{error}</p>
@@ -72,7 +83,7 @@ const Setting = () => {
             <div className="logo">   
             </div>
         <div className="companyInfo">
-          <h1 className="textCompany">{companyName}</h1>
+          <input id="nameInput" type="companyName" value={companyName} readOnly />
             <p className="othertext">Committed to excellence, integrity, and customer satisfaction, we strive to deliver reliable products and services that create lasting value. Our focus is on building strong relationships, maintaining high standards of professionalism, and continuously improving to meet the evolving needs of our clients. We believe that trust, quality, and dedication are the foundation of every successful partnership, and we remain committed to supporting our customers with efficient solutions and exceptional service.</p>
         </div>
         </div>

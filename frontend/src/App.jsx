@@ -11,6 +11,7 @@ import Invoices from "./invoices";
 import instance from "./api/axios";
 import ProtectedRoute from "./components/protech";
 import ClientForm from "./clientform";
+import CompanyForm from "./companyForm";
 import "./App-2.css";
 
 function App() {
@@ -115,6 +116,17 @@ function App() {
                         <div className="layout">
                             <SideMenu />
                             <ClientForm />
+                        </div>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/companyForm"
+                element={
+                    <ProtectedRoute user={user}>
+                        <div className="layout">
+                            <SideMenu />
+                            <CompanyForm />
                         </div>
                     </ProtectedRoute>
                 }
