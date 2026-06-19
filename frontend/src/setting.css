@@ -1,0 +1,206 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.settingContainer{
+    flex:1;
+    height:100vh;
+    overflow-y:auto;
+    padding:40px 50px ;
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+    background:#F8F9FF;
+}
+.headingSetting{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    width:100%;
+    padding:20px;
+    background:#fff;
+    height:auto;
+    flex-direction:row;
+    border-radius:10px;
+    flex-wrap:wrap;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+
+}
+.logo{
+    width:200px;
+    height:200px;
+    margin-top:20px;
+    display:flex;
+    align-items:center;
+    background: url('./images/setting.png');
+    background-size: cover;
+    justify-content:center;
+}
+.companyInfo{
+    display:flex;
+    flex-direction:column;
+    width:80%;
+    height:100%;
+    align-items:flex-start;
+
+}
+.textCompany{
+    color:#5400C3;
+
+}
+.iconCompany{
+    font-size: 37px;
+    display: flex;
+    align-items: center;
+}
+.bankDetailsitems{
+    width: 100%;
+    height: auto;
+    background-color: #E6EEFF;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 20px;
+}
+.allHeading{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 40%;
+    font-size: 16px;
+    
+    padding: 10px;
+    height: auto;
+}
+
+.answerHeading{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 60%;
+    font-size: 16px;
+    
+    padding: 10px;
+    height: auto;
+}
+.otherDetailsCompany{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap:20px;
+    width:100%;
+
+    height:auto;
+    flex-direction:row;
+    border-radius:10px;
+    flex-wrap:wrap;
+
+}
+.TaXBlock, .ContactInfoBlock,.bankDetailsBlock{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    padding:25px;
+    background:#fff;
+    height:400px;
+    flex-direction:column;
+
+    border-radius:10px;
+    flex-wrap:wrap;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+input{
+    padding:10px;
+    border-radius:5px;
+    border:1px solid #ccc;
+    width:100%;
+    outline:none;
+    background:white;
+    color:#333;
+    font-size:16px;
+}
+.signatureBlock,.StampBlock{
+    display:flex;
+    flex-direction:row;
+    gap:10px;
+    padding:20px;
+    background:#fff;
+    height:auto;
+    border-radius:10px;
+    flex-wrap:wrap;
+
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+
+}
+.textBlock{
+    font-size:18px;
+    font-weight:bold;
+    color:#5400C3;
+    gap:10px;
+    display:flex;
+    align-items:center;
+    
+}
+.image{
+    width: 30%;
+    height: 100%;
+    object-fit: cover;
+    border: 3px solid #ccc;
+    border-style: dashed;
+    align-items: center;
+    margin-left: 20px;
+    justify-content: center;
+    display: flex;
+}
+.textArea{
+    padding:10px;
+    border-radius:5px;
+    border:1px solid #ccc;
+    width:100%;
+    outline:none;
+    height:auto;
+    background:white;
+    color:#333;
+    font-size:16px;
+    resize:none;
+}
+.companyProfileContainer{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+}
+.error{
+    color: #ff0000;
+    font-size: 16px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
+.imagesTextBlockHeading{
+    width: 67%;
+    height: 200px;
+    gap: 20px;
+    display: flex;
+    padding: 20px ;
+    flex-direction: column;
+
+}
+.imagesBlockHeading{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    color: #5400C3;
+
+    font-size: 16px;
+    align-items: center;
+}
+.image img{
+    width: 60%;
+}

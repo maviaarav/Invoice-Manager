@@ -12,7 +12,6 @@ const companySchema = new mongoose.Schema({
     CompanyName: {
         type: String,
         required: true,
-        unique: true
     },
     OwnerName: {
         type: String,
@@ -37,25 +36,41 @@ const companySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    Email: {
+    type: String,
+    required: true,
+    unique: true
+    },
    BankName: {
     type: String,
-    required: true
+    required: true,
+    unique: true
    },
    AccountNumber: {
     type: String,
-    required: true
+    required: true,
+    unique: true
    },
    IFSCCode: {
     type: String,
-    required: true
+    required: true,
    },
    BranchName: {
     type: String,
     required: true
    },
+   signature: {
+    type: String,
+    default: ""
+},
+
+    stamp: {
+    type: String,
+    default: ""
+}
    
    
-})
+}, { timestamps: true });
 const CompanyModel = mongoose.model('Company', companySchema);
 
 module.exports = CompanyModel;

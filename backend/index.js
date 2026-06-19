@@ -2,7 +2,11 @@ require('dotenv').config()
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
-
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({
+    storage
+});
 const { restrictToLogin } = require('./middlewares/auth')
 const { getCompany }  = require('./controllers/company')
 const UserRouter = require('./routes/user')

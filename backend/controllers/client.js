@@ -69,8 +69,9 @@ const createClient = async (req, res) => {
 
         console.error(error);
 
+
         return res.status(500).json({
-            error: "Error creating client"
+            error: error.message
         });
     }
 };
