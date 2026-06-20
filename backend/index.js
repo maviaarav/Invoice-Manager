@@ -13,6 +13,7 @@ const UserRouter = require('./routes/user')
 const CompanyRouter = require('./routes/company')
 const ClientRouter = require('./routes/client')
 const mongoose = require('./connections/server')
+const InvoiceRouter = require('./routes/invoice')
 const app = express()
 
 app.use(cors({
@@ -25,6 +26,7 @@ app.use(cookieParser())
 app.use('/user', UserRouter)
 app.use('/company', CompanyRouter)
 app.use('/client', ClientRouter)
+app.use('/invoice', InvoiceRouter)
 app.listen(3000,()=>{
     console.log("Working at port: http://localhost:3000")
 })
