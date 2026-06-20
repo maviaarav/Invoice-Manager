@@ -21,13 +21,56 @@ const CompanyForm = () =>{
    const [accountNumber, setAccountNumber] = useState("");
    const [BranchName, setBranchName] = useState("");
    const [phoneNumber, setPhoneNumber] = useState("");
+   const [editingCompany, setEditingCompany] = useState(null);
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
     const [step, setStep] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     const registerCompany = async () =>{
         try{    
-           const formData = new FormData();
+             setLoading(true);
+        setError("");
+        setSuccess("");
+            if (editingCompany) {
+
+    const formData = new FormData();
+
+    formData.append("CompanyName", companyName);
+    formData.append("OwnerName", ownerName);
+    formData.append("Email", companyEmail);
+    formData.append("phoneNumber", companyPhone);
+    formData.append("Address", companyAddress);
+    formData.append("BankName", bankName);
+    formData.append("AccountNumber", accountNumber);
+    formData.append("BranchName", BranchName);
+    formData.append("GSTNumber", taxId);
+    formData.append("panNumber", panNumber);
+    formData.append("IFSCCode", ifscCode);
+
+    if (stamp instanceof File) {
+        formData.append("stamp", stamp);
+    }
+
+    if (signature instanceof File) {
+        formData.append("signature", signature);
+    }
+
+    await instance.put(
+        `/company/update/${editingCompany._id}`,
+        formData
+    );
+
+    localStorage.removeItem("editingCompany");
+    clearForm();
+    setEditingCompany(null);
+    setSuccess("✅ Company updated successfully!");
+    setTimeout(() => {
+        window.location.href = "/settings";
+    }, 1200);
+}
+            else{
+                     const formData = new FormData();
 
         formData.append("CompanyName", companyName);
         formData.append("OwnerName", ownerName);
@@ -55,12 +98,41 @@ const CompanyForm = () =>{
         );
         clearForm();
         setSuccess("Company created successfully!");
-        setTimeout(() => {window.location.href = "/settings"}, 2000);
+          setTimeout(() => {
+                    window.location.href = "/settings";
+                }, 2000);
+    }
+
+      
         }catch(error){
-            console.log(error.response?.data.Msg)
-            setError(error.response?.data.Msg)
+setError(
+    error?.response?.data?.Msg ||
+    "Something went wrong. Please try again."
+);
         }
     }
+
+ useEffect(() => {
+    const storedCompany = localStorage.getItem("editingCompany");
+
+    if (storedCompany) {
+        const companyData = JSON.parse(storedCompany);
+
+        setEditingCompany(companyData);
+        setCompanyName(companyData.CompanyName || "");
+        setOwnerName(companyData.OwnerName || "");
+        setCompanyEmail(companyData.Email || "");
+        setCompanyPhone(companyData.phoneNumber || "");
+        setCompanyAddress(companyData.Address || "");
+        setBankName(companyData.BankName || "");
+        setAccountNumber(companyData.AccountNumber || "");
+        setBranchName(companyData.BranchName || "");
+        setTaxId(companyData.GSTNumber || "");
+        setPanNumber(companyData.panNumber || "");
+        setIfscCode(companyData.IFSCCode || "");
+    }
+}, []);
+
     const clearForm = () =>{
         setCompanyName("");
         setOwnerName("");
@@ -83,7 +155,12 @@ const CompanyForm = () =>{
 
     return (
         <div className="companyFormContainer">
-            <h1 id="text">Complete Your Company Profile</h1>
+            {editingCompany ? (
+                <h1 id="text">Update Your Company Profile</h1>
+            ) : (
+                <h1 id="text">Create Your Company Profile</h1>
+            )}
+          
             <div className="container">
                 <div className="leftSide">
                     <h3 id="text2"> <div className="icon2"><CheckmarkStarburstRegular /></div> Get Compliance Ready</h3>
@@ -276,8 +353,11 @@ standards.</p>
                         Back
                     </button>
 
-                    <button onClick={registerCompany}>
-                        Submit
+                    <button onClick={registerCompany} disabled={loading}>
+                       {loading
+        ? (editingCompany ? "Updating..." : "Submitting...")
+        : (editingCompany ? "Update Company" : "Create Company")
+    }
                     </button>
                     
                 </div>

@@ -9,7 +9,7 @@
     overflow-y:auto;
     padding:20px 20px ;
     display:flex;
-    overflow: hidden;
+    overflow-y:auto;
     flex-direction:column;
     gap:30px;
     background:#F8F9FF;
@@ -22,14 +22,15 @@
     padding:20px 10px;
     border-radius:10px;
     width:100%;
-    overflow: hidden;
+    overflow:visible;
     height:fit-content;
 }
 .leftSide{
     display:flex;
     flex-direction:column;
     gap:20px;
-    width:25%;
+    width:300px;
+    min-width:300px;
     height:auto;
     border-radius:10px;
     background:#fff;
@@ -193,4 +194,174 @@
     font-weight: 600;
     color: #003594;
     margin-top: 20px;
+}
+/* ===================================
+   TABLET
+=================================== */
+
+@media (max-width:1024px){
+
+    .container{
+        flex-direction:column;
+    }
+
+    .leftSide,
+    .rightSide{
+        width:100%;
+    }
+
+    .leftSide{
+        min-height:220px;
+    }
+
+    .sameInput{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+
+/* ===================================
+   MOBILE
+=================================== */
+
+@media (max-width:768px){
+
+    .companyFormContainer{
+        padding:15px;
+        gap:20px;
+        overflow-y:auto;
+    }
+
+    .container{
+        flex-direction:column;
+        padding:0;
+        gap:15px;
+        overflow:visible;
+    }
+
+    .leftSide,
+    .rightSide{
+        width:100%;
+    }
+
+    .leftSide{
+        padding:20px;
+        text-align:center;
+    }
+
+    #text{
+        font-size:26px;
+        text-align:center;
+    }
+
+    #text2{
+        font-size:18px;
+        flex-wrap:wrap;
+        text-align:center;
+    }
+
+    .para{
+        text-align:center;
+        width:100%;
+    }
+
+    .rightSide{
+        padding:20px;
+    }
+
+    /* STEP HEADER */
+
+    .steps{
+        flex-direction:column;
+        gap:10px;
+        align-items:stretch;
+    }
+
+    .step{
+        text-align:center;
+        width:100%;
+        padding:12px;
+        font-size:14px;
+    }
+
+    /* FORM */
+
+    .sameInput{
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+
+    .inputFieldsCompany input{
+        padding:12px;
+    }
+
+    .largeInput textarea{
+        min-height:100px;
+    }
+
+    /* BUTTONS */
+
+    .buttonRow{
+        justify-content:stretch;
+        flex-direction:column;
+    }
+
+    .buttonRow button{
+        width:100%;
+    }
+
+}
+
+
+/* ===================================
+   SMALL PHONES
+=================================== */
+
+@media (max-width:480px){
+
+    .companyFormContainer{
+        padding:10px;
+    }
+
+    .leftSide,
+    .rightSide{
+        padding:15px;
+    }
+
+    #text{
+        font-size:22px;
+    }
+
+    #text2{
+        font-size:16px;
+    }
+
+    .icon2{
+        font-size:24px;
+    }
+
+    .step{
+        font-size:13px;
+        padding:10px;
+    }
+
+    .inputFieldsCompany label{
+        font-size:13px;
+    }
+
+    .inputFieldsCompany input,
+    .largeInput textarea{
+        font-size:14px;
+    }
+
+    .buttonRow button{
+        padding:12px;
+        font-size:14px;
+    }
+
+    .message{
+        font-size:14px;
+    }
+
 }

@@ -128,7 +128,8 @@ const updateCompany = async (req,res) =>{
         } = req.body
 
         const company = await CompanyModel.findOne({
-            userId: req.user._id
+            userId: req.user._id,
+            _id: req.params.id
         })
 
         if(!company){

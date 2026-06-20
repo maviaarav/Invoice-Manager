@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import instance from "./api/axios";
 import "./setting.css";
-import { Gavel32Filled,ContactCard32Filled,BuildingBankFilled,Signature32Regular,Stamp32Light,PeopleCommunity24Regular } from "@fluentui/react-icons";
+import { Gavel32Filled,ContactCard32Filled,BuildingBankFilled,Signature32Regular,Stamp32Light,PeopleCommunity24Regular,EditFilled } from "@fluentui/react-icons";
 
 
 
@@ -24,6 +24,7 @@ const Setting = () => {
    const [phoneNumber, setPhoneNumber] = useState("");
     const [companyProfile, setCompanyProfile] = useState(null);
     const [error, setError] = useState('')
+    const [editingCompany, setEditingCompany] = useState(null);
 
    const fetchCompanyProfile = async () =>{
     try{
@@ -83,6 +84,14 @@ const Setting = () => {
             <div className="logo">   
             </div>
         <div className="companyInfo">
+            <div className="info">
+               <div className="edit"
+               onClick = {()=> {
+                localStorage.setItem('editingCompany', JSON.stringify(companyProfile));
+                window.location.href = "/companyForm"
+               }}
+               > <EditFilled /></div>
+                </div>
           <input id="nameInput" type="companyName" value={companyName} readOnly />
             <p className="othertext">Committed to excellence, integrity, and customer satisfaction, we strive to deliver reliable products and services that create lasting value. Our focus is on building strong relationships, maintaining high standards of professionalism, and continuously improving to meet the evolving needs of our clients. We believe that trust, quality, and dedication are the foundation of every successful partnership, and we remain committed to supporting our customers with efficient solutions and exceptional service.</p>
         </div>

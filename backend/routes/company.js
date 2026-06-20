@@ -19,7 +19,7 @@ router.post(
     ]),
     createCompany
 )
-router.put('/update', 
+router.put('/update/:id', 
     restrictToLogin, 
     upload.fields([
         { name: 'signature', maxCount: 1 },

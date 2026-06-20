@@ -9,7 +9,7 @@ import {
 
 function SideMenu() {
     return (
-        <div className="side-menu">
+        <aside className="side-menu">
 
             <div className="text">
                 <h3 id="menuText">Invoice</h3>
@@ -68,7 +68,7 @@ function SideMenu() {
 
             </div>
 
-        </div>
+        </aside>
     );
 }
 

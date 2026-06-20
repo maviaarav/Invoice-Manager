@@ -52,6 +52,9 @@ const handleSubmit = async () => {
             localStorage.removeItem("editingClient");
 
             setSuccess("✅ Client updated successfully!");
+            setTimeout(() => {
+                window.location.href = "/clients";
+            }, 1500);
 
         } else {
 
@@ -67,6 +70,9 @@ const handleSubmit = async () => {
             );
 
             setSuccess("✅ Client created successfully!");
+            setTimeout(() => {
+                window.location.href = "/clients";
+            }, 1500);
         }
 
         clearForm();
