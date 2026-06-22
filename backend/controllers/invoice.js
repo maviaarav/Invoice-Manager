@@ -60,9 +60,6 @@ const CalculateInvoiceAmount = ({
 };
 
 
-/* =========================
-   FINANCIAL YEAR
-========================= */
 const getFinancialYear = (date = new Date()) => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -73,9 +70,7 @@ const getFinancialYear = (date = new Date()) => {
 };
 
 
-/* =========================
-   INVOICE NUMBER GENERATOR
-========================= */
+
 const getInvoiceNumber = async (financialYear) => {
     const count = await InvoiceModel.countDocuments({ financialYear });
 
@@ -85,15 +80,13 @@ const getInvoiceNumber = async (financialYear) => {
 };
 
 
-/* =========================
-   CREATE INVOICE
-========================= */
 const createInvoice = async (req, res) => {
 
     try {
 
         const {
             companyId,
+            
             customerId,
             items,
             taxType,
@@ -124,6 +117,7 @@ const createInvoice = async (req, res) => {
             taxType,
             invoiceNumber,
             financialYear,
+            invoiceDate: new Date().toISOString(),
 
             items,
 
@@ -162,9 +156,6 @@ const createInvoice = async (req, res) => {
 };
 
 
-/* =========================
-   GET ALL INVOICES
-========================= */
 const getInvoices = async (req, res) => {
     try {
 
@@ -175,10 +166,17 @@ const getInvoices = async (req, res) => {
             .populate("companyId")
             .populate("customerId")
             .sort({ createdAt: -1 });
+        const invoiceCount = await InvoiceModel.countDocuments({ userId });
+        if (!invoices || invoices.length === 0) {
+            return res.status(404).json({
+                Msg: "No Invoices Found"
+            });
+        } 
 
         return res.status(200).json({
             Msg: "Invoices Fetched Successfully",
-            invoices
+            invoices,
+            invoiceCount
         });
 
     } catch (error) {
@@ -258,9 +256,39 @@ const deleteInvoice = async (req, res) => {
 };
 
 
-/* =========================
-   UPDATE INVOICE
-========================= */
+
+const monthlyIncome = async (req,res) =>{
+    try{
+        const userId = req.user._id
+        const { year, month } = req.params
+        const startdate = new Date(year, month-1, 1)
+        const endDate = new Date(year, month,1)
+        const invoices = await InvoiceModel.find({
+            userId,
+            invoiceDate: {
+                $gte: startdate,
+                $lt: endDate
+            }
+        })
+        const totalIncome = invoices.reduce(
+            (sum, inv) => sum + inv.totalAmount, 0
+        )
+        res.status(201).json({
+        month,
+        year,
+        totalIncome,
+        totalInvoices: invoices.length
+        })
+    }
+    catch(error){
+        return res.status(403).json({Msg: "Error while Calculating Monthly Income", error: error.message})
+    }
+}
+
+
+
+
+
 const updateInvoice = async (req, res) => {
     try {
 
@@ -349,10 +377,16 @@ const getAllInvoiceByFinancialYear = async (req, res) => {
             .populate("companyId")
             .populate("customerId")
             .sort({ createdAt: -1 });
-
+        const InvoiceCount = await InvoiceModel.countDocuments({userId})
+        if (!invoices || invoices.length === 0) {
+            return res.status(404).json({
+                Msg: "No Invoices Found for the specified financial year"
+            });
+        }
         return res.status(200).json({
             Msg: "Invoices Fetched Successfully",
-            invoices
+            invoices,
+            InvoiceCount
         });
 
     } catch (error) {
@@ -369,5 +403,6 @@ module.exports = {
     getSingleInvoice,
     deleteInvoice,
     updateInvoice,
-    getAllInvoiceByFinancialYear
+    getAllInvoiceByFinancialYear,
+    monthlyIncome
 };

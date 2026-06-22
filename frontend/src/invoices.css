@@ -1,0 +1,62 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.invoiceContainer{
+       flex:1;
+    height:100vh;
+    overflow-y:auto;
+    padding:40px 5%;
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+    background:#F8F9FF;
+}
+.InvoiceHeading{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    flex-direction:row;
+    height:auto;
+    align-items:center;
+}
+.actual{
+    width:50%;
+    height:100%;
+    display:flex;
+    justify-content:flex-start;
+    flex-direction:column;
+    gap:10px;
+}
+.buttons{
+    width:50%;
+    height:100%;
+    display:flex;
+    justify-content:flex-end;
+    flex-direction:row;
+    gap:10px;
+}
+#Invoice-Btn{
+    width:200px;
+    height:50px;
+    border:none;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    outline:none;
+    background:linear-gradient(45deg, #003594,50%, #4B41E1, 100%);
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    border-radius:5px;
+}
+.invoicesTable{
+    width: 100%;
+    height: 100vh;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    padding: 20px; 
+
+}
