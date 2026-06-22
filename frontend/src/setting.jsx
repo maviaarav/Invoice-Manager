@@ -20,9 +20,11 @@ const Setting = () => {
    const [signature, setSignature] = useState(null);
    const [bankName, setBankName] = useState("");
    const [accountNumber, setAccountNumber] = useState("");
+   const [PlaceOfSupply, setPlaceOfSupply] = useState("");
    const [BranchName, setBranchName] = useState("");
    const [phoneNumber, setPhoneNumber] = useState("");
     const [companyProfile, setCompanyProfile] = useState(null);
+
     const [error, setError] = useState('')
     const [editingCompany, setEditingCompany] = useState(null);
 
@@ -46,6 +48,7 @@ const Setting = () => {
         setStamp(data.stamp)
         setSignature(data.signature)
         setBranchName(data.BranchName) 
+        setPlaceOfSupply(data.PlaceOfSupply) 
         console.log(data)
     }catch(error){
         console.log(error.response?.data.Msg)
@@ -105,6 +108,8 @@ const Setting = () => {
                 <input type="text" value={taxId} readOnly />
                 <label>PAN</label>
                 <input type="text" value={panNumber} readOnly />
+                <label>Place of Supply</label>
+                <input type="text" value={PlaceOfSupply} readOnly />
             </div>
             <div className="ContactInfoBlock">
                   <h2 className="textBlock"> <div className="iconCompany"><ContactCard32Filled /> </div> Contact Info</h2>

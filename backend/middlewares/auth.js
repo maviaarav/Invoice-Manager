@@ -1,5 +1,6 @@
 const { getUser } = require('../utils/auth')
 
+
 const restrictToLogin = async (req,res,next) =>{
     const id = req.cookies && req.cookies.UUID
     if(!id){

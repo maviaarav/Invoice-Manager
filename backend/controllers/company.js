@@ -16,7 +16,8 @@ const createCompany = async (req,res) =>{
             AccountNumber,
             IFSCCode,
             BranchName,
-            Email
+            Email,
+            PlaceOfSupply
         } = req.body
 
         if(
@@ -30,7 +31,8 @@ const createCompany = async (req,res) =>{
             !panNumber ||
             !phoneNumber ||
             !BranchName,
-            !Email
+            !Email,
+            !PlaceOfSupply
         ){
             return res.status(400).json({
                 Msg: "All Field Are required"
@@ -78,6 +80,7 @@ const createCompany = async (req,res) =>{
             AccountNumber,
             IFSCCode,
             BranchName,
+            PlaceOfSupply,
             signature,
             stamp,
         })
@@ -124,7 +127,8 @@ const updateCompany = async (req,res) =>{
             AccountNumber,
             IFSCCode,
             BranchName,
-            Email
+            Email,
+            PlaceOfSupply
         } = req.body
 
         const company = await CompanyModel.findOne({
@@ -182,6 +186,7 @@ const updateCompany = async (req,res) =>{
         company.phoneNumber =
             phoneNumber || company.phoneNumber
         company.Email = Email || company.Email
+        company.PlaceOfSupply = PlaceOfSupply || company.PlaceOfSupply
         await company.save()
 
         return res.status(200).json({

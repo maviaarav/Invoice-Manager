@@ -59,6 +59,10 @@ const companySchema = new mongoose.Schema({
     type: String,
     required: true
    },
+   PlaceOfSupply: {
+    type: String,
+    required: true
+   },
    signature: {
     type: String,
     default: ""

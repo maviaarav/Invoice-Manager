@@ -22,6 +22,7 @@ const CompanyForm = () =>{
    const [BranchName, setBranchName] = useState("");
    const [phoneNumber, setPhoneNumber] = useState("");
    const [editingCompany, setEditingCompany] = useState(null);
+   const [PlaceOfSupply, setPlaceOfSupply] = useState("");
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
     const [step, setStep] = useState(0);
@@ -47,6 +48,7 @@ const CompanyForm = () =>{
     formData.append("GSTNumber", taxId);
     formData.append("panNumber", panNumber);
     formData.append("IFSCCode", ifscCode);
+    formData.append("PlaceOfSupply", PlaceOfSupply);
 
     if (stamp instanceof File) {
         formData.append("stamp", stamp);
@@ -83,6 +85,7 @@ const CompanyForm = () =>{
         formData.append("GSTNumber", taxId);
         formData.append("panNumber", panNumber);
         formData.append("IFSCCode", ifscCode);
+        formData.append("PlaceOfSupply", PlaceOfSupply);
 
         if(stamp){
             formData.append("stamp", stamp);
@@ -130,6 +133,7 @@ setError(
         setTaxId(companyData.GSTNumber || "");
         setPanNumber(companyData.panNumber || "");
         setIfscCode(companyData.IFSCCode || "");
+        setPlaceOfSupply(companyData.PlaceOfSupply || ""); 
     }
 }, []);
 
@@ -145,6 +149,7 @@ setError(
         setTaxId("");
         setPanNumber("");
         setIfscCode("");
+        setPlaceOfSupply("");
         setStamp(null);
         setSignature(null);
 
@@ -250,6 +255,14 @@ standards.</p>
                             type="text"
                             value={panNumber}
                             onChange={(e) => setPanNumber(e.target.value)}
+                        />
+                    </div>
+                    <div className="inputFieldsCompany">
+                        <label>Place of Supply</label>
+                        <input
+                            type="text"
+                            value={PlaceOfSupply}
+                            onChange={(e) => setPlaceOfSupply(e.target.value)}
                         />
                     </div>
 

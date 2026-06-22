@@ -1,313 +1,372 @@
-const invoiceModel = require('../models/invoice');
+const InvoiceModel = require("../models/invoice");
+
+/* =========================
+   CALCULATION FUNCTION
+========================= */
+const CalculateInvoiceAmount = ({
+    items,
+    taxType,
+    cgstRate = 0,
+    sgstRate = 0,
+    igstRate = 0
+}) => {
+
+    const subtotal = items.reduce(
+        (sum, item) => sum + Number(item.amount || 0),
+        0
+    );
+
+    const taxableAmount = items
+        .filter(item => item.isTaxable)
+        .reduce(
+            (sum, item) => sum + Number(item.amount || 0),
+            0
+        );
+
+    let cgstAmount = 0;
+    let sgstAmount = 0;
+    let igstAmount = 0;
+
+    if (taxType === "CGST_SGST") {
+        cgstAmount = taxableAmount * cgstRate / 100;
+        sgstAmount = taxableAmount * sgstRate / 100;
+    }
+
+    if (taxType === "IGST") {
+        igstAmount = taxableAmount * igstRate / 100;
+    }
+
+    const totalTax = cgstAmount + sgstAmount + igstAmount;
+
+    const totalAmount = subtotal + totalTax;
+
+    return {
+        subtotal,
+        cgst: {
+            rate: cgstRate,
+            amount: cgstAmount
+        },
+        sgst: {
+            rate: sgstRate,
+            amount: sgstAmount
+        },
+        igst: {
+            rate: igstRate,
+            amount: igstAmount
+        },
+        totalTax,
+        totalAmount
+    };
+};
+
 
 /* =========================
    FINANCIAL YEAR
 ========================= */
-const financialYear = (data = new Date()) => {
-    const year = data.getFullYear();
-    const month = data.getMonth() + 1;
+const getFinancialYear = (date = new Date()) => {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
 
-    if (month >= 4) return `${year}-${year + 1}`;
-    else return `${year - 1}-${year}`;
+    return month >= 4
+        ? `${year}-${year + 1}`
+        : `${year - 1}-${year}`;
 };
+
 
 /* =========================
    INVOICE NUMBER GENERATOR
 ========================= */
-const InvoiceNumber = async (userId, financialYear, Invoice) => {
-    const count = await Invoice.countDocuments({ userId, financialYear });
+const getInvoiceNumber = async (financialYear) => {
+    const count = await InvoiceModel.countDocuments({ financialYear });
 
-    const next = String(count + 1).padStart(4, '0'); // FIXED
+    const nextNumber = count + 1;
 
-    return `INV-${financialYear.split('-')[0]}-${next}`;
+    return `INV/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
 };
 
-/* =========================
-   NORMALIZE ITEMS
-========================= */
-const NormalizeItems = (items) => {
-    return items.map(item => {
-        let amount = 0;
-
-        if (item.quantity && item.rate) {
-            amount = item.quantity * item.rate;
-        } else {
-            amount = item.amount || 0;
-        }
-
-        return {
-            name: item.name,
-            quantity: item.quantity || null,
-            rate: item.rate || null,
-            amount,
-            isTaxable: item.isTaxable || false   // IMPORTANT FIX
-        };
-    });
-};
-
-/* =========================
-   TAX CALCULATION
-========================= */
-const CalculateTax = (items, taxType) => {
-    const taxableAmount = items
-        .filter(item => item.isTaxable)
-        .reduce((sum, item) => sum + item.amount, 0);
-
-    if (taxType === 'cgst') {
-        const cgst = taxableAmount * 0.09;
-        const igst = 0;
-
-        return { cgst, igst, taxableAmount };
-    } else {
-        const igst = taxableAmount * 0.18;
-        const cgst = 0;
-
-        return { cgst, igst, taxableAmount };
-    }
-};
 
 /* =========================
    CREATE INVOICE
 ========================= */
-const CreateInvoice = async (req, res) => {
+const createInvoice = async (req, res) => {
+
     try {
+
         const {
-            customerId,
             companyId,
+            customerId,
             items,
-            taxType = 'cgst',
+            taxType,
+            cgstRate,
+            sgstRate,
+            igstRate
         } = req.body;
+        console.log("REQ BODY:", req.body);
+        console.log("TAX TYPE:", req.body.taxType);
+        const userId = req.user._id;
 
-        const financialYearValue = financialYear();
+        const financialYear = getFinancialYear();
 
-        const cleanItems = NormalizeItems(items);
+        const invoiceNumber = await getInvoiceNumber(financialYear);
 
-        const subtotal = cleanItems.reduce(
-            (sum, item) => sum + item.amount,
-            0
-        );
-
-        const { cgst, igst } = CalculateTax(cleanItems, taxType);
-
-        const totalAmount = subtotal + cgst + igst;
-
-        const invoiceNumber = await InvoiceNumber(
-            req.user._id,
-            financialYearValue,
-            invoiceModel
-        );
-
-        const invoice = new invoiceModel({
-            userId: req.user._id,
-            customerId,
-            companyId,
-            financialYear: financialYearValue,
-            invoiceDate: new Date(),
-            invoiceNumber,
-            items: cleanItems,
-            subtotal,
-            cgst: {
-                rate: taxType === 'cgst' ? 9 : 0,
-                amount: cgst
-            },
-            igst: {
-                rate: taxType === 'igst' ? 18 : 0,
-                amount: igst
-            },
-            totalAmount
+        const calculations = CalculateInvoiceAmount({
+            items,
+            taxType,
+            cgstRate,
+            sgstRate,
+            igstRate
         });
 
-        await invoice.save(); // IMPORTANT FIX
+        const invoice = await InvoiceModel.create({
+            userId,
+            companyId,
+            customerId,
+            taxType,
+            invoiceNumber,
+            financialYear,
+
+            items,
+
+            subtotal: calculations.subtotal,
+
+            cgst: {
+                rate: cgstRate || 0,
+                amount: calculations.cgst.amount
+            },
+
+            sgst: {
+                rate: sgstRate || 0,
+                amount: calculations.sgst.amount
+            },
+
+            igst: {
+                rate: igstRate || 0,
+                amount: calculations.igst.amount
+            },
+
+            totalTax: calculations.totalTax,
+            totalAmount: calculations.totalAmount
+        });
 
         return res.status(201).json({
-            success: true,
-            message: "Invoice created successfully",
-            data: invoice
+            Msg: "Invoice Created Successfully",
+            invoice
         });
 
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            message: 'Error creating invoice',
-            error: err.message
+    } catch (error) {
+        return res.status(500).json({
+            Msg: "Error while Creating Invoice",
+            error: error.message
         });
     }
 };
-
-
 
 
 /* =========================
-   GET INVOICE BY ID
+   GET ALL INVOICES
 ========================= */
-const GetInvoiceById = async (req, res) => {
+const getInvoices = async (req, res) => {
     try {
-        const { id } = req.params;
 
-        const invoice = await invoiceModel.findById(id)
+        const userId = req.user._id;
+
+        const invoices = await InvoiceModel
+            .find({ userId })
+            .populate("companyId")
             .populate("customerId")
-            .populate("companyId");
+            .sort({ createdAt: -1 });
 
-        if (!invoice) {
-            return res.status(404).json({ message: 'Invoice not found' });
-        }
-
-        res.status(200).json({
-            success: true,
-            message: "Invoice retrieved successfully",
-            data: invoice
+        return res.status(200).json({
+            Msg: "Invoices Fetched Successfully",
+            invoices
         });
 
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            message: 'Error retrieving invoice',
-            error: err.message
+    } catch (error) {
+        return res.status(500).json({
+            Msg: "Error while Fetching Invoice",
+            error: error.message
         });
     }
 };
+
+
+/* =========================
+   GET SINGLE INVOICE
+========================= */
+const getSingleInvoice = async (req, res) => {
+    try {
+
+        const userId = req.user._id;
+        const invoiceId = req.params.id;
+
+        const invoice = await InvoiceModel
+            .findOne({ _id: invoiceId, userId })
+            .populate("companyId")
+            .populate("customerId");
+
+        if (!invoice) {
+            return res.status(404).json({
+                Msg: "Invoice Not Found"
+            });
+        }
+
+        return res.status(200).json({
+            Msg: "Invoice Fetched Successfully",
+            invoice
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            Msg: "Error while Fetching Invoice",
+            error: error.message
+        });
+    }
+};
+
 
 /* =========================
    DELETE INVOICE
 ========================= */
 const deleteInvoice = async (req, res) => {
     try {
-        const { id } = req.params;
 
-        const invoice = await invoiceModel.findByIdAndDelete(id);
+        const userId = req.user._id;
+        const invoiceId = req.params.id;
 
-        if (!invoice) {
-            return res.status(404).json({ message: 'Invoice not found' });
-        }
-
-        res.status(200).json({
-            success: true,
-            message: "Invoice deleted successfully",
+        const invoice = await InvoiceModel.findOneAndDelete({
+            _id: invoiceId,
+            userId
         });
 
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            message: 'Error deleting invoice',
-            error: err.message
+        if (!invoice) {
+            return res.status(404).json({
+                Msg: "Invoice Not Found"
+            });
+        }
+
+        return res.status(200).json({
+            Msg: "Invoice Deleted Successfully",
+            invoice
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            Msg: "Error while Deleting Invoice",
+            error: error.message
         });
     }
 };
+
 
 /* =========================
    UPDATE INVOICE
 ========================= */
 const updateInvoice = async (req, res) => {
     try {
-        const { id } = req.params;
+
+        const userId = req.user._id;
+        const invoiceId = req.params.id;
+
         const {
+            companyId,
+            customerId,
             items,
-            taxType
+            taxType,
+            cgstRate,
+            sgstRate,
+            igstRate
         } = req.body;
 
-        const cleanItems = NormalizeItems(items);
+        const calculations = CalculateInvoiceAmount({
+            items,
+            taxType,
+            cgstRate,
+            sgstRate,
+            igstRate
+        });
 
-        const { cgst, igst, taxableAmount } =
-            CalculateTax(cleanItems, taxType);
-
-        const subtotal = taxableAmount;
-
-        const totalAmount = subtotal + cgst + igst;
-
-        const invoice = await invoiceModel.findByIdAndUpdate(
-            id,
+        const invoice = await InvoiceModel.findOneAndUpdate(
+            { _id: invoiceId, userId },
             {
-                items: cleanItems,
-                subtotal,
+                companyId,
+                customerId,
+                items,
+
+                subtotal: calculations.subtotal,
+
                 cgst: {
-                    rate: taxType === 'cgst' ? 9 : 0,
-                    amount: cgst
+                    rate: cgstRate || 0,
+                    amount: calculations.cgst.amount
                 },
+
+                sgst: {
+                    rate: sgstRate || 0,
+                    amount: calculations.sgst.amount
+                },
+
                 igst: {
-                    rate: taxType === 'igst' ? 18 : 0,
-                    amount: igst
+                    rate: igstRate || 0,
+                    amount: calculations.igst.amount
                 },
-                totalAmount
+
+                totalTax: calculations.totalTax,
+                totalAmount: calculations.totalAmount
             },
             { new: true }
         );
 
         if (!invoice) {
-            return res.status(404).json({ message: 'Invoice not found' });
+            return res.status(404).json({
+                Msg: "Invoice Not Found"
+            });
         }
 
-        res.status(200).json({
-            success: true,
-            message: "Invoice updated successfully",
-            data: invoice
+        return res.status(200).json({
+            Msg: "Invoice Updated Successfully",
+            invoice
         });
 
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            message: 'Error updating invoice',
-            error: err.message
+    } catch (error) {
+        return res.status(500).json({
+            Msg: "Error while Updating Invoice",
+            error: error.message
         });
     }
 };
-const GetInvoices = async (req, res) => {
-    try {
-        const invoices = await invoiceModel.find({userId: req.user._id})
-            .populate("customerId")
-            .populate("companyId")
-            .sort({ createdAt: -1 });
 
-        res.status(200).json({
-            success: true,
-            message: "Invoices retrieved successfully",
-            data: invoices
-        });
 
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            message: 'Error retrieving invoices',
-            error: err.message
-        });
-    }
-}
 /* =========================
-   GET BY FINANCIAL YEAR
+   FILTER BY FINANCIAL YEAR
 ========================= */
 const getAllInvoiceByFinancialYear = async (req, res) => {
     try {
-        const { userId, financialYear } = req.query;
 
-        const invoices = await invoiceModel.find({
-            userId,
-            financialYear
-        })
-            .populate("customerId")
+        const userId = req.user._id;
+        const financialYear = req.params.id;
+
+        const invoices = await InvoiceModel
+            .find({ userId, financialYear })
             .populate("companyId")
+            .populate("customerId")
             .sort({ createdAt: -1 });
 
-        res.status(200).json({
-            success: true,
-            message: "Invoices retrieved successfully",
-            data: invoices
+        return res.status(200).json({
+            Msg: "Invoices Fetched Successfully",
+            invoices
         });
 
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            message: 'Error retrieving invoices',
-            error: err.message
+    } catch (error) {
+        return res.status(500).json({
+            Msg: "Error while Fetching Invoice",
+            error: error.message
         });
     }
 };
 
-/* =========================
-   EXPORTS
-========================= */
 module.exports = {
-    CreateInvoice,
-    GetInvoices,
-    GetInvoiceById,
+    createInvoice,
+    getInvoices,
+    getSingleInvoice,
     deleteInvoice,
     updateInvoice,
     getAllInvoiceByFinancialYear

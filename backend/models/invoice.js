@@ -1,90 +1,129 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const invoiceSchema = new mongoose.Schema({
-    userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
-    required: true
-  },
+const invoiceSchema = new mongoose.Schema(
+{
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"users",
+        required:true
+    },
 
-  companyId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Company",
-    required: true
-  },
+    companyId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Company",
+        required:true
+    },
 
-  customerId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "clients",
-    required: true
-  },
+    customerId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"clients",
+        required:true
+    },
 
-  invoiceNumber: {
-    type: String,
-    unique: true
-  },
+    invoiceNumber:{
+        type:String,
+        unique:true
+    },
 
-  financialYear: String,
+    financialYear:{
+        type:String
+    },
 
-  invoiceDate: {
-    type: Date,
-    default: Date.now
-  },
-
-
-  items: [
-    {
-      name: String,
+    invoiceDate:{
+        type:Date,
+        default:Date.now
+    },
 
 
-      quantity: {
-        type: Number,
-        default: null
-      },
+    items:[
+        {
+            description:{
+                type:String,
+                required:true
+            },
 
+            quantity:{
+                type:Number,
+                default:null
+            },
 
-      rate: {
-        type: Number,
-        default: null
-      },
+            rate:{
+                type:Number,
+                default:null
+            },
 
+            amount:{
+                type:Number,
+                required:true
+            },
 
-      amount: {
-        type: Number,
-        required: true
-      },
-      isTaxable: {
-        type: Boolean,
-        default: false
-      }
+            isTaxable:{
+                type:Boolean,
+                default:true
+            }
+        }
+    ],
 
+    subtotal:{
+        type:Number,
+        required:true
+    },
+
+    taxType:{
+        type:String,
+        enum:["CGST_SGST","IGST","NONE"],
+        default:"NONE"
+    },
+
+    cgst:{
+        rate:{
+            type:Number,
+            default:0
+        },
+        amount:{
+            type:Number,
+            default:0
+        }
+    },
+
+    sgst:{
+        rate:{
+            type:Number,
+            default:0
+        },
+        amount:{
+            type:Number,
+            default:0
+        }
+    },
+
+    igst:{
+        rate:{
+            type:Number,
+            default:0
+        },
+        amount:{
+            type:Number,
+            default:0
+        }
+    },
+
+    totalTax:{
+        type:Number,
+        default:0
+    },
+
+    totalAmount:{
+        type:Number,
+        required:true
     }
-  ],
 
-  subtotal: {
-    type: Number,
-    required: true
-  },
+},
+{timestamps:true}
+);
 
-  cgst: {
-    rate: Number,   
-    amount: Number 
-  },
+module.exports = mongoose.model("invoices", invoiceSchema);
 
-  igst: {
-    rate: Number,
-    amount: Number
-  },
+const InvoiceModel = mongoose.model("invoices", invoiceSchema);
 
-
-
-  totalAmount: {
-    type: Number,
-    required: true
-  },
-
-}, { timestamps: true })
-
-const invoiceModel = mongoose.model('invoices', invoiceSchema);
-
-module.exports = invoiceModel;
+module.exports = InvoiceModel;
