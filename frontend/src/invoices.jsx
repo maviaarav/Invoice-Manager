@@ -32,11 +32,11 @@ const Invoices = () => {
                     <h1 id="text">Invoice History</h1>
                     <p>Manage and track all your client billing in one place.</p>
                 </div>
-                {error && (
+               
                     <div className="buttons">
-                    <button type="button" id="Invoice-Btn" onClick={() => window.location.href="/"}>Create Invoice</button>
+                    <button type="button" id="Invoice-Btn" onClick={() => window.location.href="/invoiceForm"}>Create Invoice</button>
                 </div>
-                )}
+ 
                 
             </div>
            {error && (

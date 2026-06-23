@@ -90,6 +90,8 @@ const createInvoice = async (req, res) => {
             customerId,
             items,
             taxType,
+            shippingAddress,
+            placeOfSupply,
             cgstRate,
             sgstRate,
             igstRate
@@ -100,7 +102,6 @@ const createInvoice = async (req, res) => {
 
         const financialYear = getFinancialYear();
 
-        const invoiceNumber = await getInvoiceNumber(financialYear);
 
         const calculations = CalculateInvoiceAmount({
             items,
@@ -109,7 +110,7 @@ const createInvoice = async (req, res) => {
             sgstRate,
             igstRate
         });
-
+             
         const invoice = await InvoiceModel.create({
             userId,
             companyId,
@@ -117,7 +118,9 @@ const createInvoice = async (req, res) => {
             taxType,
             invoiceNumber,
             financialYear,
-            invoiceDate: new Date().toISOString(),
+            invoiceDate: new Date(invoiceDate).toLocaleDateString("en-IN",{ day: "numeric", month: "long", year: "numeric" }),
+            shippingAddress,
+            placeOfSupply,
 
             items,
 
@@ -188,9 +191,6 @@ const getInvoices = async (req, res) => {
 };
 
 
-/* =========================
-   GET SINGLE INVOICE
-========================= */
 const getSingleInvoice = async (req, res) => {
     try {
 
@@ -222,9 +222,6 @@ const getSingleInvoice = async (req, res) => {
 };
 
 
-/* =========================
-   DELETE INVOICE
-========================= */
 const deleteInvoice = async (req, res) => {
     try {
 
@@ -302,7 +299,8 @@ const updateInvoice = async (req, res) => {
             taxType,
             cgstRate,
             sgstRate,
-            igstRate
+            igstRate,
+            shippingAddress
         } = req.body;
 
         const calculations = CalculateInvoiceAmount({
@@ -319,7 +317,7 @@ const updateInvoice = async (req, res) => {
                 companyId,
                 customerId,
                 items,
-
+                shippingAddress,
                 subtotal: calculations.subtotal,
 
                 cgst: {

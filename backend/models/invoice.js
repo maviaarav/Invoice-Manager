@@ -33,11 +33,18 @@ const invoiceSchema = new mongoose.Schema(
         type:Date,
         default:Date.now
     },
-
+    shippingAddress:{
+        type:String,
+        default:""
+    },
+    placeOfSupply:{
+        type:String,
+        required:true
+    },
 
     items:[
         {
-            description:{
+            Name:{
                 type:String,
                 required:true
             },
@@ -56,10 +63,13 @@ const invoiceSchema = new mongoose.Schema(
                 type:Number,
                 required:true
             },
-
+            HSNCode:{
+                type:String,
+                required:true
+            },
             isTaxable:{
                 type:Boolean,
-                default:true
+                default:false
             }
         }
     ],
@@ -122,7 +132,7 @@ const invoiceSchema = new mongoose.Schema(
 {timestamps:true}
 );
 
-module.exports = mongoose.model("invoices", invoiceSchema);
+
 
 const InvoiceModel = mongoose.model("invoices", invoiceSchema);
 
