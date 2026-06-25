@@ -86,7 +86,7 @@ const createInvoice = async (req, res) => {
 
         const {
             companyId,
-            
+            billingAddress,
             customerId,
             items,
             taxType,
@@ -94,7 +94,8 @@ const createInvoice = async (req, res) => {
             placeOfSupply,
             cgstRate,
             sgstRate,
-            igstRate
+            igstRate,
+            
         } = req.body;
         console.log("REQ BODY:", req.body);
         console.log("TAX TYPE:", req.body.taxType);
@@ -116,10 +117,11 @@ const createInvoice = async (req, res) => {
             companyId,
             customerId,
             taxType,
-            invoiceNumber,
+            invoiceNumber: await getInvoiceNumber(financialYear),
             financialYear,
-            invoiceDate: new Date(invoiceDate).toLocaleDateString("en-IN",{ day: "numeric", month: "long", year: "numeric" }),
+            invoiceDate: new Date().toLocaleDateString("en-IN",{ day: "numeric", month: "long", year: "numeric" }),
             shippingAddress,
+            billingAddress,
             placeOfSupply,
 
             items,
@@ -300,7 +302,8 @@ const updateInvoice = async (req, res) => {
             cgstRate,
             sgstRate,
             igstRate,
-            shippingAddress
+            shippingAddress,
+            billingAddress
         } = req.body;
 
         const calculations = CalculateInvoiceAmount({
@@ -318,6 +321,7 @@ const updateInvoice = async (req, res) => {
                 customerId,
                 items,
                 shippingAddress,
+                billingAddress,
                 subtotal: calculations.subtotal,
 
                 cgst: {

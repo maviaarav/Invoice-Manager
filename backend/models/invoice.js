@@ -37,6 +37,10 @@ const invoiceSchema = new mongoose.Schema(
         type:String,
         default:""
     },
+    billingAddress:{
+        type:String,
+        default:""
+    },
     placeOfSupply:{
         type:String,
         required:true

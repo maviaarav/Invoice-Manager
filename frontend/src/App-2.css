@@ -10,6 +10,7 @@ body,
 #root{
     width:100%;
     height:100%;
+    overflow-y:scroll;
 }
 
 body{
@@ -22,8 +23,9 @@ body{
 }
 
 .layout{
-    display:flex;
-    width:100%;
+   display:flex;
     height:100vh;
-    overflow:hidden;
+    overflow:scroll;
+
 }
+

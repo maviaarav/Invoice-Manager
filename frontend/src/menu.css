@@ -22,6 +22,7 @@
     padding:32px 24px;
 
     border-right:1px solid #e5e7eb;
+    overflow-y:auto;
 
     transition:all .3s ease;
     z-index:1000;
