@@ -86,7 +86,7 @@ const invoiceSchema = new mongoose.Schema(
     taxType:{
         type:String,
         enum:["CGST_SGST","IGST","NONE"],
-        default:"NONE"
+        default:"CGST_SGST"
     },
 
     cgst:{

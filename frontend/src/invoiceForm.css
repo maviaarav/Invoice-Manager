@@ -36,8 +36,49 @@
   width: 30%;
   height: auto;
   display: flex;
+  background-color: white;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border-radius: 10px;
+  padding: 20px;
   flex-direction: column;
   gap: 20px;
+}
+.rightHeader p{
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+.Mainsection{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.leftSectionInvoice{
+  width: 50%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.RigthSectionInvoice{
+    width: 50%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+.leftSectionInvoice p{
+  font-size: 14px;
+  font-weight: bold;
+  color: #6A11CB;
+}
+.RigthSectionInvoice p{
+    font-size: 16px;
+  font-weight: bold;
+  color: #0050CB;
 }
 .company, .client{
   width: 50%;
@@ -98,7 +139,7 @@
   gap: 20px;
   padding: 10px;
 }
-.info{
+.infoInvoice{
   width: 55%;
   height: auto;
   background-color: white;
@@ -107,6 +148,7 @@
 justify-content: left;
     align-items: flex-start;
     gap: 10px;
+    padding: 10px;
 text-align: left;
   display: flex;
   flex-direction: column;
@@ -140,7 +182,31 @@ text-align: left;
     justify-content:center;
     gap:15px;
 }
+.InvoiceTable{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+    overflow-x:auto;
+    overflow-y:hidden;
 
+}
+.InvoiceTable th, .InvoiceTable td{
+  border: 1px solid #C4C4C4;
+  width: auto;
+  background-color: #F8F9FF;
+    padding:10px;
+    font-size:14px;
+    text-align:center;
+}
+.InvoiceTable th{
+    font-weight:600;
+    color:#5400C3;
+}
+.InvoiceTable td{
+    font-weight:500;
+    color:#0C0E16;
+    width: auto;
+}
 .taxBtn{
     flex:1;
     padding:14px 20px;
@@ -250,6 +316,62 @@ text-align: left;
   font-weight: 600;
   color: #5B5B5B;
 }
+#desc{
+  width: 20%;
+}
+#description{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border-radius: 10px;
+  outline: none;
+  align-items: flex-start;
+  font-size: 12px;
+  font-weight: bold;
+  color: black;
+  resize: none;
+  overflow: hidden;
+  gap: 10px;
+}
+#totalAmount{
+  width: 10%;
+}
+#isTaxable{
+  width: 1%;
+}
+#cgstAmount, #sgstAmount, #igstAmount{
+  width: 9%;
+}
+#hsn{
+  width: 10%;
+}
+#qty{
+  width: 6%;
+}
+.addItemBtn{
+  width: auto;
+  height: 40px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  border: none;
+  background-color: #5400C3;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.btn{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
 .billingAddress input, .shippingAddress input{
   width: 100%;
   height: 40px;
@@ -281,8 +403,49 @@ text-align: left;
   border-radius: 10px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
+.create{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
 .itemsInvoice h3{
   font-size: 20px;
   font-weight: 600;
   color: #5400C3;
+}
+.createBtn{
+  width: auto;
+  height: 40px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  border: none;
+  background-color: #5400C3;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.createBtn:hover{
+  background-color: #6A11CB;
+}
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+#rate{
+  width: 10%;
+}
+#taxable{
+  width: 10%;
 }
