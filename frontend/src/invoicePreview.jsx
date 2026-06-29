@@ -280,20 +280,28 @@ const toWords = new ToWords({
     </div>
 </div>
     <div className="signatureSection">
-        <div className="upperSectionSignature">
-            <p>For <strong>{invoice.companyId.CompanyName}</strong></p>
-            <div className="signaturePreview">
-                {invoice.companyId.signature && (
-                    <img src={invoice.companyId.signature} alt="Signature" />
-                )}
-                <p>Authorized Signatory</p>
-            </div>
-           
-        </div>
-         <div className="sealPreview">
-                <p>Company Seal</p>
-            </div>
+
+    <div className="sealPreview">
+        {invoice.companyId.stamp ? (
+            <img src={invoice.companyId.stamp} alt="Company Seal" />
+        ) : (
+            <p>Company Seal</p>
+        )}
     </div>
+
+    {/* RIGHT - Signature */}
+    <div className="upperSectionSignature">
+        <p>For <strong>{invoice.companyId.CompanyName}</strong></p>
+        <div className="signaturePreview">
+            {invoice.companyId.signature ? (
+                <img src={invoice.companyId.signature} alt="Signature" />
+            ) : (
+                <div style={{ height: "70px" }} />
+            )}
+            <p>Authorized Signatory</p>
+        </div>
+    </div>
+</div>
             </div>
         </div>
        </div>
