@@ -113,7 +113,6 @@ const handleSubmit = async () => {
             JSON.parse(storedClient);
 
         setEditingClient(client);
-
         setClientName(client.clientName);
         setClientEmail(client.email);
         setClientPhone(client.phoneNumber);

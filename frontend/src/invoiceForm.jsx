@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import instance from "./api/axios";
 import states from "./getStates.js";
 import { Delete16Regular } from "@fluentui/react-icons";
+import { ToWords } from "to-words";
 
 const InvoiceForm = () => {
 
   const [company, setCompany] = useState([]);
   const [companyId, setCompanyId] = useState("");
+  const [amountInWords, setAmountInWords] = useState("");
   const [taxableAmount, setTaxableAmount] = useState(0);
   const [clients, setClients] = useState([]);
   const [selectedClientId, setSelectedClient] = useState("");
@@ -21,6 +23,10 @@ const InvoiceForm = () => {
   const [invoiceNumber, setInvoiceNumber] = useState(1);
   const [shippingAddress, setShippingAddress] = useState("");
   const [billingAddress, setBillingAddress] = useState("");
+  const [error, setError] = useState(null);
+  const [editingInvoice, setEditingInvoice] = useState(null);
+  const [success, setSuccess] = useState(null);
+
 
   // FIX 4: cgstRate, sgstRate, igstRate were never declared as state
   const [cgstRate, setCgstRate] = useState(9);
@@ -63,6 +69,40 @@ const InvoiceForm = () => {
     setItems(updatedItems);
   };
 
+  const clearForm = () => {
+    setItems([
+      {
+        Name: "",
+        quantity: 1,
+        rate: 0,
+        HSNCode: "",
+        amount: 0,
+        cgstRate: 9,
+        sgstRate: 9,
+        igstRate: 18,
+        isTaxable: false,
+      },
+    ]);
+    setSubtotal(0);
+    setCgstAmount(0);
+    setSgstAmount(0);
+    setIgstAmount(0);
+    setTotalAmount(0);
+    setBillingAddress("");
+    setShippingAddress("");
+    setSameAsBilling(false);
+    setSelectedClient("");
+    setPlaceOfSupply("");
+  };
+  const toWords = new ToWords({
+    localeCode: "en-IN",
+    converterOptions: {
+      currency: true,
+      ignoreDecimal: false,
+      ignoreZeroCurrency: false,
+    },
+  })
+
   // FIX 3: handleAddItem was missing — the setItems call was floating loose
   const handleAddItem = () => {
     setItems([
@@ -95,11 +135,11 @@ const InvoiceForm = () => {
   );
   setSubtotal(newSubtotal);
 
-  const taxableSubtotal = items.reduce(
-    (acc, item) => acc + (item.isTaxable ? Number(item.amount || 0) : 0),
-    0
-  );
-  setTaxableAmount(taxableSubtotal);
+const taxableSubtotal = items.reduce(
+  (acc, item) => acc + Number(item.amount || 0),
+  0
+);
+setTaxableAmount(taxableSubtotal);
 
   let newCgstAmount = 0;
   let newSgstAmount = 0;
@@ -195,8 +235,29 @@ const InvoiceForm = () => {
     }
   };
 
-  const CreateInvoice = async () => {
-    try {
+const CreateInvoice = async () => {
+  try {
+    if (editingInvoice) {
+      await instance.put(
+        `/invoice/update/${editingInvoice._id}`,
+        {
+          companyId,
+          customerId: selectedClientId,
+          items,
+          taxType,
+          cgstRate,
+          sgstRate,
+          igstRate,
+          placeOfSupply,
+          shippingAddress,
+          billingAddress,
+        }
+      );
+
+      localStorage.removeItem("editingInvoice");
+      setSuccess("✅ Invoice updated successfully!");
+
+    } else {
       const response = await instance.post("/invoice/create", {
         companyId,
         customerId: selectedClientId,
@@ -210,12 +271,57 @@ const InvoiceForm = () => {
         billingAddress,
       });
       const data = response.data;
+      setSuccess("✅ Invoice created successfully!");
+      clearForm();
+      setError(null);
       console.log("Invoice created successfully:", data);
-    } catch (error) {
-      console.error("Error creating invoice:", error);
     }
-  };
+  } catch (error) {
+    console.error("Error saving invoice:", error);
+    setError(
+      error.response?.data?.Msg || "Failed to save invoice. Please try again."
+    );
+    setSuccess(null);
+  }
+};
 
+useEffect(() => {
+  const storedEditingInvoice = localStorage.getItem("editingInvoice");
+  if (storedEditingInvoice) {
+    const invoiceData = JSON.parse(storedEditingInvoice);
+    setEditingInvoice(invoiceData);
+
+    const clientId = invoiceData.customerId?._id || invoiceData.customerId || "";
+    setSelectedClient(clientId);
+
+    setPlaceOfSupply(invoiceData.placeOfSupply || "");
+    setShippingAddress(invoiceData.shippingAddress || "");
+    setBillingAddress(invoiceData.billingAddress || "");
+
+    // FIX: normalize items — DB may store cgst/sgst as objects or missing fields
+    const normalizedItems = (invoiceData.items || []).map((item) => ({
+      ...item,
+      cgstRate: Number(item.cgstRate ?? invoiceData.cgst?.rate ?? invoiceData.cgstRate ?? 9),
+      sgstRate: Number(item.sgstRate ?? invoiceData.sgst?.rate ?? invoiceData.sgstRate ?? 9),
+      igstRate: Number(item.igstRate ?? invoiceData.igst?.rate ?? invoiceData.igstRate ?? 18),
+      amount:   Number(item.amount || 0),
+      quantity: Number(item.quantity || 1),
+      rate:     Number(item.rate || 0),
+      isTaxable: item.isTaxable ?? false,
+    }));
+    setItems(normalizedItems);
+
+    setSubtotal(Number(invoiceData.subtotal || 0));
+    setTaxType(invoiceData.taxType || "CGST_SGST");
+    setCgstRate(Number(invoiceData.cgst?.rate || invoiceData.cgstRate || 9));
+    setSgstRate(Number(invoiceData.sgst?.rate || invoiceData.sgstRate || 9));
+    setIgstRate(Number(invoiceData.igst?.rate || invoiceData.igstRate || 18));
+    setCgstAmount(Number(invoiceData.cgst?.amount || invoiceData.cgstAmount || 0));
+    setSgstAmount(Number(invoiceData.sgst?.amount || invoiceData.sgstAmount || 0));
+    setIgstAmount(Number(invoiceData.igst?.amount || invoiceData.igstAmount || 0));
+    setTotalAmount(Number(invoiceData.totalAmount || 0));
+  }
+}, []);
   useEffect(() => {
     InvoiceDate();
     fetchCompanyId();
@@ -239,6 +345,13 @@ const InvoiceForm = () => {
       setShippingAddress(billingAddress);
     }
   }, [sameAsBilling, billingAddress]);
+  useEffect(() => {
+  if (totalAmount > 0) {
+    setAmountInWords(toWords.convert(totalAmount));
+  } else {
+    setAmountInWords("Zero Rupees Only");
+  }
+}, [totalAmount]);
 
   return (
     <div className="invoiceContainerForm">
@@ -307,7 +420,7 @@ const InvoiceForm = () => {
           <div className="Mainsection">
             <div className="leftSectionInvoice">
               <p>Total Items</p>
-              <p>Taxable Amount</p>
+              <p>Subtotal Amount</p>
               <p>CGST</p>
               <p>SGST</p>
               <p>IGST</p>
@@ -315,13 +428,27 @@ const InvoiceForm = () => {
             {/* FIX 10: Added missing sgstAmount and igstAmount display rows */}
             <div className="RigthSectionInvoice">
               <p>{items.length}</p>
-              <p>{taxableAmount.toFixed(2)}</p>
-              <p>{cgstAmount.toFixed(2)}</p>
-              <p>{sgstAmount.toFixed(2)}</p>
-              <p>{igstAmount.toFixed(2)}</p>
+              <p>{Number(taxableAmount || 0).toFixed(2)}</p>
+<p>{Number(cgstAmount || 0).toFixed(2)}</p>
+<p>{Number(sgstAmount || 0).toFixed(2)}</p>
+<p>{Number(igstAmount || 0).toFixed(2)}</p>
             </div>
           </div>
+            <div className="grandTotal">
+            <div className="leftTotal">
+              <h3>Grand Total</h3>
+            </div>
+            <div className="rightTotal">
+             <h3>₹ {Number(totalAmount || 0).toFixed(2)}</h3>
+      
+            </div>
+          </div>
+          <div className="wordAmount">
+            <h3>Amount in Words:</h3>
+            <p id="special">{amountInWords}</p>
+          </div>
         </div>
+        
       </div>
 
       <div className="invoiceInfo">
@@ -337,6 +464,7 @@ const InvoiceForm = () => {
           </div>
           <div className="invoiceNumber">
             <label>Invoice Date:</label>
+
             <input type="text" value={invoiceDate} readOnly />
           </div>
         </div>
@@ -628,9 +756,13 @@ const InvoiceForm = () => {
         </div>
         <div className="create">
           <button className="createBtn" onClick={CreateInvoice}>
-            Create Invoice
+            {editingInvoice ? "Update Invoice" : "Create Invoice"}
+
           </button>
+
         </div>
+                  {error && <p className="error">{error}</p> || null }
+          {success && <p className="success">{success}</p>|| null} 
       </div>
     </div>
   );

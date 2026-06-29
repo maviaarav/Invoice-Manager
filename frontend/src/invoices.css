@@ -1,62 +1,455 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ── Full-page wrapper ── */
+.inv-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #f0f2f8;
+  box-sizing: border-box;
 }
-.invoiceContainer{
-       flex:1;
-    height:100vh;
-    overflow-y:auto;
-    padding:40px 5%;
-    display:flex;
-    flex-direction:column;
-    gap:30px;
-    background:#F8F9FF;
-}
-.InvoiceHeading{
-    width:100%;
-    display:flex;
-    justify-content:space-between;
-    flex-direction:row;
-    height:auto;
-    align-items:center;
-}
-.actual{
-    width:50%;
-    height:100%;
-    display:flex;
-    justify-content:flex-start;
-    flex-direction:column;
-    gap:10px;
-}
-.buttons{
-    width:50%;
-    height:100%;
-    display:flex;
-    justify-content:flex-end;
-    flex-direction:row;
-    gap:10px;
-}
-#Invoice-Btn{
-    width:200px;
-    height:50px;
-    border:none;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    outline:none;
-    background:linear-gradient(45deg, #003594,50%, #4B41E1, 100%);
-    color:white;
-    font-size:16px;
-    font-weight:600;
-    border-radius:5px;
-}
-.invoicesTable{
-    width: 100%;
-    height: 100vh;
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
-    padding: 20px; 
 
+/* ── Inner container ── */
+.inv-container {
+  width: 100%;
+  max-width: 100%;
+  padding: 36px 48px;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+  color: #1a1a2e;
+}
+
+/* ── Header ── */
+.inv-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.inv-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0 0 4px 0;
+}
+
+.inv-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.inv-create-btn {
+  background: #4f3ff0;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+  white-space: nowrap;
+}
+.inv-create-btn:hover { background: #3b2dd4; }
+
+/* ── Error ── */
+.inv-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* ── Filter bar ── */
+.inv-filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* Date button */
+.inv-date-wrapper {
+  position: relative;
+}
+
+.inv-date-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1.5px solid #e0e3ef;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  white-space: nowrap;
+}
+.inv-date-btn:hover { border-color: #4f3ff0; }
+
+.inv-date-icon { font-size: 15px; }
+.inv-chevron { font-size: 10px; color: #9ca3af; margin-left: 4px; }
+
+/* Date dropdown */
+.inv-date-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: #fff;
+  border: 1.5px solid #e0e3ef;
+  border-radius: 12px;
+  padding: 18px;
+  z-index: 200;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  min-width: 310px;
+}
+
+.inv-date-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.inv-date-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inv-date-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.inv-date-field input[type="date"] {
+  border: 1.5px solid #e0e3ef;
+  border-radius: 7px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: #1a1a2e;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+.inv-date-field input[type="date"]:focus { border-color: #4f3ff0; }
+
+.inv-date-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.inv-date-clear {
+  background: transparent;
+  border: 1.5px solid #e0e3ef;
+  border-radius: 7px;
+  padding: 7px 16px;
+  font-size: 13px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.inv-date-clear:hover { border-color: #9ca3af; }
+
+.inv-date-apply {
+  background: #4f3ff0;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 7px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.inv-date-apply:hover { background: #3b2dd4; }
+
+/* ── Table card ── */
+.inv-table-wrapper {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  width: 100%;
+}
+
+.inv-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.inv-table thead tr {
+  background: #f8f9fc;
+  border-bottom: 1.5px solid #e9ebf4;
+}
+
+.inv-table th {
+  padding: 14px 24px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.inv-table tbody tr {
+  border-bottom: 1px solid #f0f2f8;
+  transition: background 0.12s;
+}
+.inv-table tbody tr:last-child { border-bottom: none; }
+.inv-table tbody tr:hover { background: #f8f9fc; }
+
+.inv-table td {
+  padding: 18px 24px;
+  font-size: 14px;
+  color: #374151;
+  vertical-align: middle;
+}
+
+/* Invoice number */
+.inv-number {
+  font-weight: 700;
+  color: #4f3ff0;
+  font-size: 13.5px;
+}
+
+/* Client cell */
+.inv-client {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.inv-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.inv-client-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.inv-client-name {
+  font-weight: 600;
+  color: #1a1a2e;
+  font-size: 14px;
+}
+
+.inv-client-email {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* Action button */
+.inv-action-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  line-height: 1;
+  transition: background 0.12s, color 0.12s;
+}
+.inv-action-btn:hover { background: #f0f2f8; color: #4f3ff0; }
+
+/* Empty state */
+.inv-empty {
+  text-align: center;
+  padding: 48px 20px !important;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* ── Pagination ── */
+.inv-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-top: 1px solid #f0f2f8;
+}
+
+.inv-page-info {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.inv-page-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.inv-page-btn {
+  min-width: 36px;
+  height: 36px;
+  border: 1.5px solid #e0e3ef;
+  border-radius: 8px;
+  background: #fff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+}
+.inv-page-btn:hover:not(:disabled):not(.active) { border-color: #4f3ff0; color: #4f3ff0; }
+.inv-page-btn.active { background: #4f3ff0; border-color: #4f3ff0; color: #fff; font-weight: 700; }
+.inv-page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Month picker dropdown ── */
+.inv-month-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: #fff;
+  border: 1.5px solid #e0e3ef;
+  border-radius: 14px;
+  padding: 16px;
+  z-index: 200;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  width: 260px;
+}
+
+/* Year nav row */
+.inv-year-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.inv-year-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.inv-year-btn {
+  background: #f0f2f8;
+  border: none;
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  color: #4f3ff0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.inv-year-btn:hover:not(:disabled) { background: #e0e3ef; }
+.inv-year-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Month grid — 3 columns */
+.inv-month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.inv-month-btn {
+  background: #f8f9fc;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  padding: 9px 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.inv-month-btn:hover:not(.disabled):not(.selected) {
+  background: #ede9ff;
+  border-color: #c4b5fd;
+  color: #4f3ff0;
+}
+.inv-month-btn.selected {
+  background: #4f3ff0;
+  border-color: #4f3ff0;
+  color: #fff;
+  font-weight: 700;
+}
+.inv-month-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+/* ── Action dropdown ── */
+.inv-action-dropdown {
+  position: absolute;
+  right: 12px;
+  top: calc(100% - 8px);
+  background: #fff;
+  border: 1.5px solid #e0e3ef;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  z-index: 300;
+  min-width: 160px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.inv-action-item {
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-size: 13px;
+  color: #374151;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inv-action-item:hover {
+  background: #f0f2f8;
+  color: #4f3ff0;
+}
+/* Override overflow so action dropdown isn't clipped */
+.inv-table-wrapper {
+  overflow: visible;  /* Change from hidden to visible */
+}
+
+.inv-table {
+  overflow: visible;
+}
+
+/* Make sure last rows dropdown goes upward if near bottom */
+tbody tr:last-child .inv-action-dropdown,
+tbody tr:nth-last-child(2) .inv-action-dropdown {
+  top: auto;
+  bottom: calc(100% + 4px);
 }

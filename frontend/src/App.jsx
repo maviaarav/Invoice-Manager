@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/protech";
 import ClientForm from "./clientform";
 import CompanyForm from "./companyForm";
 import InvoiceForm from "./invoiceForm";
+import InvoicePreview from "./invoicePreview";
 import "./App-2.css";
 
 function App() {
@@ -143,6 +144,18 @@ function App() {
                     </ProtectedRoute>
                 }
             />
+            <Route
+                path="/invoice/preview/:id"
+                element={
+                    <ProtectedRoute user={user}>
+                        <div className="layout">
+                            <SideMenu />
+                            <InvoicePreview />
+                        </div>
+                    </ProtectedRoute>
+                }
+            />
+
 
         </Routes>
         </div>

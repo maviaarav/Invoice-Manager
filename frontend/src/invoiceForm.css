@@ -70,6 +70,57 @@
   gap: 10px;
   align-items: flex-end;
 }
+.grandTotal{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+  background-color: #E8ECFB;
+  font-weight: bold;
+  border-radius: 10px;
+}
+.leftTotal{
+  width: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  color: #1F4FE0;
+  font-size: 16px;
+}
+.rightTotal{
+  width: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #1F4FE0;
+  font-size: 18px;
+}
+.wordAmount{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 30px;
+  border-radius: 10px;
+  border: 2px solid #D7F0DD;
+  background-color: #F1FAF4;
+  font-size: 14px;
+  color: #1F4FE0;
+  font-weight: bold;
+  border-radius: 10px;
+}
+.success{
+  color: green;
+  font-size: 20px;
+  font-weight: bold;
+}
 .leftSectionInvoice p{
   font-size: 14px;
   font-weight: bold;

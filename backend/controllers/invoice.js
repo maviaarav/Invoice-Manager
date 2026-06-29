@@ -398,7 +398,40 @@ const getAllInvoiceByFinancialYear = async (req, res) => {
         });
     }
 };
+const getInvoicesByDateRange = async (req, res) => {
+  try {
+    let { startDate, endDate } = req.query;
 
+    // Default to current month if not provided
+    const now = new Date();
+    if (!startDate) {
+      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+      startDate = firstDay.toISOString();
+    }
+    if (!endDate) {
+      const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+      endDate = lastDay.toISOString();
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // Guard against invalid dates
+    if (isNaN(start) || isNaN(end)) {
+      return res.status(400).json({ success: false, message: "Invalid date format" });
+    }
+
+    const invoices = await InvoiceModel
+      .find({ createdAt: { $gte: start, $lte: end } })
+      .populate("companyId")
+      .populate("customerId");
+
+    res.status(200).json({ success: true, invoices, total: invoices.length });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 module.exports = {
     createInvoice,
     getInvoices,
@@ -406,5 +439,6 @@ module.exports = {
     deleteInvoice,
     updateInvoice,
     getAllInvoiceByFinancialYear,
-    monthlyIncome
+    monthlyIncome,
+    getInvoicesByDateRange
 };
