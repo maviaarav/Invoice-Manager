@@ -17,7 +17,6 @@ const createCompany = async (req,res) =>{
             IFSCCode,
             BranchName,
             Email,
-            PlaceOfSupply,
             termsAndCondition
         } = req.body
 
@@ -33,7 +32,6 @@ const createCompany = async (req,res) =>{
             !phoneNumber ||
             !BranchName,
             !Email,
-            !PlaceOfSupply,
             !termsAndCondition
         ){
             return res.status(400).json({
@@ -82,7 +80,6 @@ const createCompany = async (req,res) =>{
             AccountNumber,
             IFSCCode,
             BranchName,
-            PlaceOfSupply,
             signature,
             stamp,
             termsAndCondition
@@ -131,7 +128,6 @@ const updateCompany = async (req,res) =>{
             IFSCCode,
             BranchName,
             Email,
-            PlaceOfSupply,
             termsAndCondition
         } = req.body
 
@@ -190,7 +186,6 @@ const updateCompany = async (req,res) =>{
         company.phoneNumber =
             phoneNumber || company.phoneNumber
         company.Email = Email || company.Email
-        company.PlaceOfSupply = PlaceOfSupply || company.PlaceOfSupply
         company.termsAndCondition = termsAndCondition || company.termsAndCondition
         await company.save()
 

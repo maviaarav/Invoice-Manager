@@ -22,7 +22,7 @@ const CompanyForm = () =>{
    const [BranchName, setBranchName] = useState("");
    const [phoneNumber, setPhoneNumber] = useState("");
    const [editingCompany, setEditingCompany] = useState(null);
-   const [PlaceOfSupply, setPlaceOfSupply] = useState("");
+   const [termsAndCondition, setTermsAndCondition] = useState("");
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
     const [step, setStep] = useState(0);
@@ -48,7 +48,7 @@ const CompanyForm = () =>{
     formData.append("GSTNumber", taxId);
     formData.append("panNumber", panNumber);
     formData.append("IFSCCode", ifscCode);
-    formData.append("PlaceOfSupply", PlaceOfSupply);
+    formData.append("termsAndCondition", termsAndCondition);
 
     if (stamp instanceof File) {
         formData.append("stamp", stamp);
@@ -85,7 +85,7 @@ const CompanyForm = () =>{
         formData.append("GSTNumber", taxId);
         formData.append("panNumber", panNumber);
         formData.append("IFSCCode", ifscCode);
-        formData.append("PlaceOfSupply", PlaceOfSupply);
+        formData.append("termsAndCondition", termsAndCondition);
 
         if(stamp){
             formData.append("stamp", stamp);
@@ -133,7 +133,7 @@ setError(
         setTaxId(companyData.GSTNumber || "");
         setPanNumber(companyData.panNumber || "");
         setIfscCode(companyData.IFSCCode || "");
-        setPlaceOfSupply(companyData.PlaceOfSupply || ""); 
+        setTermsAndCondition(companyData.termsAndCondition || ""); 
     }
 }, []);
 
@@ -149,7 +149,7 @@ setError(
         setTaxId("");
         setPanNumber("");
         setIfscCode("");
-        setPlaceOfSupply("");
+        setTermsAndCondition("");
         setStamp(null);
         setSignature(null);
 
@@ -257,12 +257,12 @@ standards.</p>
                             onChange={(e) => setPanNumber(e.target.value)}
                         />
                     </div>
-                    <div className="inputFieldsCompany">
-                        <label>Place of Supply</label>
-                        <input
+                    <div className="largeInput">
+                        <label>Terms and Conditions</label>
+                        <textarea
                             type="text"
-                            value={PlaceOfSupply}
-                            onChange={(e) => setPlaceOfSupply(e.target.value)}
+                            value={termsAndCondition}
+                            onChange={(e) => setTermsAndCondition(e.target.value)}
                         />
                     </div>
 

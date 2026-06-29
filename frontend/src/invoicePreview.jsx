@@ -225,8 +225,75 @@ const toWords = new ToWords({
                 </div>
             </div>
         </div>
+            <div className="termsAndCondition">
+        <label>Terms and Conditions</label>
+        {invoice.companyId?.termsAndCondition
+            ?.split(".")
+            ?.filter(term => term.trim() !== "")
+            ?.map((term, index) => (
+                <p key={index}>{term.trim()}</p>
+            ))
+        }
+    </div>
+    </div>
+    <div className="rightInfoDetailsPreview">
+        <div className="upperInfoDetails">
+            <div className="leftInfoUpper">
+                <label>Sub Total</label>
+                <label>CGST (9%)</label>
+                <label>SGST (9%)</label>
+                <label>IGST (18%)</label>
+                <label>Total Tax</label>
+            </div>
+            <div className="rightInfoUpper">
+                <span>₹ {invoice.subtotal.toLocaleString("en-IN")}</span>
+                {invoice.taxType === "CGST_SGST" ? (
+    <>
+        <span>₹ {invoice.cgst.amount.toLocaleString("en-IN")}</span>
+        <span>₹ {invoice.sgst.amount.toLocaleString("en-IN")}</span>
+        <span>N/A</span>
+    </>
+) : (
+    <>
+        <span>N/A</span>
+        <span>N/A</span>
+        <span>₹ {invoice.igst.amount.toLocaleString("en-IN")}</span>
+    </>
+    
+)}
+  <span>₹ {invoice.totalTax.toLocaleString("en-IN")}</span>
+               
+               
+            </div>
+            
+        </div>
+        <div className="lowerInfo">
+                <div className="totalText">
+                    <label>GRAND TOTAL</label>
+                </div>
+            
+                <div className="amountPreview">
+                    <span>₹ {invoice.totalAmount.toLocaleString("en-IN")}</span>
+                </div>
+                
+            </div>
     </div>
 </div>
+    <div className="signatureSection">
+        <div className="upperSectionSignature">
+            <p>For <strong>{invoice.companyId.CompanyName}</strong></p>
+            <div className="signaturePreview">
+                {invoice.companyId.signature && (
+                    <img src={invoice.companyId.signature} alt="Signature" />
+                )}
+                <p>Authorized Signatory</p>
+            </div>
+           
+        </div>
+         <div className="sealPreview">
+                <p>Company Seal</p>
+            </div>
+    </div>
             </div>
         </div>
        </div>

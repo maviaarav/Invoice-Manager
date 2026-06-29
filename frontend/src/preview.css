@@ -343,6 +343,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #C3C6D6;
 }
 .bankdetails label{
     font-size: 16px;
@@ -375,4 +377,143 @@
     font-size: 16px;
     color: #434654;
     font-weight: 600;
+}
+.termsAndCondition{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 20px;
+}
+.termsAndCondition label{
+    font-size: 16px;
+    color: #434654;
+    font-weight: 600;
+}
+.termsAndCondition p{
+    font-size: 16px;
+    color: #003594;
+    font-weight: 600;
+    word-wrap: break-word;
+}
+.rightInfoDetailsPreview{
+    width: 40%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background-color: #EFF4FF;
+    border: 1px solid #C3C6D6;
+    color: #003594;
+    margin-top: 50px;
+    padding-bottom: 30px;
+}
+.upperInfoDetails{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 15px;
+    border-bottom: 1px solid #C3C6D6;
+}
+.leftInfoUpper, .rightInfoUpper{
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+#specialPara{
+    font-size: 16px;
+    color: black;
+    font-weight: 600;
+}
+.leftInfoUpper span, .rightInfoUpper span{
+    font-size: 18px;
+    color: #003594;
+    font-weight: 600;
+}
+.leftInfoUpper label, .rightInfoUpper label{
+    font-size: 16px;
+    color: #434654;
+    font-weight: 600;
+}
+.rightInfoUpper{
+    align-items: flex-end;
+}
+.lowerInfo{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    color: white;
+    gap: 20px;
+    padding: 20px;
+    background-color: #003594;
+    border-radius: 12px;
+}
+.lowerInfo label{
+    font-size: 16px;
+    color: white;
+    font-weight: 600;
+}
+.lowerInfo span{
+    font-size: 25px;
+    color: white;
+    font-weight: bold;
+}
+.amountPreview{
+    width: 70%;
+    height: auto;
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end;
+}
+.totalText{
+    width: 30%;
+    height: auto;
+    display: flex;
+    gap: 10px;
+}
+.signatureSection{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 50px;
+    padding: 20px;
+    align-items: flex-end;
+}
+.upperSectionSignature{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #0050CB;
+    
+    padding: 20px;
+    gap: 10px;
+}
+.upperSectionSignature p{
+    font-size: 16px;
+    color: #434654;
+    font-weight: 600;
+}
+.signaturePreview{
+    width: 50%;
+    height: auto;
+    border-radius: 12px;
+    flex-wrap:wrap;
+}
+.sealPreview{
+    width: 50%;
+    height: auto;
+    border-radius: 12px;
+    flex-wrap:wrap;
+    flex-direction: column;
 }
