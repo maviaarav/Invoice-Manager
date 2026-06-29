@@ -71,6 +71,10 @@ const companySchema = new mongoose.Schema({
     stamp: {
     type: String,
     default: ""
+},
+termsAndCondition: {
+    type: String,
+    required: true
 }
    
    

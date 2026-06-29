@@ -3,19 +3,41 @@
     padding: 0;
     box-sizing: border-box;
 }
+@import url('https://fonts.googleapis.com/css2?family=Cause:wght@100..900&family=Fira+Code:wght@300..700&display=swap');
+
 .previewContainer {
-    flex:1;
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;        /* changed from hidden */
+    padding: 40px 5%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    background: #F8F9FF;
+}
 
-    height:100vh;
-    overflow-y:hidden;
+.mainPreview {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: flex-start;   /* changed from center */
+    justify-content: center;
+    padding-bottom: 40px;      /* add breathing room at bottom */
+}
 
-    padding:40px 5%;
-
-    display:flex;
-    flex-direction:column;
-    gap:30px;
-
-    background:#F8F9FF;
+.preview {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 12px;
+    overflow-y: visible;       /* changed from auto */
+    border-top: 2px solid #003594;
+    background-color: white;
+    padding: 10px 30px 30px 30px;  /* added bottom padding */
 }
 .headerPreview{
     width:100%;
@@ -25,8 +47,9 @@
     gap:20px;
 }
 .headerPreview h1{
-    font-size: 34px;
+    font-size: 36px;
     color: #0050CB;
+    font-weight: bold;
 }
 .headerPreview span{
     font-size: 34px;
@@ -64,27 +87,8 @@
     flex-direction: row;
     gap: 20px;
 }
-.mainPreview{
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-}
-.preview{
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border-radius: 12px;
-    overflow-y: auto;
-    border-top: 2px solid #003594;
-    background-color: white;
-    padding: 10px 30px 0 30px;
-}
+
+
 .headerOFInvoice{
     width: 100%;
     height: auto;
@@ -168,4 +172,207 @@
 
     gap: 10px;
 
+}
+.addressDetailsPreview{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+    margin-top: 20px;
+}
+.shippedTo, .billedTo{
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 1px solid #C3C6D6;
+    border-radius: 08px;
+    background-color: #EFF4FF;
+    padding: 10px 20px;
+}
+.shippedTo p, .billedTo p{
+    font-size: 16px;
+    color: #003594;
+    font-weight: 700;
+}
+.shippedTo h3, .billedTo h3{
+    font-size: 26px;
+    color: #0B1C30;
+    font-weight: 600;
+}
+.addressBilling{
+    width: 100%;
+    height: auto;
+    color: #434654;
+}
+.otherDetailsBilling{
+    width: 100%;
+    height: auto;
+    color: #434654;
+    flex-direction: column;
+    gap: 5px;
+}
+.otherDetailsBilling p{
+    font-size: 16px;
+    color: #434654;
+    font-weight: 600;
+}
+.otherDetailsBilling span{
+    font-size: 16px;
+    color: #0B1C30;
+    font-weight: bold;
+}
+.table{
+    width: 100%;
+    margin-top: 30px;
+    overflow-x: auto;
+}
+
+.invoiceTablePreview {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+}
+
+.invoiceTablePreview thead tr th {
+  background-color: #0d2b6b;
+  color: #ffffff;
+  padding: 10px 12px;
+  text-align: center;
+  font-weight: 600;
+  
+}
+
+.invoiceTablePreview tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+.table {
+    width: 100%;
+    margin-top: 30px;
+    overflow: hidden;           /* clips the rounded corners */
+    border-radius: 12px;        /* outer curve */
+    border: 1px solid #0d2b6b;
+}
+
+.invoiceTablePreview {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.invoiceTablePreview thead tr th {
+    background-color: #0d2b6b;
+    color: #ffffff;
+    padding: 10px 12px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.invoiceTablePreview tbody tr td {
+  padding: 12px;
+  text-align: center;
+  vertical-align: middle;
+  color: #1a1a1a;
+}
+
+.invoiceTablePreview tbody tr td:nth-child(2) {
+  text-align: left;
+}
+
+.invoiceTablePreview tbody tr td strong {
+  font-weight: 700;
+  display: block;
+}
+
+.invoiceTablePreview .itemDescription {
+  font-size: 12px;
+  color: #555;
+  margin-top: 4px;
+}
+
+.invoiceTablePreview tbody tr:last-child td:last-child {
+  font-weight: 700;
+}
+.infoDetailsPreview{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+}
+.leftInfoDetailsPreview{
+    width: 60%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px 20px;
+}
+.amountInWord{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #C3C6D6;
+    padding-bottom: 20px;
+}
+.amountInWord label{
+    font-size: 14px;
+    color: #434654;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+
+}
+#amountInWords{
+    font-family: "Fira Code", monospace;
+    font-style:normal;
+    font-weight: 700;
+    color: #003594;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    font-weight: bolder;
+}
+.bankdetails{
+    margin-top: 20px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.bankdetails label{
+    font-size: 16px;
+    color: #434654;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+
+}
+.detailsCompany{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    gap: 100px;
+}
+.leftBank{
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.detailsCompany p{
+    font-size: 16px;
+    color: #003594;
+    font-weight: 600;
+}
+.detailsCompany span{
+    font-size: 16px;
+    color: #434654;
+    font-weight: 600;
 }
