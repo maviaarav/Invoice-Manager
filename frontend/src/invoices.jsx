@@ -228,9 +228,6 @@ const Invoices = () => {
                             }}>
                               Edit
                             </button>
-                            <button className="inv-action-item" onClick={() => (window.location.href = `/invoice/pdf/${inv._id}`)}>
-                              Download PDF
-                            </button>
                             <button className="inv-action-item" onClick={() => (window.location.href = `/invoice/preview/${inv._id}`)}>
                               Preview
                             </button>
