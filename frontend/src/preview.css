@@ -16,6 +16,19 @@
     background: #F8F9FF;
 }
 
+#Proformainvoice-heading {
+    font-size: 38px;
+    line-height: 1.2;
+    text-align: right;
+    color: #434654;
+    opacity: 0.3;
+    letter-spacing: 3.2px;
+    white-space: pre-line;
+}
+#Proformainvoice-heading {
+    line-height: 1.15;
+    white-space: pre-line;
+}
 .mainPreview {
     width: 100%;
     height: auto;
@@ -104,7 +117,7 @@
     gap: 10px;
 }
 .companyNamePre h1{
-    font-size: 34px;
+    font-size: 54px;
     color: #003594;
 }
 .companyNamePre{
@@ -336,16 +349,53 @@
     letter-spacing: 0.5px;
     font-weight: bolder;
 }
-.bankdetails{
+.bankdetails {
     margin-top: 20px;
     width: 100%;
     height: auto;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid #C3C6D6;
 }
+
+.detailsOfBank {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bankQrcode {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px;
+    background-color: #FAFBFF;
+    border: 1px solid #C3C6D6;
+    border-radius: 10px;
+}
+
+.qrLabel {
+    font-size: 11px;
+    color: #003594;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-align: center;
+}
+#itemsDes{
+    width: 30%;
+}
+
+.bankQrcode canvas {
+    border-radius: 6px;
+}
+
 .bankdetails label{
     font-size: 16px;
     color: #434654;
@@ -359,7 +409,7 @@
     display: flex;
     flex-direction: row;
     margin-top: 10px;
-    gap: 100px;
+    gap: 60px;
 }
 .leftBank{
     width: auto;
@@ -479,64 +529,128 @@
     display: flex;
     gap: 10px;
 }
-/* Signature Section */
+/* ===== DECLARATION ===== */
+.declarationSection {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.declarationDivider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.declarationDivider .line {
+    flex: 1;
+    height: 1px;
+    background-color: #C3C6D6;
+}
+
+.declarationBadge {
+    background-color: #003594;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 10px 28px;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+
+.declarationBox {
+    width: 100%;
+    border: 1.5px dashed #C3C6D6;
+    border-radius: 12px;
+    background-color: #FAFBFF;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.declarationIntro {
+    font-size: 16px;
+    font-weight: 700;
+    color: #003594;
+}
+
+.declarationList {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    list-style: none;
+}
+
+.declarationList li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 15px;
+    color: #1F2A40;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.checkIcon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #003594;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== SIGNATURE + STAMP ===== */
 .signatureSection {
     width: 100%;
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-end;
+    gap: 40px;
     margin-top: 40px;
-    padding: 20px 0;
-    border-top: 1.5px dashed #C3C6D6;
+    padding: 10px 0;
 }
 
-.upperSectionSignature {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
-}
-
-.upperSectionSignature > p {
-    font-size: 14px;
-    color: #434654;
-    font-weight: 500;
-}
-
-.upperSectionSignature > p strong {
-    color: #003594;
-    font-weight: 700;
-}
-
-.signaturePreview {
+.sealPreview {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    min-width: 180px;
-    min-height: 90px;
-    border-top: 1.5px solid #0B1C30;
-    padding-top: 8px;
+    gap: 16px;
 }
 
-.signaturePreview img {
-    width: 150px;
-    height: 70px;
-    object-fit: contain;
-    margin-bottom: 4px;
+.sealLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.signaturePreview p {
+.sealLabel .line {
+    width: 40px;
+    height: 1px;
+    background-color: #003594;
+}
+
+.sealBadge {
+    background-color: #003594;
+    color: white;
     font-size: 13px;
-    color: #434654;
     font-weight: 600;
-    text-align: center;
-    letter-spacing: 0.5px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    white-space: nowrap;
 }
 
-
-.sealPreview {
+.stampCircle {
     width: 160px;
     height: 160px;
     border: 2.5px dashed #C3C6D6;
@@ -549,12 +663,104 @@
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
-    overflow: hidden;         /* clips image to circle */
+    overflow: hidden;
     padding: 4px;
 }
 
-.sealPreview img {
+.stampCircle img {
     width: 100%;
     height: 100%;
-    object-fit: contain;     /* keeps stamp proportions */
+    object-fit: contain;
+}
+
+.signatureDividerVertical {
+    width: 1px;
+    height: 220px;
+    background-color: #C3C6D6;
+    align-self: center;
+}
+
+.upperSectionSignature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    min-width: 220px;
+}
+
+.forCompanyBadge {
+    background-color: #003594;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 18px;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+.forCompanyBadge strong {
+    font-weight: 700;
+}
+
+.signaturePreview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 180px;
+    min-height: 90px;
+}
+
+.signaturePreview img {
+    width: 170px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.authorizedSignatoryLabel {
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #0B1C30;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-top: 1px dotted #0B1C30;
+    padding-top: 10px;
+    margin-top: 4px;
+}
+
+/* ===== THANK YOU FOOTER ===== */
+.thankYouFooter {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 30px;
+}
+
+.thankYouFooter .line {
+    flex: 1;
+    height: 1px;
+    background-color: #C3C6D6;
+}
+
+.thankYouContent {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #C3C6D6;
+    border-radius: 8px;
+    padding: 8px 18px;
+    white-space: nowrap;
+}
+
+.shieldIcon {
+    font-size: 16px;
+}
+
+.thankYouContent p {
+    font-size: 14px;
+    font-style: italic;
+    color: #434654;
+    font-weight: 500;
 }

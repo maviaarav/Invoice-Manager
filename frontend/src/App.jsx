@@ -14,6 +14,9 @@ import ClientForm from "./clientform";
 import CompanyForm from "./companyForm";
 import InvoiceForm from "./invoiceForm";
 import InvoicePreview from "./invoicePreview";
+import ProformaInvoices from "./preforma-invoice";
+import ProformaForm from "./proformaForm";
+import ProformaInvoicePreview from "./proforma-preview";
 import "./App-2.css";
 
 function App() {
@@ -112,6 +115,17 @@ function App() {
                 }
             />
             <Route
+                path="/proforma-invoices"
+                element={
+                    <ProtectedRoute user={user}>
+                        <div className="layout">
+                            <SideMenu />
+                            <ProformaInvoices />
+                        </div>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
                 path="/clientForm"
                 element={
                     <ProtectedRoute user={user}>
@@ -151,6 +165,28 @@ function App() {
                         <div className="layout">
                             <SideMenu />
                             <InvoicePreview />
+                        </div>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/proforma-invoice-form"
+                element={
+                    <ProtectedRoute user={user}>
+                        <div className="layout">
+                            <SideMenu />
+                            <ProformaForm />
+                        </div>
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/proforma-invoice/preview/:id"
+                element={
+                    <ProtectedRoute user={user}>
+                        <div className="layout">
+                            <SideMenu />
+                            <ProformaInvoicePreview />
                         </div>
                     </ProtectedRoute>
                 }

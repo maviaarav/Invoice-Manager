@@ -1,8 +1,5 @@
-const InvoiceModel = require("../models/invoice");
+const ProformaInvoiceModel = require("../models/proformaInvoice");
 
-/* =========================
-   CALCULATION FUNCTION
-========================= */
 const CalculateInvoiceAmount = ({
     items,
     taxType,
@@ -72,11 +69,11 @@ const getFinancialYear = (date = new Date()) => {
 
 
 const getInvoiceNumber = async (financialYear) => {
-    const count = await InvoiceModel.countDocuments({ financialYear });
+    const count = await ProformaInvoiceModel.countDocuments({ financialYear });
 
     const nextNumber = count + 1;
 
-    return `INV/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
+    return `PROFORMA-INV/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
 };
 
 
@@ -112,7 +109,7 @@ const createInvoice = async (req, res) => {
             igstRate
         });
              
-        const invoice = await InvoiceModel.create({
+        const invoice = await ProformaInvoiceModel.create({
             userId,
             companyId,
             customerId,
@@ -166,12 +163,12 @@ const getInvoices = async (req, res) => {
 
         const userId = req.user._id;
 
-        const invoices = await InvoiceModel
+        const invoices = await ProformaInvoiceModel
             .find({ userId })
             .populate("companyId")
             .populate("customerId")
             .sort({ createdAt: -1 });
-        const invoiceCount = await InvoiceModel.countDocuments({ userId });
+        const invoiceCount = await ProformaInvoiceModel.countDocuments({ userId });
         if (!invoices || invoices.length === 0) {
             return res.status(404).json({
                 Msg: "No Invoices Found"
@@ -199,7 +196,7 @@ const getSingleInvoice = async (req, res) => {
         const userId = req.user._id;
         const invoiceId = req.params.id;
 
-        const invoice = await InvoiceModel
+        const invoice = await ProformaInvoiceModel
             .findOne({ _id: invoiceId, userId })
             .populate("companyId")
             .populate("customerId");
@@ -230,7 +227,7 @@ const deleteInvoice = async (req, res) => {
         const userId = req.user._id;
         const invoiceId = req.params.id;
 
-        const invoice = await InvoiceModel.findOneAndDelete({
+        const invoice = await ProformaInvoiceModel.findOneAndDelete({
             _id: invoiceId,
             userId
         });
@@ -262,7 +259,7 @@ const monthlyIncome = async (req,res) =>{
         const { year, month } = req.params
         const startdate = new Date(year, month-1, 1)
         const endDate = new Date(year, month,1)
-        const invoices = await InvoiceModel.find({
+        const invoices = await ProformaInvoiceModel.find({
             userId,
             invoiceDate: {
                 $gte: startdate,
@@ -314,7 +311,7 @@ const updateInvoice = async (req, res) => {
             igstRate
         });
 
-        const invoice = await InvoiceModel.findOneAndUpdate(
+        const invoice = await ProformaInvoiceModel.findOneAndUpdate(
             { _id: invoiceId, userId },
             {
                 companyId,
@@ -364,22 +361,19 @@ const updateInvoice = async (req, res) => {
     }
 };
 
-
-/* =========================
-   FILTER BY FINANCIAL YEAR
-========================= */
+    
 const getAllInvoiceByFinancialYear = async (req, res) => {
     try {
 
         const userId = req.user._id;
         const financialYear = req.params.id;
 
-        const invoices = await InvoiceModel
+        const invoices = await ProformaInvoiceModel
             .find({ userId, financialYear })
             .populate("companyId")
             .populate("customerId")
             .sort({ createdAt: -1 });
-        const InvoiceCount = await InvoiceModel.countDocuments({userId})
+        const InvoiceCount = await ProformaInvoiceModel.countDocuments({userId})
         if (!invoices || invoices.length === 0) {
             return res.status(404).json({
                 Msg: "No Invoices Found for the specified financial year"
@@ -420,8 +414,8 @@ const getInvoicesByDateRange = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid date format" });
     }
 
-    const invoices = await InvoiceModel
-      .find({ invoiceDate: { $gte: start, $lte: end } }) // ✅ filter on invoiceDate, not createdAt
+    const invoices = await ProformaInvoiceModel
+      .find({ invoiceDate: { $gte: start, $lte: end } })
       .populate("companyId")
       .populate("customerId");
 

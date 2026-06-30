@@ -9,7 +9,7 @@ import html2pdf from "html2pdf.js";
 import { QRCodeCanvas } from "qrcode.react";
 
 
-const InvoicePreview = () => {
+const ProformaInvoicePreview = () => {
     const invoiceRef = useRef();
     const [invoice, setInvoice] = useState(null);
     const [states, setStates] = useState("");
@@ -18,7 +18,7 @@ const InvoicePreview = () => {
     const { id } = useParams();
     const fetchInvoice = async () => {
         try {
-            const response = await instance.get(`/invoice/get/${id}`);
+            const response = await instance.get(`/proforma/get/${id}`);
             setInvoice(response.data.invoice);
         } catch (error) {
             console.error("Error fetching invoice:", error);
@@ -64,7 +64,7 @@ const InvoicePreview = () => {
 
             const options = {
                 margin: 0,
-                filename: `Invoice-${invoice.invoiceNumber}.pdf`,
+                filename: `Performa-Invoice-${invoice.invoiceNumber}.pdf`,
                 image: {
                     type: "jpeg",
                     quality: 1
@@ -122,7 +122,7 @@ const InvoicePreview = () => {
                             </div>
                         </div>
                         <div className="InvoiceDetails">
-                            <h1>TAX INVOICE</h1>
+                            <h1 id="Proformainvoice-heading">PROFORMA <br /> INVOICE</h1>
                             <div className="upperSectionPreview">
                                 <div className="invoiceNumberPreview">
                                     <p>Invoice No:</p>
@@ -411,4 +411,4 @@ const InvoicePreview = () => {
     );
 }
 
-export default InvoicePreview;
+export default ProformaInvoicePreview;

@@ -39,6 +39,16 @@ function SideMenu() {
                     <ReceiptRegular />
                     <span>Invoices</span>
                 </NavLink>
+                <NavLink
+                    to="/proforma-invoices"
+                    className={({ isActive }) =>
+                        isActive ? "link-menu active" : "link-menu"
+                    }
+                >
+                    <div className="active-bar"></div>
+                    <ReceiptRegular />
+                    <span>Proforma Invoices</span>
+                </NavLink>
 
                 <NavLink
                     to="/clients"

@@ -1,4 +1,6 @@
+const mongoose = require("mongoose");
 const ClientModel = require('../models/client');
+const InvoiceModel = require('../models/invoice')
 
 const createClient = async (req, res) => {
     try {
@@ -149,11 +151,52 @@ const recentClient = async (req,res) =>{
     }
 }
 
+
+const getTopClient = async (req, res) => {
+    try {
+        const userId = new mongoose.Types.ObjectId(req.user._id);
+
+        const grouped = await InvoiceModel.aggregate([
+            { $match: { userId: userId } },
+            {
+                $group: {
+                    _id: "$customerId",
+                    totalSpent: { $sum: "$totalAmount" }
+                }
+            },
+            { $sort: { totalSpent: -1 } },
+            { $limit: 1 }
+        ]);
+
+        if (grouped.length === 0) {
+            return res.status(200).json({ topClient: null });
+        }
+
+        const clientMatch = await ClientModel.findById(grouped[0]._id);
+
+        if (!clientMatch) {
+            return res.status(200).json({ topClient: null });
+        }
+
+        return res.status(200).json({
+            success: true,
+            topClient: {
+                name: clientMatch.clientName,
+                totalSpent: grouped[0].totalSpent
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching top client:", error);
+        return res.status(500).json({ message: "Error fetching top client", error: error.message });
+    }
+};
+
 module.exports = {
     createClient,
     getClient,
     updateClient,
     deleteClient,
     getClientAll,
-    recentClient
+    recentClient,
+    getTopClient
 }

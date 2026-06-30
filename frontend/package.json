@@ -13,9 +13,14 @@
     "@fluentui/react-icons": "^2.0.329",
     "@fortawesome/react-fontawesome": "^3.3.1",
     "axios": "^1.17.0",
+    "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.14.0",
+    "jspdf": "^4.2.1",
+    "qrcode.react": "^4.2.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.17.0",
+    "recharts": "^3.9.0",
     "to-words": "^5.6.1"
   },
   "devDependencies": {

@@ -18,6 +18,7 @@ const CompanyForm = () =>{
    const [stamp, setStamp] = useState(null);
    const [signature, setSignature] = useState(null);
    const [bankName, setBankName] = useState("");
+   const [upiID, setUpiID] = useState("");
    const [accountNumber, setAccountNumber] = useState("");
    const [BranchName, setBranchName] = useState("");
    const [phoneNumber, setPhoneNumber] = useState("");
@@ -43,6 +44,7 @@ const CompanyForm = () =>{
     formData.append("phoneNumber", companyPhone);
     formData.append("Address", companyAddress);
     formData.append("BankName", bankName);
+    formData.append("upiID", upiID);
     formData.append("AccountNumber", accountNumber);
     formData.append("BranchName", BranchName);
     formData.append("GSTNumber", taxId);
@@ -86,6 +88,7 @@ const CompanyForm = () =>{
         formData.append("panNumber", panNumber);
         formData.append("IFSCCode", ifscCode);
         formData.append("termsAndCondition", termsAndCondition);
+        formData.append("upiID", upiID);
 
         if(stamp){
             formData.append("stamp", stamp);
@@ -133,7 +136,8 @@ setError(
         setTaxId(companyData.GSTNumber || "");
         setPanNumber(companyData.panNumber || "");
         setIfscCode(companyData.IFSCCode || "");
-        setTermsAndCondition(companyData.termsAndCondition || ""); 
+        setTermsAndCondition(companyData.termsAndCondition || "");
+        setUpiID(companyData.upiID || "");
     }
 }, []);
 
@@ -152,6 +156,7 @@ setError(
         setTermsAndCondition("");
         setStamp(null);
         setSignature(null);
+        setUpiID("");
 
 
     }
@@ -320,6 +325,13 @@ standards.</p>
                         <input
                             value={ifscCode}
                             onChange={(e) => setIfscCode(e.target.value)}
+                        />
+                    </div>
+                    <div className="inputFieldsCompany">
+                        <label>UPI ID</label>
+                        <input
+                            value={upiID}
+                            onChange={(e) => setUpiID(e.target.value)}
                         />
                     </div>
 

@@ -71,6 +71,10 @@ const companySchema = new mongoose.Schema({
 termsAndCondition: {
     type: String,
     required: true
+},
+upiID:{
+    type: String,
+    required: true
 }
    
    

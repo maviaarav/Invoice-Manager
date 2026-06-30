@@ -5,7 +5,7 @@ import states from "./getStates.js";
 import { Delete16Regular } from "@fluentui/react-icons";
 import { ToWords } from "to-words";
 
-const InvoiceForm = () => {
+const ProformaForm = () => {
 
   const [company, setCompany] = useState([]);
   const [companyId, setCompanyId] = useState("");
@@ -225,7 +225,7 @@ setTaxableAmount(taxableSubtotal);
   const fetchInvoiceNumber = async () => {
     try {
       const response = await instance.get(
-        `/invoice/year/${getFinancialYear()}`
+        `/proforma/year/${getFinancialYear()}`
       );
       const invoiceCount = response.data.InvoiceCount;
       const newInvoiceNumber = invoiceCount + 1;
@@ -239,7 +239,7 @@ const CreateInvoice = async () => {
   try {
     if (editingInvoice) {
       await instance.put(
-        `/invoice/update/${editingInvoice._id}`,
+        `/proforma/update/${editingInvoice._id}`,
         {
           companyId,
           customerId: selectedClientId,
@@ -258,7 +258,7 @@ const CreateInvoice = async () => {
       setSuccess("✅ Invoice updated successfully!");
 
     } else {
-      const response = await instance.post("/invoice/create", {
+      const response = await instance.post("/proforma/create", {
         companyId,
         customerId: selectedClientId,
         taxType,
@@ -356,7 +356,7 @@ useEffect(() => {
 
   return (
     <div className="invoiceContainerForm">
-      <h1 id="text">Create Invoice</h1>
+      <h1 id="text">Create Proforma Invoice</h1>
       <div className="invoiceFormHeader">
         <div className="leftHeader">
           <div className="company">
@@ -459,7 +459,7 @@ useEffect(() => {
             <label>Invoice Number:</label>
             <input
               type="text"
-              value={`INV-${getFinancialYear()}-${invoiceNumber}`}
+              value={`PERFORMA-INV-${getFinancialYear()}-${invoiceNumber}`}
               readOnly
             />
           </div>
@@ -769,4 +769,4 @@ useEffect(() => {
   );
 };
 
-export default InvoiceForm;
+export default ProformaForm;

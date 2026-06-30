@@ -27,7 +27,7 @@
     box-shadow:0 0 10px rgba(0,0,0,0.1);
 
 }
-.logo{
+.logoCompany{
     width:200px;
     height:200px;
     margin-top:20px;
@@ -65,7 +65,7 @@
     border-radius: 10px;
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    gap: 10px;
     margin-top: 20px;
 }
 .allHeading{
@@ -334,7 +334,7 @@ input{
         padding:20px;
     }
 
-    .logo{
+    .logoCompany{
         width:140px;
         height:140px;
         margin-top:0;
@@ -444,7 +444,7 @@ input{
         padding:20px;
     }
 
-    .logo{
+    .logoCompany{
         width:140px;
         height:140px;
         margin-top:0;

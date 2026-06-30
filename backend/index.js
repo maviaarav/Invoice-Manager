@@ -14,6 +14,7 @@ const CompanyRouter = require('./routes/company')
 const ClientRouter = require('./routes/client')
 const mongoose = require('./connections/server')
 const InvoiceRouter = require('./routes/invoice')
+const ProformaRouter = require('./routes/proforma')
 const app = express()
 
 app.use(cors({
@@ -27,6 +28,7 @@ app.use('/user', UserRouter)
 app.use('/company', CompanyRouter)
 app.use('/client', ClientRouter)
 app.use('/invoice', InvoiceRouter)
+app.use('/proforma', ProformaRouter)
 app.listen(3000,()=>{
     console.log("Working at port: http://localhost:3000")
 })

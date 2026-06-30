@@ -23,6 +23,7 @@ const Setting = () => {
    const [termsAndCondition, setTermsAndCondition] = useState("");
    const [BranchName, setBranchName] = useState("");
    const [phoneNumber, setPhoneNumber] = useState("");
+   const [upiID, setUpiID] = useState("");
     const [companyProfile, setCompanyProfile] = useState(null);
 
     const [error, setError] = useState('')
@@ -49,6 +50,7 @@ const Setting = () => {
         setSignature(data.signature)
         setBranchName(data.BranchName) 
         setTermsAndCondition(data.termsAndCondition) 
+        setUpiID(data.upiID)
         console.log(data)
     }catch(error){
         console.log(error.response?.data.Msg)
@@ -84,7 +86,7 @@ const Setting = () => {
        {companyProfile && (
     <div className="companyProfileContainer" >
 <div className="headingSetting">
-            <div className="logo">   
+            <div className="logoCompany">   
             </div>
         <div className="companyInfo">
             <div className="info">
@@ -128,12 +130,15 @@ const Setting = () => {
                         <p>ACCOUNT</p>
                         <p>IFSC</p>
                         <p>BRANCH</p>
+                        <p>UPI ID</p>
+
                      </div>
                      <div className="answerHeading">
                         <p><strong>{bankName}</strong></p>
                         <p>{accountNumber}</p>
                         <p>{ifscCode}</p>
-                        <p>{BranchName}</p>
+                        <p id="branchName">{BranchName}</p>
+                        <p>{upiID}</p>
                      </div>
                 </div>
                

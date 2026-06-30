@@ -12,7 +12,7 @@ const getMonthRange = (year, month) => {
   return { startDate, endDate };
 };
 
-const Invoices = () => {
+const ProformaInvoices = () => {
   const now = new Date();
 
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
@@ -38,11 +38,11 @@ const Invoices = () => {
   const itemsPerPage = 8;
   const pickerRef = useRef(null);
 
-  // Fetches ALL invoices for the selected month — pagination is handled client-side below
+  // Fetches ALL proforma invoices for the selected month — pagination is handled client-side below
   const fetchInvoices = async (month = selectedMonth, year = selectedYear) => {
     const { startDate, endDate } = getMonthRange(year, month);
     try {
-      const response = await instance.get("/invoice/filter", {
+      const response = await instance.get("/proforma/filter", {
         params: { startDate, endDate },
       });
       setInvoices(response.data.invoices || []);
@@ -69,7 +69,6 @@ const Invoices = () => {
     setSelectedMonth(monthIndex);
     setCurrentPage(1);
     setShowPicker(false);
-    // fetchInvoices fires automatically via the useEffect above when selectedMonth changes
   };
 
   const handleYearChange = (dir) => {
@@ -84,7 +83,6 @@ const Invoices = () => {
     });
   };
 
-  // Derive the current page's slice from the full invoices array
   const totalInvoices = invoices.length;
   const totalPages = Math.max(Math.ceil(totalInvoices / itemsPerPage), 1);
   const startItem  = totalInvoices === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;
@@ -106,7 +104,7 @@ const Invoices = () => {
 
   const handleCreateInvoice = () => {
     localStorage.removeItem("editingInvoice");
-    window.location.href = "/invoiceForm";
+    window.location.href = "/proforma-invoice-form";
   }
 
   return (
@@ -115,11 +113,11 @@ const Invoices = () => {
 
         <div className="inv-header">
           <div className="inv-header-left">
-            <h1 className="inv-title">Invoice History</h1>
+            <h1 className="inv-title">Proforma Invoice History</h1>
             <p className="inv-subtitle">Manage and track all your client billing in one place.</p>
           </div>
           <button className="inv-create-btn" onClick={handleCreateInvoice}>
-            + Create Invoice
+            + Create Proforma Invoice
           </button>
         </div>
 
@@ -224,14 +222,11 @@ const Invoices = () => {
                           <div className="inv-action-dropdown">
                             <button className="inv-action-item" onClick={() => {
                               localStorage.setItem("editingInvoice", JSON.stringify(inv));
-                              window.location.href = `/invoiceForm`;
+                              window.location.href = `/proforma-invoice-form`;
                             }}>
                               Edit
                             </button>
-                            <button className="inv-action-item" onClick={() => (window.location.href = `/invoice/pdf/${inv._id}`)}>
-                              Download PDF
-                            </button>
-                            <button className="inv-action-item" onClick={() => (window.location.href = `/invoice/preview/${inv._id}`)}>
+                            <button className="inv-action-item" onClick={() => (window.location.href = `/proforma-invoice/preview/${inv._id}`)}>
                               Preview
                             </button>
                           </div>
@@ -265,4 +260,4 @@ const Invoices = () => {
   );
 };
 
-export default Invoices;
+export default ProformaInvoices;
