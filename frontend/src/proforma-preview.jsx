@@ -125,7 +125,7 @@ const ProformaInvoicePreview = () => {
                             <h1 id="Proformainvoice-heading">PROFORMA <br /> INVOICE</h1>
                             <div className="upperSectionPreview">
                                 <div className="invoiceNumberPreview">
-                                    <p>Invoice No:</p>
+                                    <p>PI No:</p>
                                     <span>{invoice.invoiceNumber}</span>
                                 </div>
                                 <div className="invoiceDatePreview">
@@ -136,6 +136,33 @@ const ProformaInvoicePreview = () => {
                                     <p>Place of Supply:</p>
                                     <span>{invoice.placeOfSupply}</span>
                                 </div>
+                                {invoice.PoNumber && (
+                                    <>
+                                    <div className="invoicePlaceOfSupplyPreview">
+                                        <p>PO Number:</p>
+                                        <span>{invoice.PoNumber}</span>
+                                    </div>
+                                    <div className="invoicePlaceOfSupplyPreview">
+                                        <p>PO Date:</p>
+                                        <span>{new Date(invoice.PODate).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}</span>
+                                    </div>
+                                    </>
+                                    
+                                    
+                                )}
+
+                                {invoice.ServiceOrderNumber && (
+                                    <>
+                                    <div className="invoicePlaceOfSupplyPreview">
+                                        <p>Service Order Number:</p>
+                                        <span>{invoice.ServiceOrderNumber}</span>
+                                    </div>
+                                    <div className="invoicePlaceOfSupplyPreview">
+                                        <p>Service Order Date:</p>
+                                        <span>{new Date(invoice.ServiceOrderDate).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}</span>
+                                    </div>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

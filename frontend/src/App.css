@@ -25,6 +25,64 @@ body{
     background:#F8F9FF;
     overflow:visible;
 }
+.google {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#googleButton {
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background: #FFFFFF;
+    border: 1px solid #E3E8F2;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1A1D29;
+    box-shadow: 0 1px 2px rgba(27, 83, 196, 0.06);
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+}
+
+#googleButton img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+#googleButton span {
+    line-height: 1;
+}
+.or {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#googleButton:hover {
+    border-color: #1B53C4;
+    box-shadow: 0 4px 14px rgba(27, 83, 196, 0.14);
+}
+
+#googleButton:active {
+    transform: scale(0.98);
+    box-shadow: 0 1px 3px rgba(27, 83, 196, 0.1);
+}
+
+#googleButton:focus-visible {
+    outline: none;
+    border-color: #1B53C4;
+    box-shadow: 0 0 0 3px rgba(27, 83, 196, 0.18);
+}
 
 /* ======================
    LEFT SECTION

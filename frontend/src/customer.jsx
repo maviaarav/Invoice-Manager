@@ -76,7 +76,7 @@ const deleteClient = async () => {
                 </div>
             </div>
 
-            <div className="info">
+            <div className="infoClient">
                 {length === 0 && <p>{message}</p>}
             </div>
 

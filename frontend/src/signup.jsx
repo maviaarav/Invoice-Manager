@@ -5,7 +5,7 @@ import './signUp.css'
 import { WalletCreditCard48Regular,MailAllUnreadRegular,Password32Regular,Eye32Regular,EyeOff32Regular,Person32Regular } from '@fluentui/react-icons';
 import { Routes, Route }
 from "react-router-dom";
-
+import googleImage from './images/google.png'
 const SignUp =  (e) =>{
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -157,6 +157,15 @@ const navigate = useNavigate();
                         <span>Already have an account?</span>
                         <span className="link" onClick={()=>navigate('/login')}>Sign In</span>
                     </div>
+                    <div className="or">
+                             <span>or</span>
+                                        </div>
+                                        <div className="google">
+                                            <button type="button" id="googleButton" onClick={()=>window.location.href = 'http://localhost:3000/api/google/connect'}>
+                                                <img src={googleImage} alt="Google Logo" />
+                                                <span>Continue with Google</span>
+                                            </button>
+                                        </div>
                     <div className="errorMessage">
                         {error && <p>{error}</p>}
                     </div>

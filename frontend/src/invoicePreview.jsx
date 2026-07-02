@@ -14,6 +14,7 @@ const InvoicePreview = () => {
     const [invoice, setInvoice] = useState(null);
     const [states, setStates] = useState("");
     const [StateCode, setStateCode] = useState("");
+    const [isSending, setIsSending] = useState(false);
 
     const { id } = useParams();
     const fetchInvoice = async () => {
@@ -28,11 +29,19 @@ const InvoicePreview = () => {
     useEffect(() => {
         fetchInvoice();
     }, []);
+    useEffect(() => {
+    if (invoice?.customerId?.email) {
+        setEmails(invoice.customerId.email);
+    }
+}, [invoice]);
 
     if (!invoice) {
         return <h2>Loading...</h2>;
     }
-
+const emailList = emails
+    .split(",")
+    .map(email => email.trim())
+    .filter(email => email);
     const upiurl = `upi://pay?pa=${invoice?.companyId?.upiID}&pn=${encodeURIComponent(invoice?.companyId?.CompanyName)}&am=${invoice?.totalAmount}&cu=INR&tn=Payment for Invoice ${invoice?.invoiceNumber}`;
 
     const stateCode = gstStates.find(
@@ -48,13 +57,12 @@ const InvoicePreview = () => {
         }
     });
 
+
     const handleDownloadPdf = () => {
-        // small delay ensures the QR canvas has fully painted before measuring/capturing
         setTimeout(() => {
             const element = invoiceRef.current;
 
-            // Use scrollHeight (full content height) instead of offsetHeight,
-            // plus a small buffer to avoid rounding pushing content to page 2
+        
             const elementWidth = element.offsetWidth;
             const elementHeight = element.scrollHeight + 10;
 
@@ -94,16 +102,20 @@ const InvoicePreview = () => {
     }
 
     return (
+        <>
+
         <div className="previewContainer">
             <div className="headerPreview">
                 <div className="previewHeading">
                     <h1>Showing Preview for <span>#{invoice.invoiceNumber}</span> </h1>
+
                 </div>
 
                 <div className="button">
                     <button type="button" onClick={handleDownloadPdf}>
                         Download Pdf
                     </button>
+                    
                 </div>
             </div>
             <div className="mainPreview">
@@ -408,6 +420,7 @@ const InvoicePreview = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 

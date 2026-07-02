@@ -73,7 +73,7 @@ const getInvoiceNumber = async (financialYear) => {
 
     const nextNumber = count + 1;
 
-    return `PROFORMA-INV/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
+    return `PI/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
 };
 
 
@@ -92,11 +92,14 @@ const createInvoice = async (req, res) => {
             cgstRate,
             sgstRate,
             igstRate,
-            
+            PoNumber,
+            PODate,
+            ServiceOrderNumber,
+            ServiceOrderDate
         } = req.body;
         console.log("REQ BODY:", req.body);
         console.log("TAX TYPE:", req.body.taxType);
-        const userId = req.user._id;
+        const userId = req.user.userId;
 
         const financialYear = getFinancialYear();
 
@@ -120,6 +123,10 @@ const createInvoice = async (req, res) => {
             shippingAddress,
             billingAddress,
             placeOfSupply,
+            PoNumber,
+            PODate,
+            ServiceOrderNumber,
+            ServiceOrderDate,
 
             items,
 
@@ -161,7 +168,7 @@ const createInvoice = async (req, res) => {
 const getInvoices = async (req, res) => {
     try {
 
-        const userId = req.user._id;
+        const userId = req.user.userId;
 
         const invoices = await ProformaInvoiceModel
             .find({ userId })
@@ -193,7 +200,7 @@ const getInvoices = async (req, res) => {
 const getSingleInvoice = async (req, res) => {
     try {
 
-        const userId = req.user._id;
+        const userId = req.user.userId;
         const invoiceId = req.params.id;
 
         const invoice = await ProformaInvoiceModel
@@ -224,7 +231,7 @@ const getSingleInvoice = async (req, res) => {
 const deleteInvoice = async (req, res) => {
     try {
 
-        const userId = req.user._id;
+        const userId = req.user.userId;
         const invoiceId = req.params.id;
 
         const invoice = await ProformaInvoiceModel.findOneAndDelete({
@@ -255,7 +262,7 @@ const deleteInvoice = async (req, res) => {
 
 const monthlyIncome = async (req,res) =>{
     try{
-        const userId = req.user._id
+        const userId = req.user.userId
         const { year, month } = req.params
         const startdate = new Date(year, month-1, 1)
         const endDate = new Date(year, month,1)
@@ -288,7 +295,7 @@ const monthlyIncome = async (req,res) =>{
 const updateInvoice = async (req, res) => {
     try {
 
-        const userId = req.user._id;
+        const userId = req.user.userId;
         const invoiceId = req.params.id;
 
         const {
@@ -300,7 +307,12 @@ const updateInvoice = async (req, res) => {
             sgstRate,
             igstRate,
             shippingAddress,
-            billingAddress
+            billingAddress,
+            placeOfSupply,
+            PoNumber,
+            PODate,
+            ServiceOrderNumber,
+            ServiceOrderDate
         } = req.body;
 
         const calculations = CalculateInvoiceAmount({
@@ -365,7 +377,7 @@ const updateInvoice = async (req, res) => {
 const getAllInvoiceByFinancialYear = async (req, res) => {
     try {
 
-        const userId = req.user._id;
+        const userId = req.user.userId;
         const financialYear = req.params.id;
 
         const invoices = await ProformaInvoiceModel
@@ -395,20 +407,19 @@ const getAllInvoiceByFinancialYear = async (req, res) => {
 const getInvoicesByDateRange = async (req, res) => {
   try {
     let { startDate, endDate } = req.query;
+    const IST = "+05:30";
 
-    const now = new Date();
-    if (!startDate) {
+    if (!startDate || !endDate) {
+      const now = new Date();
       const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-      startDate = firstDay.toISOString();
-    }
-    if (!endDate) {
-      const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
-      endDate = lastDay.toISOString();
+      const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      const pad = (n) => String(n).padStart(2, "0");
+      if (!startDate) startDate = `${firstDay.getFullYear()}-${pad(firstDay.getMonth()+1)}-${pad(firstDay.getDate())}`;
+      if (!endDate) endDate = `${lastDay.getFullYear()}-${pad(lastDay.getMonth()+1)}-${pad(lastDay.getDate())}`;
     }
 
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    end.setHours(23, 59, 59, 999); // ✅ force end-of-day regardless of input format
+    const start = new Date(`${startDate}T00:00:00${IST}`);
+    const end = new Date(`${endDate}T23:59:59.999${IST}`);
 
     if (isNaN(start) || isNaN(end)) {
       return res.status(400).json({ success: false, message: "Invalid date format" });
@@ -425,6 +436,7 @@ const getInvoicesByDateRange = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 module.exports = {
     createInvoice,
     getInvoices,

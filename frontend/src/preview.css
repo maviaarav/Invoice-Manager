@@ -15,7 +15,6 @@
     gap: 30px;
     background: #F8F9FF;
 }
-
 #Proformainvoice-heading {
     font-size: 38px;
     line-height: 1.2;
@@ -29,6 +28,7 @@
     line-height: 1.15;
     white-space: pre-line;
 }
+
 .mainPreview {
     width: 100%;
     height: auto;
@@ -97,10 +97,33 @@
     width: 80%;
     height: auto;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 20px;
 }
+.InvoiceSend{
+    width: 50%;
 
+    
+}
+.buttonSend button{
+    width: auto;
+        background-color: #1F4FE0;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 20px;
+
+}
+.inputContainerSendInvoice{
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
 
 .headerOFInvoice{
     width: 100%;

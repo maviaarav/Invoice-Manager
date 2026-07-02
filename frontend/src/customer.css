@@ -64,12 +64,12 @@
     font-size:22px;
 }
 
-.info{
+.infoClient{
     width:100%;
     display:flex;
     justify-content:center;
     align-items:center;
-    color:#64748B;
+    color: #ff0000;
 }
 
 .clients{

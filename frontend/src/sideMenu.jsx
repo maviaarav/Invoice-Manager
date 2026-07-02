@@ -1,5 +1,8 @@
 import "./menu.css";
 import { NavLink } from "react-router-dom";
+import instance from "./api/axios";
+import { useState, useEffect } from "react";
+
 import {
     AppsRegular,
     ReceiptRegular,
@@ -8,6 +11,20 @@ import {
 } from "@fluentui/react-icons";
 
 function SideMenu() {
+    const [userProfile, setUserProfile] = useState({});
+    const fetchProfile = async () => {
+        try{
+            const response = await instance.get('/user/getUserProfile');
+            const data = response.data;
+            setUserProfile(data);
+
+        }catch(err){
+            console.log(err);
+        }
+    }
+    useEffect(() => {
+        fetchProfile();
+    }, []);
     return (
         <aside className="side-menu">
 
@@ -64,7 +81,25 @@ function SideMenu() {
             </div>
 
             <div className="systems">
-
+                <div className="profilePhoto">
+                   <div className="iconPhoto">
+                    {userProfile && (
+    <img
+        src={userProfile.profilePicture}
+        alt="Profile"
+        referrerPolicy="no-referrer"
+    />
+)}
+                   </div>
+                   <div className="profileName">
+                        {userProfile && (
+                            <>
+                            <span className="profileNameText">{userProfile.name}</span>
+                            <span className="profileEmail">{userProfile.email}</span>
+                            </>
+                        )}
+                   </div>
+                </div>
                 <NavLink
                     to="/settings"
                     className={({ isActive }) =>

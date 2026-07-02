@@ -42,7 +42,7 @@ const createCompany = async (req,res) =>{
         }
 
         const existCompany = await CompanyModel.findOne({
-            userId: req.user._id,
+            userId: req.user.userId,
             phoneNumber
         })
 
@@ -70,7 +70,7 @@ const createCompany = async (req,res) =>{
         }
 
         await CompanyModel.create({
-            userId: req.user._id,
+            userId: req.user.userId,
             CompanyName,
             OwnerName,
             phoneNumber,
@@ -102,11 +102,11 @@ const createCompany = async (req,res) =>{
 
 const getCompany = async (req,res)=>{
     try{
-        const company = await CompanyModel.findOne({userId: req.user._id})
+        const company = await CompanyModel.findOne({userId: req.user.userId})
         if(!company){
             return res.status(404).json({Msg: "You haven't created a company profile yet.\nCreate your company profile to start generating invoices and managing your business information."})
         }
-        const companyLength = await CompanyModel.countDocuments({userId: req.user._id})
+        const companyLength = await CompanyModel.countDocuments({userId: req.user.userId})
         return res.status(200).json({success: true, company,companyLength})
     }
     catch(error){
@@ -136,7 +136,7 @@ const updateCompany = async (req,res) =>{
         } = req.body
 
         const company = await CompanyModel.findOne({
-            userId: req.user._id,
+            userId: req.user.userId,
             _id: req.params.id
         })
 

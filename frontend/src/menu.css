@@ -27,7 +27,66 @@
     transition:all .3s ease;
     z-index:1000;
 }
+.profilePhoto {
+width: 100%;
+    display: flex;
+    align-items: center;
+    height: 100px;
+    flex-direction: row;
+    margin-bottom: 40px;
+    gap: 16px;
+    padding: 10px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #EEF1F7 0%, #F5F7FB 100%);
+    border: 1px solid #E3E8F2;
+    position: relative;
+}
 
+.iconPhoto {
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: #FFFFFF;
+    padding: 3px;
+    box-shadow:
+        0 0 0 2px #1B53C4,
+        0 2px 6px rgba(27, 83, 196, 0.18);
+}
+
+.iconPhoto img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.profileName {
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+    color: #1A1D29;
+}
+
+.profileNameText {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A1D29;
+}
+
+.profileEmail {
+    font-size: 13px;
+    color: #6B7085;
+}
 .side-menu.collapsed{
     width:var(--sidebar-width-collapsed);
     min-width:var(--sidebar-width-collapsed);

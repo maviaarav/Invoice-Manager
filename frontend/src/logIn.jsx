@@ -5,6 +5,7 @@ import './App.css'
 import { WalletCreditCard48Regular,MailAllUnreadRegular,Password32Regular,Eye32Regular,EyeOff32Regular } from '@fluentui/react-icons';
 import { Routes, Route }
 from "react-router-dom";
+import googleImage from './images/google.png'
 import loginImage from './images/login.png'
 
 const Login =  (e) =>{
@@ -146,6 +147,15 @@ const navigate = useNavigate();
                         </form>
                         
 
+                    </div>
+                    <div className="or">
+                        <span>or</span>
+                    </div>
+                    <div className="google">
+                        <button type="button" id="googleButton" onClick={()=>window.location.href = 'http://localhost:3000/api/google/connect'}>
+                            <img src={googleImage} alt="Google Logo" />
+                            <span>Sign in with Google</span>
+                        </button>
                     </div>
                    <div className="signUpLink">
                         <span>Don't have an account?</span>

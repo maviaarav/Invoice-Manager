@@ -23,6 +23,10 @@ const InvoiceForm = () => {
   const [invoiceNumber, setInvoiceNumber] = useState(1);
   const [shippingAddress, setShippingAddress] = useState("");
   const [billingAddress, setBillingAddress] = useState("");
+  const [PoNumber, setPoNumber] = useState("");
+  const [PODate, setPODate] = useState("");
+  const [ServiceOrderNumber, setServiceOrderNumber] = useState("");
+  const [ServiceOrderDate, setServiceOrderDate] = useState("");
   const [error, setError] = useState(null);
   const [editingInvoice, setEditingInvoice] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -62,7 +66,6 @@ const InvoiceForm = () => {
     }
 
     if (field === "amount") {
-      item.quantity = "";
       item.rate = "";
     }
 
@@ -93,6 +96,10 @@ const InvoiceForm = () => {
     setSameAsBilling(false);
     setSelectedClient("");
     setPlaceOfSupply("");
+    setPoNumber("");
+    setPODate("");
+    setServiceOrderNumber("");
+    setServiceOrderDate("");
   };
   const toWords = new ToWords({
     localeCode: "en-IN",
@@ -251,6 +258,10 @@ const CreateInvoice = async () => {
           placeOfSupply,
           shippingAddress,
           billingAddress,
+          PoNumber,
+          PODate,
+          ServiceOrderNumber,
+          ServiceOrderDate
         }
       );
 
@@ -269,6 +280,10 @@ const CreateInvoice = async () => {
         shippingAddress,
         items,
         billingAddress,
+        PoNumber,
+        PODate,
+        ServiceOrderNumber,
+        ServiceOrderDate
       });
       const data = response.data;
       setSuccess("✅ Invoice created successfully!");
@@ -298,6 +313,10 @@ useEffect(() => {
     setPlaceOfSupply(invoiceData.placeOfSupply || "");
     setShippingAddress(invoiceData.shippingAddress || "");
     setBillingAddress(invoiceData.billingAddress || "");
+    setPoNumber(invoiceData.PoNumber || "");
+    setPODate(invoiceData.PODate || "");
+    setServiceOrderNumber(invoiceData.ServiceOrderNumber || "");
+    setServiceOrderDate(invoiceData.ServiceOrderDate || "");
 
     // FIX: normalize items — DB may store cgst/sgst as objects or missing fields
     const normalizedItems = (invoiceData.items || []).map((item) => ({
@@ -467,6 +486,22 @@ useEffect(() => {
             <label>Invoice Date:</label>
 
             <input type="text" value={invoiceDate} readOnly />
+          </div>
+          <div className="invoiceNumber">
+            <label>PO Number:</label>
+            <input type="text" value={PoNumber} onChange={(e) => setPoNumber(e.target.value)} />
+          </div>
+          <div className="invoiceNumber">
+            <label>PO Date:</label>
+            <input type="text" value={PODate} onChange={(e) => setPODate(e.target.value)} />
+          </div>
+          <div className="invoiceNumber">
+            <label>Service Order Number:</label>
+            <input type="text" value={ServiceOrderNumber} onChange={(e) => setServiceOrderNumber(e.target.value)} />
+          </div>
+          <div className="invoiceNumber">
+            <label>Service Order Date:</label>
+            <input type="text" value={ServiceOrderDate} onChange={(e) => setServiceOrderDate(e.target.value)} />
           </div>
         </div>
         <div className="gstType">

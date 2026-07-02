@@ -24,7 +24,7 @@ const createClient = async (req, res) => {
             });
         }
 
-        const userId = req.user._id;
+        const userId = req.user.userId;
 
         // Check email first
         const emailExists = await ClientModel.findOne({
@@ -79,7 +79,7 @@ const createClient = async (req, res) => {
 };
 const getClient = async (req,res)=>{
     try{
- const Client = await ClientModel.findOne({userId: req.user._id, email: req.params.email})
+ const Client = await ClientModel.findOne({userId: req.user.userId, email: req.params.email})
     if(!Client){
         return res.status(404).json({message: 'Client not found'})
     }
@@ -100,7 +100,7 @@ const updateClient = async (req,res)=>{
         if(!req.body){
             return res.status(400).json({message: 'All fields are required'})
         }
-        const client = await ClientModel.findOne({userId: req.user._id, _id: req.params.id})
+        const client = await ClientModel.findOne({userId: req.user.userId, _id: req.params.id})
         if(!client){
             return res.status(404).json({message: 'Client not found'})
         }
@@ -119,7 +119,7 @@ const updateClient = async (req,res)=>{
 
 const deleteClient = async (req,res)=>{
     try{
-        const client = await ClientModel.findOne({userId: req.user._id, _id: req.params.id})
+        const client = await ClientModel.findOne({userId: req.user.userId, _id: req.params.id})
         if(!client){
             return res.status(404).json({message: 'Client not found'})
         }
@@ -131,7 +131,7 @@ const deleteClient = async (req,res)=>{
 }
 const getClientAll = async (req,res)=>{
     try{
-        const clients = await ClientModel.find({userId: req.user._id})
+        const clients = await ClientModel.find({userId: req.user.userId})
         if(clients.length === 0){
             return res.status(404).json({message: 'No clients found'})
         }
@@ -142,7 +142,7 @@ const getClientAll = async (req,res)=>{
 }
 const recentClient = async (req,res) =>{
     try{
-        const recent = await ClientModel.find({userId: req.user._id})
+        const recent = await ClientModel.find({userId: req.user.userId})
         .sort({ createdAt: - 1 })
         .limit(5)
         return res.status(201).json({recent: recent})
@@ -154,7 +154,7 @@ const recentClient = async (req,res) =>{
 
 const getTopClient = async (req, res) => {
     try {
-        const userId = new mongoose.Types.ObjectId(req.user._id);
+        const userId = new mongoose.Types.ObjectId(req.user.userId);
 
         const grouped = await InvoiceModel.aggregate([
             { $match: { userId: userId } },

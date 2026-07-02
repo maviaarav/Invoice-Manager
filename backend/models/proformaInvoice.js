@@ -45,6 +45,21 @@ const PerformainvoiceSchema = new mongoose.Schema(
         type:String,
         required:true
     },
+    PoNumber:{
+        type:String,
+        default:""
+    },
+    PODate:{
+        type:Date,
+    },
+    ServiceOrderNumber:{
+        type:String,
+        default:""
+    },
+    ServiceOrderDate:{
+        type:Date,
+    },
+
 
     items:[
         {
@@ -133,7 +148,7 @@ const PerformainvoiceSchema = new mongoose.Schema(
     }
 
 },
-{timestamps:true}
+    {timestamps:true}
 );
 
 

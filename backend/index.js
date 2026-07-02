@@ -15,6 +15,9 @@ const ClientRouter = require('./routes/client')
 const mongoose = require('./connections/server')
 const InvoiceRouter = require('./routes/invoice')
 const ProformaRouter = require('./routes/proforma')
+const GoogleOauthRouter = require('./routes/googleOauth')
+
+
 const app = express()
 
 app.use(cors({
@@ -29,6 +32,7 @@ app.use('/company', CompanyRouter)
 app.use('/client', ClientRouter)
 app.use('/invoice', InvoiceRouter)
 app.use('/proforma', ProformaRouter)
+app.use('/api/google', GoogleOauthRouter)
 app.listen(3000,()=>{
     console.log("Working at port: http://localhost:3000")
 })

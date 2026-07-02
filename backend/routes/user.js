@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { HandlerLogin , SignUpHandler, getUserName } = require('../controllers/user')
+const { HandlerLogin , SignUpHandler, getUserName, getUserProfile } = require('../controllers/user')
 const { restrictToLogin } = require('../middlewares/auth')
 
 router.post('/signUp', SignUpHandler)
@@ -24,4 +24,5 @@ router.get('/logout', (req, res) => {
         success: true
     });
 });
+router.get('/getUserProfile', restrictToLogin, getUserProfile)
 module.exports = router
