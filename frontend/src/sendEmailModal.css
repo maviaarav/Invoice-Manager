@@ -1,0 +1,48 @@
+/* sendEmailModal.css */
+.sem-overlay {
+  position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10000; padding: 16px;
+}
+.sem-modal {
+  width: 100%; max-width: 440px; background: #ffffff; border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(16, 24, 40, 0.25);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  overflow: hidden;
+}
+.sem-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 20px 24px 0 24px; }
+.sem-header h3 { margin: 0; font-size: 18px; color: #0f172a; }
+.sem-subtitle { margin: 4px 0 0 0; font-size: 13px; color: #6b7280; }
+.sem-close { background: none; border: none; font-size: 22px; line-height: 1; color: #6b7280; cursor: pointer; padding: 2px 6px; }
+.sem-close:hover { color: #111827; }
+.sem-body { padding: 18px 24px 4px 24px; }
+.sem-label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: #6b7280; margin-bottom: 8px; }
+.sem-chip-input {
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-height: 44px;
+  padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 10px; background: #f9fafb; cursor: text;
+}
+.sem-chip-input:focus-within { border-color: #2f6bff; background: #ffffff; box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.12); }
+.sem-chip {
+  display: inline-flex; align-items: center; gap: 6px; background: #e8eefc; color: #1d4ed8;
+  font-size: 13px; padding: 5px 8px 5px 10px; border-radius: 999px; white-space: nowrap;
+}
+.sem-chip-remove { background: none; border: none; color: #1d4ed8; font-size: 15px; line-height: 1; cursor: pointer; padding: 0; opacity: 0.7; }
+.sem-chip-remove:hover { opacity: 1; }
+.sem-input { flex: 1; min-width: 140px; border: none; outline: none; background: transparent; font-size: 14px; padding: 6px 4px; color: #111827; }
+.sem-error { margin: 8px 2px 0 2px; font-size: 12px; color: #dc2626; }
+.sem-hint { margin: 8px 2px 0 2px; font-size: 12px; color: #9ca3af; }
+.sem-footer { display: flex; justify-content: flex-end; gap: 10px; padding: 20px 24px 24px 24px; }
+.sem-btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 9px;
+  font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: filter 0.15s ease;
+}
+.sem-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+.sem-btn-secondary { background: #ffffff; color: #374151; border-color: #d1d5db; }
+.sem-btn-secondary:hover:not(:disabled) { background: #f9fafb; }
+.sem-btn-primary { background: #2f6bff; color: #ffffff; }
+.sem-btn-primary:hover:not(:disabled) { filter: brightness(1.05); }
+.sem-spinner {
+  width: 14px; height: 14px; border: 2px solid rgba(255, 255, 255, 0.5); border-top-color: #ffffff;
+  border-radius: 50%; display: inline-block; animation: sem-spin 0.7s linear infinite;
+}
+@keyframes sem-spin { to { transform: rotate(360deg); } }

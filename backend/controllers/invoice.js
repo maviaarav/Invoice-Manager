@@ -103,7 +103,7 @@ const createInvoice = async (req, res) => {
         } = req.body;
         console.log("REQ BODY:", req.body);
         console.log("TAX TYPE:", req.body.taxType);
-        const userId = req.user.userId;
+        const userId = req.user.userId || req.user._id;
 
         const financialYear = getFinancialYear();
 
@@ -172,7 +172,7 @@ const createInvoice = async (req, res) => {
 const getInvoices = async (req, res) => {
     try {
 
-        const userId = req.user.userId;
+        const userId = req.user.userId || req.user._id;
 
         const invoices = await InvoiceModel
             .find({ userId })
@@ -204,7 +204,7 @@ const getInvoices = async (req, res) => {
 const getSingleInvoice = async (req, res) => {
     try {
 
-        const userId = req.user.userId;
+        const userId = req.user.userId || req.user._id;
         const invoiceId = req.params.id;
 
         const invoice = await InvoiceModel
@@ -235,7 +235,7 @@ const getSingleInvoice = async (req, res) => {
 const deleteInvoice = async (req, res) => {
     try {
 
-        const userId = req.user.userId;
+        const userId = req.user.userId || req.user._id;
         const invoiceId = req.params.id;
 
         const invoice = await InvoiceModel.findOneAndDelete({
@@ -266,7 +266,7 @@ const deleteInvoice = async (req, res) => {
 
 const monthlyIncome = async (req,res) =>{
     try{
-        const userId = req.user.userId
+        const userId = req.user.userId || req.user._id;
         const { year, month } = req.params
         const startdate = new Date(year, month-1, 1)
         const endDate = new Date(year, month,1)
@@ -299,7 +299,7 @@ const monthlyIncome = async (req,res) =>{
 const updateInvoice = async (req, res) => {
     try {
 
-        const userId = req.user.userId;
+        const userId = req.user.userId || req.user._id;
         const invoiceId = req.params.id;
 
         const {
@@ -383,7 +383,7 @@ const updateInvoice = async (req, res) => {
 const getAllInvoiceByFinancialYear = async (req, res) => {
     try {
 
-        const userId = req.user.userId;
+        const userId = req.user.userId || req.user._id;
         const financialYear = req.params.id;
 
         const invoices = await InvoiceModel

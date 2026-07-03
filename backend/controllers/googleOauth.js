@@ -12,7 +12,7 @@ const connectGoogle = async (req,res) =>{
             "openid",
             "email",
             "profile",
-          'https://www.googleapis.com/auth/gmail.send',
+          'https://mail.google.com/',
         ],
       
       })

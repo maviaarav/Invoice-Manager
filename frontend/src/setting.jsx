@@ -107,9 +107,9 @@ const Setting = () => {
                 <label>Name</label>
                 <input type="text" value={ownerName} readOnly />
                 <label>GSTIN</label>
-                <input type="text" value={taxId} readOnly />
+                <input type="text" value={taxId || "N/A"} readOnly />
                 <label>PAN</label>
-                <input type="text" value={panNumber} readOnly />
+                <input type="text" value={panNumber || "N/A"} readOnly />
                 <label>Terms and Conditions</label>
                 <textarea className="textArea" value={termsAndCondition} readOnly />
             </div>

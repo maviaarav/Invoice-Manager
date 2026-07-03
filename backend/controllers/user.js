@@ -67,7 +67,7 @@ const HandlerLogin = async (req,res) =>{
 }
 const getUserName = async (req,res) =>{
     try{
-        const user = await userModel.findById(req.user.userId)
+        const user = await userModel.findById(req.user.userId || req.user._id) 
         if(!user){
             return res.status(404).json({Msg: "User not found"})
         }

@@ -48,7 +48,7 @@ function Home() {
         } catch (error) {
             console.log(error);
         }
-    };
+    }
 
     const getClient = async () => {
         try {

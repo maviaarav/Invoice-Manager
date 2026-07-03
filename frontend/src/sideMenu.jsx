@@ -81,6 +81,7 @@ function SideMenu() {
             </div>
 
             <div className="systems">
+                {userProfile.success && (
                 <div className="profilePhoto">
                    <div className="iconPhoto">
                     {userProfile && (
@@ -91,6 +92,7 @@ function SideMenu() {
     />
 )}
                    </div>
+            
                    <div className="profileName">
                         {userProfile && (
                             <>
@@ -100,6 +102,7 @@ function SideMenu() {
                         )}
                    </div>
                 </div>
+                )}
                 <NavLink
                     to="/settings"
                     className={({ isActive }) =>

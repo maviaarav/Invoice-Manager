@@ -13,6 +13,7 @@
     gap:30px;
     background:#F8F9FF;
 }
+
 .headingSetting{
     display:flex;
     align-items:center;
@@ -172,6 +173,7 @@ input{
     color:#333;
     font-size:16px;
     resize:none;
+    height:150px;
 }
 .companyProfileContainer{
     width: 100%;

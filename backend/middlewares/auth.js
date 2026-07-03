@@ -1,7 +1,7 @@
 const { getUser } = require('../utils/auth')
 
 const restrictToLogin = (req, res, next) => {
-    const token = req.cookies?.token;
+    const token = req.cookies?.token || req.cookies.UUID;
 
     if (!token) {
         return res.status(401).json({ message: "Unauthorized" });
