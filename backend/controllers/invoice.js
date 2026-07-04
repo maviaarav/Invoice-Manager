@@ -71,14 +71,32 @@ const getFinancialYear = (date = new Date()) => {
 
 
 
-const getInvoiceNumber = async (financialYear) => {
-    const count = await InvoiceModel.countDocuments({ financialYear });
+// const getInvoiceNumber = async () => {
+//   try {
+//     const response = await instance.get(
+//       `/invoice/year/${getFinancialYear()}`
+//     );
 
-    const nextNumber = count + 1;
+//     const invoices = response.data.invoices || [];
 
-    return `INV/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
-};
+//     let nextInvoiceNumber = "INV/" + getFinancialYear() + "/0001";
 
+//     if (invoices.length > 0) {
+//       const lastInvoice = invoices[invoices.length - 1];
+
+//       const parts = lastInvoice.invoiceNumber.split("/");
+//       const lastNumber = parseInt(parts[2], 10);
+
+//       nextInvoiceNumber = `INV/${getFinancialYear()}/${String(
+//         lastNumber + 1
+//       ).padStart(4, "0")}`;
+//     }
+
+//     setInvoiceNumber(nextInvoiceNumber);
+//   } catch (error) {
+//     console.log("Error while fetching invoice number", error);
+//   }
+// };
 
 const createInvoice = async (req, res) => {
 
@@ -90,6 +108,7 @@ const createInvoice = async (req, res) => {
             customerId,
             items,
             taxType,
+            invoiceNumber,
             shippingAddress,
             placeOfSupply,
             cgstRate,
@@ -116,45 +135,38 @@ const createInvoice = async (req, res) => {
             igstRate
         });
              
-        const invoice = await InvoiceModel.create({
-            userId,
-            companyId,
-            customerId,
-            taxType,
-            invoiceNumber: await getInvoiceNumber(financialYear),
-            financialYear,
-            invoiceDate: new Date().toLocaleDateString("en-IN",{ day: "numeric", month: "long", year: "numeric" }),
-            shippingAddress,
-            billingAddress,
-            placeOfSupply,
-            PoNumber,
-            PODate,
-            ServiceOrderNumber,
-            ServiceOrderDate,
-
-            items,
-
-            subtotal: calculations.subtotal,
-
-            cgst: {
-                rate: cgstRate || 0,
-                amount: calculations.cgst.amount
-            },
-
-            sgst: {
-                rate: sgstRate || 0,
-                amount: calculations.sgst.amount
-            },
-
-            igst: {
-                rate: igstRate || 0,
-                amount: calculations.igst.amount
-            },
-
-            totalTax: calculations.totalTax,
-            totalAmount: calculations.totalAmount
-        });
-
+ const invoice = await InvoiceModel.create({
+    userId,
+    companyId,
+    customerId,
+    taxType,
+    invoiceNumber,
+    financialYear,
+    invoiceDate: new Date(), 
+    shippingAddress,
+    billingAddress,
+    placeOfSupply,
+    PoNumber,
+    PODate,
+    ServiceOrderNumber,
+    ServiceOrderDate,
+    items,
+    subtotal: calculations.subtotal,
+    cgst: {
+        rate: cgstRate || 0,
+        amount: calculations.cgst.amount
+    },
+    sgst: {
+        rate: sgstRate || 0,
+        amount: calculations.sgst.amount
+    },
+    igst: {
+        rate: igstRate || 0,
+        amount: calculations.igst.amount
+    },
+    totalTax: calculations.totalTax,
+    totalAmount: calculations.totalAmount
+});
         return res.status(201).json({
             Msg: "Invoice Created Successfully",
             invoice

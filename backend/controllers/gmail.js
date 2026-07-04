@@ -15,7 +15,7 @@ const transporterCache = new Map();
 const buildHtml = (fields) => {
     let html = RAW_TEMPLATE;
     for (const [key, value] of Object.entries(fields)) {
-        html = html.split(`{{${key}}}`).join(value ?? '');
+        html = html.split(`${key}`).join(value ?? '');
     }
     return html;
 };
@@ -91,12 +91,21 @@ const createTransport = async (req, res) => {
         if (recipientList.length === 0) {
             return res.status(400).json({ message: 'At least one valid recipient email is required.' });
         }
+const formattedInvoiceDate = new Date(invoiceDate).toLocaleDateString(
+    "en-GB",
+    {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+        timeZone: "UTC"
+    }
+);
 
         const htmlTemplate = buildHtml({
             company_name: companyName,
             client_name: clientName,
             invoice_number: invoiceNumber,
-            issue_date: invoiceDate,
+            issue_date: formattedInvoiceDate,
             total_amount: `₹${totalAmount}`,
             payment_url: paymentUrl,
             qr_code_url: qrCodeUrl,

@@ -185,6 +185,40 @@ const InvoicePreview = () => {
                                         <p>Place of Supply:</p>
                                         <span>{invoice.placeOfSupply}</span>
                                     </div>
+                                    {invoice.PoNumber && (
+                                    <>
+                                    <div className="invoicePlaceOfSupplyPreview">
+                                        <p>PO Number:</p>
+                                        <span>{invoice.PoNumber}</span>
+                                    </div>
+                                    </>
+                                    
+                                    
+                                )}
+                                          {invoice.PODate && invoice.PODate !== null &&(
+
+                                      
+                                    <div className="invoicePlaceOfSupplyPreview">
+                                        <p>PO Date:</p>
+                                        <span>{new Date(invoice.PODate).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}</span>
+                                    </div>
+                                    )}
+
+                                {invoice.ServiceOrderNumber && (
+                                    <>
+                                    <div className="invoicePlaceOfSupplyPreview">
+                                        <p>Service Order Number:</p>
+                                        <span>{invoice.ServiceOrderNumber}</span>
+                                    </div>
+                                    
+                                    </>
+                                )}
+                                {invoice.ServiceOrderDate && invoice.ServiceOrderDate !== null && (
+                                    <div className="invoicePlaceOfSupplyPreview">
+                                        <p>Service Order Date:</p>
+                                        <span>{new Date(invoice.ServiceOrderDate).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}</span>
+                                    </div>
+                                )}
                                 </div>
                             </div>
                         </div>

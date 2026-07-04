@@ -2,7 +2,7 @@
 <html dir="ltr" lang="en">
 <head>
 <meta content="width=device-width" name="viewport"/>
-<link rel="preload" as="image" href="{{qr_code_url}}"/>
+<link rel="preload" as="image" href="qr_code_url"/>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
 <meta name="x-apple-disable-message-reformatting"/>
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
@@ -43,7 +43,7 @@
                 </td>
                 <td>
                   <table border="0" cellpadding="0" cellspacing="0" role="presentation">
-                    <tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;letter-spacing:0.5px;color:#111827">{{company_name}}</td></tr>
+                    <tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:bold;letter-spacing:0.5px;color:#111827">company_name</td></tr>
                     <tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#6b7280;padding-top:2px">Professional. Reliable. Trusted.</td></tr>
                   </table>
                 </td>
@@ -89,19 +89,19 @@
                       <td class="stack-col" align="center" style="font-family:Arial,Helvetica,sans-serif">
                         <div style="font-size:20px;line-height:1">📄</div>
                         <div style="padding-top:10px;font-size:11px;letter-spacing:0.5px;color:#6b7280;text-transform:uppercase">Invoice Number</div>
-                        <div style="padding-top:4px;font-size:15px;font-weight:bold;color:#111827">{{invoice_number}}</div>
+                        <div style="padding-top:4px;font-size:15px;font-weight:bold;color:#111827">invoice_number</div>
                       </td>
                       <td class="stat-divider" style="border-left:1px solid #e5e7eb">&nbsp;</td>
                       <td class="stack-col" align="center" style="font-family:Arial,Helvetica,sans-serif">
                         <div style="font-size:20px;line-height:1">📅</div>
                         <div style="padding-top:10px;font-size:11px;letter-spacing:0.5px;color:#6b7280;text-transform:uppercase">Issue Date</div>
-                        <div style="padding-top:4px;font-size:15px;font-weight:bold;color:#111827">{{issue_date}}</div>
+                        <div style="padding-top:4px;font-size:15px;font-weight:bold;color:#111827">issue_date</div>
                       </td>
                       <td class="stat-divider" style="border-left:1px solid #e5e7eb">&nbsp;</td>
                       <td class="stack-col" align="center" style="font-family:Arial,Helvetica,sans-serif">
                         <div style="font-size:20px;line-height:1">💰</div>
                         <div style="padding-top:10px;font-size:11px;letter-spacing:0.5px;color:#6b7280;text-transform:uppercase">Total Amount</div>
-                        <div style="padding-top:4px;font-size:15px;font-weight:bold;color:#2f6bff">{{total_amount}}</div>
+                        <div style="padding-top:4px;font-size:15px;font-weight:bold;color:#2f6bff">total_amount</div>
                       </td>
                     </tr>
                   </table>
@@ -141,7 +141,7 @@
                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-top:18px">
                           <tr>
                             <td align="center" style="border-radius:8px;background-color:#1e8a44">
-                              <a href="{{payment_url}}" rel="noopener noreferrer nofollow" target="_blank"
+                              <a href="payment_url" rel="noopener noreferrer nofollow" target="_blank"
                                  style="color:#ffffff;text-decoration:none;display:inline-block;padding:13px 26px;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;border-radius:8px">🔒 Pay Now</a>
                             </td>
                           </tr>
@@ -152,7 +152,7 @@
                                style="background-color:#ffffff;border-radius:10px;border:1px solid #e5e7eb">
                           <tr>
                             <td align="center" style="padding:14px">
-                              <img alt="Scan to pay" height="120" src="{{qr_code_url}}" style="display:block;border:none;max-width:100%;width:120px;height:auto" width="120"/>
+                              <img alt="Scan to pay" height="120" src="qr_code_url" style="display:block;border:none;max-width:100%;width:120px;height:auto" width="120"/>
                               <div style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#374151;padding-top:8px">Scan to Pay</div>
                             </td>
                           </tr>
@@ -194,7 +194,7 @@
         <tr>
           <td class="fluid-padding" style="padding:28px 40px 36px 40px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:21px;color:#4b5563">
             Thank you for your trust and business.<br/><br/>
-            Best regards,<br/>{{company_name}}
+            Best regards,<br/>company_name
           </td>
         </tr>
       </table>

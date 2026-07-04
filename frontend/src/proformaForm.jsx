@@ -9,6 +9,7 @@ const ProformaForm = () => {
 
   const [company, setCompany] = useState([]);
   const [companyId, setCompanyId] = useState("");
+  const [invoices, setInvoices] = useState([]);
   const [amountInWords, setAmountInWords] = useState("");
   const [taxableAmount, setTaxableAmount] = useState(0);
   const [clients, setClients] = useState([]);
@@ -20,7 +21,7 @@ const ProformaForm = () => {
   const [igstAmount, setIgstAmount] = useState(0);
   const [placeOfSupply, setPlaceOfSupply] = useState("");
   const [invoiceDate, setInvoiceDate] = useState(0);
-  const [invoiceNumber, setInvoiceNumber] = useState(1);
+  const [invoiceNumber, setInvoiceNumber] = useState("");
   const [shippingAddress, setShippingAddress] = useState("");
   const [billingAddress, setBillingAddress] = useState("");
   const [PoNumber, setPoNumber] = useState("");
@@ -124,6 +125,57 @@ const ProformaForm = () => {
     ]);
   };
 
+  const convertInvoice = async () => {
+  try {
+    // Generate a fresh, real invoice number from the invoice sequence
+    // (separate from the proforma sequence — do not reuse the proforma number)
+    const financialYear = getFinancialYear();
+    const invoiceRes = await instance.get(`/invoice/year/${financialYear}`);
+    const existingInvoices = invoiceRes.data.invoices || [];
+
+    let newInvoiceNumber = `INV/${financialYear}/0001`;
+    if (existingInvoices.length > 0) {
+      const highestNumber = existingInvoices.reduce((max, invoice) => {
+        const parts = invoice.invoiceNumber?.split("/");
+        if (!parts || parts.length !== 3) return max;
+        const num = parseInt(parts[2], 10);
+        return isNaN(num) ? max : Math.max(num, max);
+      }, 0);
+      newInvoiceNumber = `INV/${financialYear}/${String(highestNumber + 1).padStart(4, "0")}`;
+    }
+
+    const response = await instance.post("/invoice/create", {
+      companyId,
+      customerId: selectedClientId,
+      taxType,
+      cgstRate,
+      sgstRate,
+      igstRate,
+      placeOfSupply,
+      invoiceNumber: newInvoiceNumber, // ✅ now actually sent
+      shippingAddress,
+      items,
+      billingAddress,
+      PoNumber,
+      PODate,
+      ServiceOrderNumber,
+      ServiceOrderDate,
+    });
+
+    const data = response.data;
+    setSuccess("✅ Invoice created successfully!");
+    clearForm();
+    localStorage.removeItem("editingInvoice");
+    setError(null);
+    console.log("Invoice created successfully:", data);
+  } catch (error) {
+    console.error("Error saving invoice:", error);
+    setError(
+      error.response?.data?.Msg || "Failed to save invoice. Please try again."
+    );
+    setSuccess(null);
+  }
+};
   const handleRemoveItem = (index) => {
     const updatedItems = items.filter((_, i) => i !== index);
     setItems(updatedItems);
@@ -197,17 +249,18 @@ setTaxableAmount(taxableSubtotal);
     setInvoiceDate(formattedDate);
   };
 
-  const fetchCompanyId = async () => {
-    try {
-      const response = await instance.get("/company/get");
-      const data = response.data.company;
-      setCompanyId(data._id);
-      setCompany(data);
-      setPlaceOfSupply(data.PlaceOfSupply);
-    } catch (error) {
-      console.error("Error fetching company ID:", error);
-    }
-  };
+ const fetchCompanyId = async () => {
+  try {
+    const response = await instance.get("/company/get");
+    const data = response.data.company;
+    setCompanyId(data._id);
+    setCompany(data);
+
+    setPlaceOfSupply((prev) => prev || data.PlaceOfSupply || "");
+  } catch (error) {
+    console.error("Error fetching company ID:", error);
+  }
+};
 
   const fetchClient = async () => {
     try {
@@ -224,19 +277,36 @@ setTaxableAmount(taxableSubtotal);
     const month = today.getMonth() + 1;
     return month >= 4 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
   };
+const fetchInvoiceNumber = async () => {
+  try {
+    const financialYear = getFinancialYear();
 
-  const fetchInvoiceNumber = async () => {
-    try {
-      const response = await instance.get(
-        `/proforma/year/${getFinancialYear()}`
-      );
-      const invoiceCount = response.data.InvoiceCount;
-      const newInvoiceNumber = invoiceCount + 1;
-      setInvoiceNumber(newInvoiceNumber);
-    } catch (error) {
-      console.log("Error while fetching the Invoice Number", error);
+    const response = await instance.get(`/proforma/year/${financialYear}`);
+    const invoices = response.data.invoices || [];
+
+    let nextInvoiceNumber = `INV/${financialYear}/0001`;
+
+    if (invoices.length > 0) {
+      const highestNumber = invoices.reduce((max, invoice) => {
+        const parts = invoice.invoiceNumber?.split("/");
+        if (!parts || parts.length !== 3) return max;
+
+        const num = parseInt(parts[2], 10);
+        if (isNaN(num)) return max;
+
+        return num > max ? num : max;
+      }, 0);
+
+      nextInvoiceNumber = `INV/${financialYear}/${String(
+        highestNumber + 1
+      ).padStart(4, "0")}`;
     }
-  };
+
+    setInvoiceNumber(nextInvoiceNumber);
+  } catch (error) {
+    console.log("Error while fetching invoice number", error);
+  }
+};
 
 const CreateInvoice = async () => {
   try {
@@ -266,21 +336,22 @@ const CreateInvoice = async () => {
 
     } else {
       const response = await instance.post("/proforma/create", {
-        companyId,
-        customerId: selectedClientId,
-        taxType,
-        cgstRate,
-        sgstRate,
-        igstRate,
-        placeOfSupply,
-        shippingAddress,
-        items,
-        billingAddress,
-        PoNumber,
-        PODate,
-        ServiceOrderNumber,
-        ServiceOrderDate
-      });
+  companyId,
+  customerId: selectedClientId,
+  taxType,
+  cgstRate,
+  sgstRate,
+  igstRate,
+  placeOfSupply,
+  invoiceNumber, 
+  shippingAddress,
+  items,
+  billingAddress,
+  PoNumber,
+  PODate,
+  ServiceOrderNumber,
+  ServiceOrderDate
+});
       const data = response.data;
       setSuccess("✅ Invoice created successfully!");
       clearForm();
@@ -302,11 +373,10 @@ useEffect(() => {
   if (storedEditingInvoice) {
     const invoiceData = JSON.parse(storedEditingInvoice);
     setEditingInvoice(invoiceData);
+    setPlaceOfSupply(invoiceData.placeOfSupply || "");
 
     const clientId = invoiceData.customerId?._id || invoiceData.customerId || "";
     setSelectedClient(clientId);
-
-    setPlaceOfSupply(invoiceData.placeOfSupply || "");
     setShippingAddress(invoiceData.shippingAddress || "");
     setBillingAddress(invoiceData.billingAddress || "");
     setPoNumber(invoiceData.PoNumber || "");
@@ -474,9 +544,10 @@ useEffect(() => {
             <label>PROFORMA Invoice Number:</label>
             <input
               type="text"
-              value={`INV-${getFinancialYear()}-${invoiceNumber}`}
-              readOnly
+              value={invoiceNumber}
+              onChange={(e) => setInvoiceNumber(e.target.value)}
             />
+  
           </div>
           <div className="invoiceNumber">
             <label>Invoice Date:</label>
@@ -788,9 +859,19 @@ useEffect(() => {
         </div>
         <div className="create">
           <button className="createBtn" onClick={CreateInvoice}>
-            {editingInvoice ? "Update Invoice" : "Create Invoice"}
+            {editingInvoice ? "Update Invoice" : "Create Performa Invoice"}
 
           </button>
+
+        </div>
+        <div className="create">
+          {editingInvoice && (
+ <button className="createBtn" onClick={convertInvoice}>
+            Convert to Invoice
+
+          </button>
+          )}
+         
 
         </div>
                   {error && <p className="error">{error}</p> || null }

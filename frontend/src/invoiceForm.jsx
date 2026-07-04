@@ -20,7 +20,7 @@ const InvoiceForm = () => {
   const [igstAmount, setIgstAmount] = useState(0);
   const [placeOfSupply, setPlaceOfSupply] = useState("");
   const [invoiceDate, setInvoiceDate] = useState(0);
-  const [invoiceNumber, setInvoiceNumber] = useState(1);
+  const [invoiceNumber, setInvoiceNumber] = useState();
   const [shippingAddress, setShippingAddress] = useState("");
   const [billingAddress, setBillingAddress] = useState("");
   const [PoNumber, setPoNumber] = useState("");
@@ -229,19 +229,36 @@ setTaxableAmount(taxableSubtotal);
     return month >= 4 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
   };
 
-  const fetchInvoiceNumber = async () => {
-    try {
-      const response = await instance.get(
-        `/invoice/year/${getFinancialYear()}`
-      );
-      const invoiceCount = response.data.InvoiceCount;
-      const newInvoiceNumber = invoiceCount + 1;
-      setInvoiceNumber(newInvoiceNumber);
-    } catch (error) {
-      console.log("Error while fetching the Invoice Number", error);
-    }
-  };
+const fetchInvoiceNumber = async () => {
+  try {
+    const financialYear = getFinancialYear();
 
+    const response = await instance.get(`/invoice/year/${financialYear}`);
+    const invoices = response.data.invoices || [];
+
+    let nextInvoiceNumber = `INV/${financialYear}/0001`;
+
+    if (invoices.length > 0) {
+      const highestNumber = invoices.reduce((max, invoice) => {
+        const parts = invoice.invoiceNumber?.split("/");
+        if (!parts || parts.length !== 3) return max;
+
+        const num = parseInt(parts[2], 10);
+        if (isNaN(num)) return max;
+
+        return num > max ? num : max;
+      }, 0);
+
+      nextInvoiceNumber = `INV/${financialYear}/${String(
+        highestNumber + 1
+      ).padStart(4, "0")}`;
+    }
+
+    setInvoiceNumber(nextInvoiceNumber);
+  } catch (error) {
+    console.log("Error while fetching invoice number", error);
+  }
+};
 const CreateInvoice = async () => {
   try {
     if (editingInvoice) {
@@ -277,6 +294,7 @@ const CreateInvoice = async () => {
         sgstRate,
         igstRate,
         placeOfSupply,
+        invoiceNumber : invoiceNumber,
         shippingAddress,
         items,
         billingAddress,
@@ -478,8 +496,8 @@ useEffect(() => {
             <label>Invoice Number:</label>
             <input
               type="text"
-              value={`INV-${getFinancialYear()}-${invoiceNumber}`}
-              readOnly
+              value={invoiceNumber}
+              onChange={(e) => setInvoiceNumber(e.target.value)}
             />
           </div>
           <div className="invoiceNumber">

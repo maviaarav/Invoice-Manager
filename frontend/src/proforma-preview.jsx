@@ -49,12 +49,10 @@ const ProformaInvoicePreview = () => {
     });
 
     const handleDownloadPdf = () => {
-        // small delay ensures the QR canvas has fully painted before measuring/capturing
+        
         setTimeout(() => {
             const element = invoiceRef.current;
 
-            // Use scrollHeight (full content height) instead of offsetHeight,
-            // plus a small buffer to avoid rounding pushing content to page 2
             const elementWidth = element.offsetWidth;
             const elementHeight = element.scrollHeight + 10;
 
@@ -137,19 +135,24 @@ const ProformaInvoicePreview = () => {
                                     <span>{invoice.placeOfSupply}</span>
                                 </div>
                                 {invoice.PoNumber && (
-                                    <>
+                            
                                     <div className="invoicePlaceOfSupplyPreview">
                                         <p>PO Number:</p>
                                         <span>{invoice.PoNumber}</span>
                                     </div>
+                                      )}
+                                      {invoice.PODate && invoice.PODate !== null &&(
+
+                                      
                                     <div className="invoicePlaceOfSupplyPreview">
                                         <p>PO Date:</p>
                                         <span>{new Date(invoice.PODate).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}</span>
                                     </div>
-                                    </>
+                                    )}
+                               
                                     
                                     
-                                )}
+                              
 
                                 {invoice.ServiceOrderNumber && (
                                     <>
