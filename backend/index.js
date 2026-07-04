@@ -17,7 +17,7 @@ const InvoiceRouter = require('./routes/invoice')
 const ProformaRouter = require('./routes/proforma')
 const GoogleOauthRouter = require('./routes/googleOauth')
 const GmailRouter = require('./routes/gmail')
-
+const PORT = process.env.PORT || 3000;
 
 const app = express()
 
@@ -38,6 +38,6 @@ app.use('/invoice', InvoiceRouter)
 app.use('/proforma', ProformaRouter)
 app.use('/api/google', GoogleOauthRouter)
 app.use('/api/gmail', restrictToLogin, GmailRouter)
-app.listen(3000,()=>{
-    console.log("Working at port: http://localhost:3000")
+app.listen(PORT,()=>{
+    console.log(`Server is running on port ${PORT}`)
 })
