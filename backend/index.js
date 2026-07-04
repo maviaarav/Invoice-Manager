@@ -25,12 +25,16 @@ app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
 }))
+console.log("=== APP STARTING ===");
+console.log("PORT =", process.env.PORT);
+console.log("MONGO_URI exists =", !!process.env.MONGO_URI);
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.get('/',(req,res)=>{
     res.send("Hello World")
 })
+
 app.use('/user', UserRouter)
 app.use('/company', CompanyRouter)
 app.use('/client', ClientRouter)
