@@ -7,7 +7,7 @@ import { ToWords } from "to-words";
 import html2pdf from "html2pdf.js";
 import { QRCodeCanvas } from "qrcode.react";
 import SendEmailModal from "./SendEmailModal";
-import Toast from "./Toast";
+import Toast from "./toast.jsx";
 
 const InvoicePreview = () => {
     const invoiceRef = useRef();
