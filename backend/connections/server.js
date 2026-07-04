@@ -1,7 +1,11 @@
 const mongoose = require('mongoose')
+const dotenv = require('dotenv')
+dotenv.config()
+
+const mongoURI = process.env.MONGO_URI
 
 mongoose
-    .connect('mongodb://127.0.0.1:27017/invoiceManager') // setuping MongoDB with name: invoiceManager
+    .connect(mongoURI) // setuping MongoDB with name: invoiceManager
     .then(()=>console.log("MongoDB Connection successful"))
     .catch((error)=>console.log('Error while connecting with MongoDB',error))
 
