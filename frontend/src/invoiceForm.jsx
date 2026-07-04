@@ -230,13 +230,13 @@ setTaxableAmount(taxableSubtotal);
   };
 
 const fetchInvoiceNumber = async () => {
-  try {
-    const financialYear = getFinancialYear();
+  const financialYear = getFinancialYear();
+  // Default for a brand-new user / first invoice of the year
+  let nextInvoiceNumber = `INV/${financialYear}/0001`;
 
+  try {
     const response = await instance.get(`/invoice/year/${financialYear}`);
     const invoices = response.data.invoices || [];
-
-    let nextInvoiceNumber = `INV/${financialYear}/0001`;
 
     if (invoices.length > 0) {
       const highestNumber = invoices.reduce((max, invoice) => {
@@ -253,10 +253,12 @@ const fetchInvoiceNumber = async () => {
         highestNumber + 1
       ).padStart(4, "0")}`;
     }
-
-    setInvoiceNumber(nextInvoiceNumber);
   } catch (error) {
-    console.log("Error while fetching invoice number", error);
+    // 404 (no invoices found yet) is expected for a brand-new user —
+    // fall through and use the 0001 default already set above
+    console.log("No existing invoices found, defaulting to first invoice", error);
+  } finally {
+    setInvoiceNumber(nextInvoiceNumber);
   }
 };
 const CreateInvoice = async () => {
