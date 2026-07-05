@@ -18,6 +18,7 @@ import ProformaInvoices from "./preforma-invoice";
 import ProformaForm from "./proformaForm";
 import ProformaInvoicePreview from "./proforma-preview";
 import PrivacyPolicy from "./privacy"
+import Pay from "./pay"
 import Terms from "./terms"
 import "./App-2.css";
 
@@ -109,6 +110,10 @@ function App() {
             <Route
                 path="/privacy"
                 element={<PrivacyPolicy />}
+            />
+            <Route
+                path="/pay"
+                element={<Pay />}
             />
             <Route
                 path="/terms"

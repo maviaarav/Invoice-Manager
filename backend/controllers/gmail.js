@@ -100,7 +100,8 @@ const formattedInvoiceDate = new Date(invoiceDate).toLocaleDateString(
         timeZone: "UTC"
     }
 );
-
+        console.log("paymentUrl:", paymentUrl);
+        console.log("qrCodeUrl:", qrCodeUrl);
         const htmlTemplate = buildHtml({
             company_name: companyName,
             client_name: clientName,
