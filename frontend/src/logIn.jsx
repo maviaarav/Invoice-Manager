@@ -152,7 +152,7 @@ const navigate = useNavigate();
                         <span>or</span>
                     </div>
                     <div className="google">
-                        <button type="button" id="googleButton" onClick={()=>window.location.href = 'http://localhost:3000/api/google/connect'}>
+                        <button type="button" id="googleButton" onClick={()=>window.location.href = 'https://maviaarav-invoice-api-d7aqcgd7gaagh7eg.centralindia-01.azurewebsites.net/api/google/connect'}>
                             <img src={googleImage} alt="Google Logo" />
                             <span>Sign in with Google</span>
                         </button>
