@@ -24,7 +24,7 @@ const ProformaInvoices = () => {
   const [editingClient, setEditingClient] = useState(null);
 
   const [openMenuId, setOpenMenuId] = useState(null);
-
+  
   const menuRef = useRef(null);
   useEffect(() => {
     const handler = (e) => {
@@ -52,7 +52,17 @@ const ProformaInvoices = () => {
       setError(err.response?.data?.Msg || "Failed to fetch invoices. Please try again later.");
     }
   };
-
+  const deleteInvoice = async (invoiceId) => {
+    try {
+      await instance.delete(`/invoice/delete/${invoiceId}`);
+      setInvoices((prev) => prev.filter((inv) => inv._id !== invoiceId));
+      setOpenMenuId(null);
+      fetchInvoices(); // Refresh the list after deletion
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.Msg || "Failed to delete invoice. Please try again later.");
+    }
+  };
   // Refetch only when month/year changes — NOT on page change, since pagination is local now
   useEffect(() => { fetchInvoices(); }, [selectedMonth, selectedYear]);
 
@@ -228,6 +238,9 @@ const ProformaInvoices = () => {
                             </button>
                             <button className="inv-action-item" onClick={() => (window.location.href = `/proforma-invoice/preview/${inv._id}`)}>
                               Preview
+                            </button>
+                            <button className="inv-action-item" onClick={() => deleteInvoice(inv._id)}>
+                              Delete
                             </button>
                           </div>
                         )}
