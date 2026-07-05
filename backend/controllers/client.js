@@ -27,16 +27,7 @@ const createClient = async (req, res) => {
         const userId = req.user.userId || req.user._id;
 
         // Check email first
-        const emailExists = await ClientModel.findOne({
-            userId,
-            email: email.trim().toLowerCase()
-        });
-
-        if (emailExists) {
-            return res.status(409).json({
-                error: "Client with this email already exists"
-            });
-        }
+        
 
         // Check GST only if provided
         if (gstNumber && gstNumber.trim() !== "") {
