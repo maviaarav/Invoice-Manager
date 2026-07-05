@@ -5,7 +5,7 @@
 }
 
 :root{
-    --sidebar-width:288px;
+    --sidebar-width:auto;
     --sidebar-width-collapsed:88px;
 }
 
