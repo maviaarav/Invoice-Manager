@@ -92,7 +92,8 @@ const Setting = () => {
             <div className="info">
                <div className="edit"
                onClick = {()=> {
-                localStorage.setItem('editingCompany', JSON.stringify(companyProfile));
+                const { stamp, signature, ...rest } = companyProfile;
+            localStorage.setItem("editingCompany", JSON.stringify(rest));
                 window.location.href = "/companyForm"
                }}
                > <EditFilled /></div>
