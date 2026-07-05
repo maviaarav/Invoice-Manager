@@ -107,20 +107,17 @@
 }
 
 .icon-client{
-    width:70px;
-    height:70px;
-
-    border-radius:20px;
-
-    background:#EEF2FF;
-    color:#6366F1;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    font-size:26px;
-    font-weight:800;
+color: #6366f1;
+    background: #eef2ff;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 70px;
+    font-size: 26px;
+    font-weight: 800;
+    display: flex;
+    padding: 10px;
 }
 
 .clientName{
