@@ -17,7 +17,10 @@ import InvoicePreview from "./invoicePreview";
 import ProformaInvoices from "./preforma-invoice";
 import ProformaForm from "./proformaForm";
 import ProformaInvoicePreview from "./proforma-preview";
+import PrivacyPolicy from "./privacy"
+import Terms from "./terms"
 import "./App-2.css";
+
 
 function App() {
 
@@ -102,6 +105,14 @@ function App() {
                         </div>
                     </ProtectedRoute>
                 }
+            />
+            <Route
+                path="/privacy"
+                element={<PrivacyPolicy />}
+            />
+            <Route
+                path="/terms"
+                element={<Terms />}
             />
             <Route
                 path="/invoices"
