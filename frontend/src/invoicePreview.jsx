@@ -56,7 +56,7 @@ const InvoicePreview = () => {
         const pxToMm = 0.264583;
         return {
             margin: 0,
-            filename: `Invoice-${invoice.invoiceNumber}.pdf`,
+            filename: `Invoice-${invoice?.clientId?.clientName}-${invoice.invoiceNumber}.pdf`,
             image: { type: "jpeg", quality: 1 },
             html2canvas: {
                 scale: 2,
