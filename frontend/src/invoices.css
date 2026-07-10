@@ -1,9 +1,13 @@
 /* ── Full-page wrapper ── */
 .inv-page {
-  width: 100%;
-  min-height: 100vh;
-  background: #f0f2f8;
-  box-sizing: border-box;
+background: #f8f9ff;
+    flex-direction: column;
+    flex: 1;
+    gap: 30px;
+    height: 100vh;
+    padding: 40px 5%;
+    display: flex;
+    overflow-y: auto;
 }
 
 /* ── Inner container ── */
