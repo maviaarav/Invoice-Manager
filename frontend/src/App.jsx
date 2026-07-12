@@ -41,7 +41,12 @@ function App() {
 
             } catch (err) {
 
-                setUser(null);
+                console.log("ERROR:", err);
+    console.log("STATUS:", err.response?.status);
+    console.log("DATA:", err.response?.data);
+    console.log("MESSAGE:", err.message);
+
+    setUser(null);;
 
             } finally {
 
