@@ -89,7 +89,6 @@ res.cookie("token", token, {
     maxAge: 7 * 24 * 60 * 60 * 1000
 });
 
-console.log("Redirecting...");
 return res.redirect("https://invoice-manager-lovat-eta.vercel.app/");
     }catch(error){
         console.log(error)
