@@ -34,6 +34,9 @@ console.log("Original URL:", req.originalUrl);
         if(!code ){
             return res.status(400).json({message: "Invalid request"})
         }
+        console.log("User-Agent:", req.headers["user-agent"]);
+    console.log("Original URL:", req.originalUrl);
+    console.log("Query:", req.query);
         const { tokens } = await oauth2Client.getToken(code);
         if(!tokens ){
             return res.status(400).json({message: "Failed to get access token"})
