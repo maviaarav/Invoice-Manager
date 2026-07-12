@@ -5,15 +5,14 @@
 }
 .companyFormContainer{
     flex:1;
-    min-height:100dvh;
+    height:100vh;
     overflow-y:auto;
-    padding:clamp(24px, 3vw, 40px) clamp(20px, 4vw, 40px);
+    padding:20px 20px ;
     display:flex;
     overflow-y:auto;
     flex-direction:column;
     gap:30px;
     background:#F8F9FF;
-    min-width:0;
 }
 
 .container{
@@ -219,18 +218,6 @@
         grid-template-columns:1fr 1fr;
     }
 
-}
-
-@media (max-width:1180px){
-
-    .container{
-        flex-direction:column;
-    }
-
-    .leftSide,
-    .rightSide{
-        width:100%;
-    }
 }
 
 

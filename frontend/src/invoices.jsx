@@ -205,8 +205,8 @@ const Invoices = () => {
                   const gst        = (inv.cgst.amount || 0) + (inv.sgst.amount || 0) + (inv.igst.amount || 0);
                   return (
                     <tr key={inv._id}>
-                      <td data-label="Invoice No."><span className="inv-number">{inv.invoiceNumber}</span></td>
-                      <td data-label="Client Name">
+                      <td><span className="inv-number">{inv.invoiceNumber}</span></td>
+                      <td>
                         <div className="inv-client">
                           <div className="inv-avatar" style={{ backgroundColor: getAvatarColor(clientName) }}>
                             {getInitials(clientName)}
@@ -217,10 +217,10 @@ const Invoices = () => {
                           </div>
                         </div>
                       </td>
-                      <td data-label="Amount (₹)"><strong>{Number(inv.totalAmount || 0).toFixed(2)}</strong></td>
-                      <td data-label="GST (₹)">{gst.toFixed(2)}</td>
-                      <td data-label="Date">{formatDate(inv.invoiceDate)}</td>
-                      <td data-label="Action" style={{ position: "relative" }} ref={openMenuId === inv._id ? menuRef : null}>
+                      <td><strong>{Number(inv.totalAmount || 0).toFixed(2)}</strong></td>
+                      <td>{gst.toFixed(2)}</td>
+                      <td>{formatDate(inv.invoiceDate)}</td>
+                      <td style={{ position: "relative" }} ref={openMenuId === inv._id ? menuRef : null}>
                         <button
                           className="inv-action-btn"
                           title="Options"

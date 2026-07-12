@@ -7,15 +7,13 @@
 
 .previewContainer {
     flex: 1;
-    min-height: 100dvh;
-    height: auto;
+    height: 100vh;
     overflow-y: auto;        /* changed from hidden */
-    padding: clamp(24px, 3vw, 40px) clamp(20px, 4vw, 48px);
+    padding: 40px 5%;
     display: flex;
     flex-direction: column;
     gap: 30px;
     background: #F8F9FF;
-    min-width:0;
 }
 #Proformainvoice-heading {
     font-size: 38px;
@@ -52,7 +50,7 @@
     overflow-y: visible;       /* changed from auto */
     border-top: 2px solid #003594;
     background-color: white;
-    padding: 10px clamp(16px, 3vw, 30px) 24px clamp(16px, 3vw, 30px);  /* added bottom padding */
+    padding: 10px 30px 30px 30px;  /* added bottom padding */
 }
 .headerPreview{
     width:100%;
@@ -72,7 +70,7 @@
     text-decoration: underline;
 }
 .button{
-    width: auto;
+    width: 20%;
     height: auto;
     color: white;
     border: none;
@@ -82,7 +80,7 @@
 
 }
 .button button{
-    min-width: 180px;
+    width: 200px;
     height: 50px;
     background-color: #1F4FE0;
     border: none;
@@ -787,95 +785,4 @@
     font-style: italic;
     color: #434654;
     font-weight: 500;
-}
-
-@media (max-width:1180px){
-
-    .headerPreview,
-    .headerOFInvoice,
-    .addressDetailsPreview,
-    .infoDetailsPreview,
-    .bankdetails,
-    .detailsCompany,
-    .upperInfoDetails,
-    .lowerInfo,
-    .amountPreview,
-    .signatureSection{
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
-    .previewHeading,
-    .userCompanyDetails,
-    .InvoiceDetails,
-    .shippedTo,
-    .billedTo,
-    .leftInfoDetailsPreview,
-    .rightInfoDetailsPreview,
-    .leftInfoUpper,
-    .rightInfoUpper,
-    .totalText{
-        width:100%;
-    }
-
-    .InvoiceDetails{
-        align-items:flex-start;
-    }
-
-    .button{
-        width:100%;
-        justify-content:flex-start;
-    }
-
-    .button button{
-        width:100%;
-    }
-}
-
-@media (max-width:768px){
-
-    .previewContainer{
-        padding:18px 14px;
-    }
-
-    .preview{
-        padding:16px 14px 20px;
-    }
-
-    #Proformainvoice-heading{
-        font-size:28px;
-    }
-
-    .headerPreview h1,
-    .companyNamePre h1{
-        font-size:clamp(28px, 5vw, 40px);
-    }
-
-    .InvoiceDetails h1{
-        font-size:28px;
-    }
-
-    .invoiceNumberPreview,
-    .invoiceDatePreview,
-    .invoicePlaceOfSupplyPreview{
-        margin-left:0;
-        flex-wrap:wrap;
-    }
-
-    .table{
-        overflow-x:auto;
-    }
-
-    .invoiceTablePreview{
-        min-width:760px;
-    }
-
-    .declarationBox{
-        padding:18px 16px;
-    }
-
-    .declarationBadge{
-        font-size:14px;
-        padding:8px 20px;
-    }
 }

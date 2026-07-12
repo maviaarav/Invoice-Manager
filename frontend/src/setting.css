@@ -5,14 +5,13 @@
 }
 .settingContainer{
     flex:1;
-    min-height:100dvh;
+    min-height:100vh;
     overflow-y:auto;
-    padding:clamp(24px, 3vw, 40px) clamp(20px, 4vw, 50px);
+    padding:40px 50px ;
     display:flex;
     flex-direction:column;
     gap:30px;
     background:#F8F9FF;
-    min-width:0;
 }
 
 .headingSetting{
@@ -91,7 +90,7 @@
 }
 .otherDetailsCompany{
     display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap:20px;
     width:100%;
 
@@ -153,7 +152,7 @@ input{
     
 }
 .image{
-    width: min(100%, 320px);
+    width: 30%;
     height: 100%;
     object-fit: cover;
     border: 3px solid #ccc;
@@ -406,32 +405,6 @@ input{
 
     .image img{
         width:70%;
-    }
-
-    @media (max-width:1180px){
-
-        .headerSetting{
-            height:auto;
-            flex-direction:column;
-            align-items:flex-start;
-        }
-
-        #nameInput{
-            font-size:clamp(28px, 4vw, 40px);
-        }
-
-        .bankDetailsitems{
-            flex-direction:column;
-        }
-
-        .signatureBlock,
-        .StampBlock{
-            flex-direction:column;
-        }
-
-        .headingSetting{
-            align-items:flex-start;
-        }
     }
 
     .textBlock{
