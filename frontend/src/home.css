@@ -7,10 +7,11 @@
 .homeContainer{
     flex:1;
 
-    height:100vh;
+    min-height:100dvh;
     overflow-y:auto;
 
-    padding:40px 5%;
+    padding:clamp(24px, 3vw, 40px) clamp(20px, 4vw, 48px);
+    min-width:0;
 
     display:flex;
     flex-direction:column;
@@ -50,10 +51,12 @@
 
     display:flex;
     gap:20px;
+    flex-wrap:wrap;
 }
 
 .box{
     flex:1;
+    min-width:240px;
 
     min-height:180px;
 
@@ -115,7 +118,7 @@
 
 .recentClients{
     width:100%;
-    min-height:500px;
+    min-height:auto;
       align-items: center;
     background:white;
     border-radius:12px;
@@ -195,4 +198,41 @@
     color: #6B7280;
     font-weight: 500;
     margin-top: 2px;
+}
+
+@media (max-width:1180px){
+
+    .blocks{
+        display:grid;
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+    }
+
+    .recentHeading{
+        font-size:22px;
+        padding:16px 0;
+        height:auto;
+    }
+
+    .chartCard{
+        padding:24px;
+    }
+}
+
+@media (max-width:760px){
+
+    .homeContainer{
+        padding:20px 16px;
+    }
+
+    .blocks{
+        grid-template-columns:1fr;
+    }
+
+    .box{
+        min-width:0;
+    }
+
+    .recentClients{
+        padding:18px 16px;
+    }
 }

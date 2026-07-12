@@ -25,6 +25,8 @@ const connectGoogle = async (req,res) =>{
 }
 const googleCallback = async (req,res) =>{
         console.log("========== CALLBACK ==========");
+        console.log("User-Agent:", req.headers["user-agent"]);
+console.log("Original URL:", req.originalUrl);
     console.log("Time:", new Date().toISOString());
     console.log("Code:", req.query.code);
     try{

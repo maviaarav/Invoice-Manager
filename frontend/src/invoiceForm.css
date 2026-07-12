@@ -6,16 +6,17 @@
 .invoiceContainerForm {
     flex:1;
 
-    height:100vh;
+  min-height:100dvh;
     overflow-y:auto;
 
-    padding:40px 5%;
+  padding:clamp(24px, 3vw, 40px) clamp(20px, 4vw, 48px);
 
     display:flex;
     flex-direction:column;
     gap:30px;
 
     background:#F8F9FF;
+  min-width:0;
 }
 .invoiceFormHeader{
   width: 100%;
@@ -499,4 +500,80 @@ input[type="number"] {
 }
 #taxable{
   width: 10%;
+}
+
+@media (max-width:1180px){
+
+  .invoiceFormHeader,
+  .Mainsection,
+  .invoiceInfo,
+  .addresses{
+    flex-direction:column;
+  }
+
+  .leftHeader,
+  .rightHeader,
+  .invoiceInfo,
+  .addresses,
+  .leftSectionInvoice,
+  .RigthSectionInvoice,
+  .company,
+  .client,
+  .infoInvoice,
+  .gstType{
+    width:100%;
+  }
+
+  .grandTotal,
+  .contact,
+  .buttonsInvoice{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .taxBtn,
+  .activeTaxBtn,
+  .buttonsInvoice button,
+  .createBtn{
+    width:100%;
+  }
+
+  .InvoiceTable{
+    display:block;
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+
+  .InvoiceTable th,
+  .InvoiceTable td{
+    min-width:110px;
+  }
+}
+
+@media (max-width:768px){
+
+  .invoiceContainerForm{
+    padding:18px 14px;
+  }
+
+  .rightHeader,
+  .infoInvoice,
+  .gstType,
+  .company,
+  .client,
+  .billingAddress,
+  .shippingAddress,
+  .itemsInvoice{
+    padding:16px;
+  }
+
+  .invoiceFormHeader,
+  .Mainsection{
+    gap:14px;
+  }
+
+  .grandTotal,
+  .wordAmount{
+    padding:18px;
+  }
 }
