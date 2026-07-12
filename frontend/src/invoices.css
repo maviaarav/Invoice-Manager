@@ -4,8 +4,7 @@ background: #f8f9ff;
     flex-direction: column;
     flex: 1;
     gap: 30px;
-  min-height: 100dvh;
-  height: auto;
+    height: 100vh;
     display: flex;
     overflow-y: auto;
 }
@@ -14,11 +13,10 @@ background: #f8f9ff;
 .inv-container {
   width: 100%;
   max-width: 100%;
-  padding: clamp(24px, 3vw, 36px) clamp(20px, 4vw, 48px);
+  padding: 36px 48px;
   box-sizing: border-box;
   font-family: "Segoe UI", sans-serif;
   color: #1a1a2e;
-  min-width:0;
 }
 
 /* ── Header ── */
@@ -27,8 +25,6 @@ background: #f8f9ff;
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 28px;
-  gap:16px;
-  flex-wrap:wrap;
 }
 
 .inv-title {
@@ -74,7 +70,6 @@ background: #f8f9ff;
   align-items: center;
   gap: 12px;
   margin-bottom: 20px;
-  flex-wrap:wrap;
 }
 
 /* Date button */
@@ -185,15 +180,12 @@ background: #f8f9ff;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  overflow-x: auto;
-  overflow-y: visible;
+  overflow: hidden;
   width: 100%;
-  position:relative;
 }
 
 .inv-table {
   width: 100%;
-  min-width: 860px;
   border-collapse: collapse;
   table-layout: auto;
 }
@@ -449,129 +441,18 @@ background: #f8f9ff;
   background: #f0f2f8;
   color: #4f3ff0;
 }
+/* Override overflow so action dropdown isn't clipped */
+.inv-table-wrapper {
+  overflow: visible;  /* Change from hidden to visible */
+}
+
+.inv-table {
+  overflow: visible;
+}
+
 /* Make sure last rows dropdown goes upward if near bottom */
 tbody tr:last-child .inv-action-dropdown,
 tbody tr:nth-last-child(2) .inv-action-dropdown {
   top: auto;
   bottom: calc(100% + 4px);
-}
-
-@media (max-width:1180px){
-
-  .inv-pagination{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:12px;
-  }
-
-  .inv-create-btn{
-    width:100%;
-  }
-
-  .inv-month-dropdown{
-    width:min(260px, calc(100vw - 32px));
-  }
-}
-
-@media (max-width:768px){
-
-  .inv-container{
-    padding:18px 14px;
-  }
-
-  .inv-title{
-    font-size:24px;
-  }
-
-  .inv-subtitle{
-    font-size:13px;
-  }
-
-  .inv-date-btn,
-  .inv-create-btn{
-    width:100%;
-    justify-content:center;
-  }
-
-  .inv-table th,
-  .inv-table td{
-    padding:14px 16px;
-  }
-
-  .inv-client{
-    gap:10px;
-  }
-
-  .inv-action-dropdown{
-    right:0;
-  }
-
-  .inv-table-wrapper{
-    overflow:visible;
-    background:transparent;
-    box-shadow:none;
-  }
-
-  .inv-table{
-    min-width:0;
-    display:block;
-  }
-
-  .inv-table thead{
-    display:none;
-  }
-
-  .inv-table tbody,
-  .inv-table tr,
-  .inv-table td{
-    display:block;
-    width:100%;
-  }
-
-  .inv-table tr{
-    background:#fff;
-    border:1px solid #e5e7eb;
-    border-radius:16px;
-    margin-bottom:14px;
-    overflow:hidden;
-    box-shadow:0 2px 10px rgba(0,0,0,.04);
-  }
-
-  .inv-table td{
-    display:flex;
-    justify-content:space-between;
-    gap:16px;
-    border-bottom:1px solid #f0f2f8;
-    align-items:flex-start;
-  }
-
-  .inv-table td:last-child{
-    border-bottom:none;
-  }
-
-  .inv-table td::before{
-    content: attr(data-label);
-    font-size:11px;
-    font-weight:700;
-    color:#6b7280;
-    text-transform:uppercase;
-    letter-spacing:0.06em;
-    flex-shrink:0;
-    width:92px;
-  }
-
-  .inv-client{
-    justify-content:flex-end;
-    text-align:right;
-    margin-left:auto;
-  }
-
-  .inv-client-info{
-    align-items:flex-end;
-  }
-
-  .inv-action-dropdown{
-    right:0;
-    left:auto;
-  }
 }
