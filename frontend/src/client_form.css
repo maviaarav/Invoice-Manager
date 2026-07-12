@@ -6,19 +6,21 @@
 
 .formContainer{
     flex:1;
-    min-height:100vh;
-    padding:40px 5%;
+    min-height:100dvh;
+    padding:clamp(24px, 3vw, 40px) clamp(20px, 4vw, 48px);
     display:flex;
     gap:30px;
     background:#F8F9FF;
+    min-width:0;
 }
 
 .form{
-    width:70%;
+    width:min(100%, 760px);
     background:#fff;
     border-radius:16px;
     padding:32px;
     box-shadow:0 8px 30px rgba(0,0,0,.08);
+    flex:1 1 620px;
 }
 
 .form-header{
@@ -117,6 +119,7 @@ select:-webkit-autofill {
 
 .promotion{
     flex:1;
+    min-width:260px;
 }
 
 .invoizor{
@@ -126,6 +129,38 @@ select:-webkit-autofill {
     box-shadow:0 8px 30px rgba(0,0,0,.08);
     position:sticky;
     top:20px;
+}
+
+@media (max-width:1180px){
+
+    .formContainer{
+        flex-direction:column;
+    }
+
+    .form,
+    .promotion{
+        width:100%;
+    }
+
+    .invoizor{
+        position:static;
+    }
+}
+
+@media (max-width:768px){
+
+    .formContainer{
+        padding:18px 14px;
+        gap:20px;
+    }
+
+    .form{
+        padding:20px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
 }
 
 .heading-ino{

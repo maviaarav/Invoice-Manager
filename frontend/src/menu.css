@@ -5,14 +5,17 @@
 }
 
 :root{
-    --sidebar-width:auto;
+    --sidebar-width:260px;
     --sidebar-width-collapsed:88px;
 }
 
 .side-menu{
     width:var(--sidebar-width);
     min-width:var(--sidebar-width);
-    height:100vh;
+    flex:0 0 var(--sidebar-width);
+    height:100dvh;
+    position:sticky;
+    top:0;
 
     background:#fff;
 
@@ -191,7 +194,7 @@ width: 100%;
 @media (max-width:1024px){
 
     :root{
-        --sidebar-width:240px;
+        --sidebar-width:220px;
     }
 
     .side-menu{
@@ -213,34 +216,37 @@ width: 100%;
 
 }
 
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width:768px){
+@media (max-width:900px){
 
     :root{
-        --sidebar-width:80px;
+        --sidebar-width:78px;
     }
 
     .side-menu{
-        width:80px;
-        min-width:80px;
-        padding:20px 10px;
+        width:78px;
+        min-width:78px;
+        padding:18px 10px;
+    }
+
+    .profilePhoto{
+        flex-direction:column;
+        height:auto;
+        gap:10px;
+        text-align:center;
+    }
+
+    .profileName{
+        display:none;
     }
 
     .text{
         display:flex;
         justify-content:center;
         align-items:center;
-        margin-bottom:30px;
+        margin-bottom:24px;
     }
 
-    #menuText{
-        display:none;
-    }
-
+    #menuText,
     .text p{
         display:none;
     }
@@ -249,7 +255,8 @@ width: 100%;
         justify-content:center;
         padding:0;
         gap:0;
-        min-height:58px;
+        min-height:56px;
+        border-radius:18px;
     }
 
     .link-menu span{
@@ -257,8 +264,16 @@ width: 100%;
     }
 
     .link-menu svg{
-        font-size:24px;
+        font-size:22px;
     }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:768px){
 
     .systems{
         margin-top:auto;
