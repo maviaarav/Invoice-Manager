@@ -15,7 +15,9 @@ const transporterCache = new Map();
 const buildHtml = (fields) => {
     let html = RAW_TEMPLATE;
     for (const [key, value] of Object.entries(fields)) {
-        html = html.split(`${key}`).join(value ?? '');
+        const replacement = value ?? '';
+        html = html.split(`{{${key}}}`).join(replacement);
+        html = html.split(`${key}`).join(replacement);
     }
     return html;
 };
