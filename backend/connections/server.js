@@ -5,7 +5,7 @@ dotenv.config()
 const mongoURI = process.env.MONGO_URI
 
 mongoose
-    .connect(mongoURI) // setuping MongoDB with name: invoiceManager
+    .connect(mongoURI) 
     .then(()=>console.log("MongoDB Connection successful"))
     .catch((error)=>console.log('Error while connecting with MongoDB',error))
 
