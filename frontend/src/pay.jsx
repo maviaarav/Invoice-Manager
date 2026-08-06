@@ -11,12 +11,9 @@ const Pay = () => {
         if (upi) {
             const decoded = decodeURIComponent(upi);
             setUpiLink(decoded);
-
-            setTimeout(() => {
-                window.location.href = decoded;
-            }, 1000);
+            window.location.replace(decoded);
         }
-    }, []);
+    }, [params]);
 
     return (
         <>
