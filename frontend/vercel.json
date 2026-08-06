@@ -1,10 +1,6 @@
 {
   "rewrites": [
     {
-      "source": "/backend/:path*",
-      "destination": "https://maviaarav-invoice-api-d7aqcgd7gaagh7eg.centralindia-01.azurewebsites.net/:path*"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
