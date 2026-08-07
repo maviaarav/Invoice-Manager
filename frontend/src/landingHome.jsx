@@ -199,14 +199,14 @@ function LandingHome() {
             <footer className="landing-footer" id="contact">
                 <div>
                     <h3>Contact Information</h3>
-                    <p>Email: <a href="mailto:support@yourdomain.com">support@yourdomain.com</a></p>
+                    <p>Email: <a href="mailto:maviaarav29@gmail.com">maviaarav29@gmail.com</a></p>
                     <p>Developer: Aarav Mavi</p>
                 </div>
 
                 <div className="footer-links">
                     <a href="/privacy">Privacy Policy</a>
                     <a href="/terms">Terms of Service</a>
-                    <a href="mailto:support@yourdomain.com">Contact Us</a>
+                    <a href="mailto:maviaarav29@gmail.com">Contact Us</a>
                 </div>
             </footer>
         </div>
