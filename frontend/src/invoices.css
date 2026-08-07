@@ -286,6 +286,63 @@ background: #f8f9ff;
   font-size: 14px;
 }
 
+/* Loading skeleton */
+.inv-skeleton-row td {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.inv-skeleton {
+  display: block;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #eceff6 25%, #f7f8fc 37%, #eceff6 63%);
+  background-size: 400% 100%;
+  animation: inv-shimmer 1.35s ease-in-out infinite;
+}
+
+.inv-skeleton-inline {
+  width: 110px;
+  height: 16px;
+}
+
+.inv-skeleton-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+}
+
+.inv-skeleton-name {
+  width: 150px;
+  height: 14px;
+}
+
+.inv-skeleton-email {
+  width: 180px;
+  height: 12px;
+}
+
+.inv-skeleton-amount,
+.inv-skeleton-tax,
+.inv-skeleton-date {
+  width: 80px;
+  height: 14px;
+}
+
+.inv-skeleton-action {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+}
+
+@keyframes inv-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
 /* ── Pagination ── */
 .inv-pagination {
   display: flex;

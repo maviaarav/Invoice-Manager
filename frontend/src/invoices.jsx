@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import instance from "./api/axios";
 import "./invoices.css";
 
@@ -12,12 +12,22 @@ const getMonthRange = (year, month) => {
   return { startDate, endDate };
 };
 
+const formatDate = (dateStr) => {
+  if (!dateStr) return "";
+  return new Date(dateStr).toLocaleDateString("en-IN", {
+    day: "2-digit", month: "short", year: "numeric",
+  });
+};
+
+const getMonthKey = (month, year) => `${year}-${String(month + 1).padStart(2, "0")}`;
+
 const Invoices = () => {
   const now = new Date();
 
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
   const [selectedYear,  setSelectedYear]  = useState(now.getFullYear());
   const [invoices,      setInvoices]      = useState([]); // full list for the month
+  const [isLoading,     setIsLoading]     = useState(true);
   const [error,         setError]         = useState(null);
   const [showPicker,    setShowPicker]    = useState(false);
   const [currentPage,   setCurrentPage]   = useState(1);
@@ -37,34 +47,62 @@ const Invoices = () => {
 
   const itemsPerPage = 8;
   const pickerRef = useRef(null);
+  const monthCacheRef = useRef(new Map());
+  const latestRequestRef = useRef(0);
 
   // Fetches ALL invoices for the selected month — pagination is handled client-side below
-  const fetchInvoices = async (month = selectedMonth, year = selectedYear) => {
+  const fetchInvoices = useCallback(async (month, year, { forceRefresh = false } = {}) => {
     const { startDate, endDate } = getMonthRange(year, month);
+    const monthKey = getMonthKey(month, year);
+
+    if (!forceRefresh && monthCacheRef.current.has(monthKey)) {
+      setInvoices(monthCacheRef.current.get(monthKey));
+      setError(null);
+      setIsLoading(false);
+      return;
+    }
+
+    const requestId = latestRequestRef.current + 1;
+    latestRequestRef.current = requestId;
+    setIsLoading(true);
+
     try {
       const response = await instance.get("/invoice/filter", {
         params: { startDate, endDate },
       });
-      setInvoices(response.data.invoices || []);
+      if (latestRequestRef.current !== requestId) return;
+
+      const monthInvoices = response.data.invoices || [];
+      monthCacheRef.current.set(monthKey, monthInvoices);
+      setInvoices(monthInvoices);
       setError(null);
     } catch (err) {
+      if (latestRequestRef.current !== requestId) return;
       console.error(err);
       setError(err.response?.data?.Msg || "Failed to fetch invoices. Please try again later.");
+    } finally {
+      if (latestRequestRef.current === requestId) {
+        setIsLoading(false);
+      }
     }
-  };
+  }, []);
+
   const deleteInvoice = async (invoiceId) => {
     try {
       await instance.delete(`/invoice/delete/${invoiceId}`);
       setInvoices((prev) => prev.filter((inv) => inv._id !== invoiceId));
       setOpenMenuId(null);
-      fetchInvoices(); // Refresh the list after deletion
+      monthCacheRef.current.delete(getMonthKey(selectedMonth, selectedYear));
+      fetchInvoices(selectedMonth, selectedYear, { forceRefresh: true });
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.Msg || "Failed to delete invoice. Please try again later.");
     }
   };
   // Refetch only when month/year changes — NOT on page change, since pagination is local now
-  useEffect(() => { fetchInvoices(); }, [selectedMonth, selectedYear]);
+  useEffect(() => {
+    fetchInvoices(selectedMonth, selectedYear);
+  }, [selectedMonth, selectedYear, fetchInvoices]);
 
   useEffect(() => {
     const handler = (e) => {
@@ -87,19 +125,28 @@ const Invoices = () => {
     setCurrentPage(1);
   };
 
-  const formatDate = (dateStr) => {
-    if (!dateStr) return "";
-    return new Date(dateStr).toLocaleDateString("en-IN", {
-      day: "2-digit", month: "short", year: "numeric",
+  const normalizedInvoices = useMemo(() => {
+    return invoices.map((inv) => {
+      const clientName = inv.customerId?.clientName || "Unknown";
+      const email = inv.customerId?.email || "";
+      const gst = (inv.cgst?.amount || 0) + (inv.sgst?.amount || 0) + (inv.igst?.amount || 0);
+
+      return {
+        ...inv,
+        clientName,
+        email,
+        gst,
+        formattedDate: formatDate(inv.invoiceDate),
+      };
     });
-  };
+  }, [invoices]);
 
   // Derive the current page's slice from the full invoices array
-  const totalInvoices = invoices.length;
+  const totalInvoices = normalizedInvoices.length;
   const totalPages = Math.max(Math.ceil(totalInvoices / itemsPerPage), 1);
   const startItem  = totalInvoices === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;
   const endItem    = Math.min(currentPage * itemsPerPage, totalInvoices);
-  const paginatedInvoices = invoices.slice(
+  const paginatedInvoices = normalizedInvoices.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -192,7 +239,26 @@ const Invoices = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedInvoices.length === 0 ? (
+              {isLoading ? (
+                Array.from({ length: 6 }).map((_, index) => (
+                  <tr key={`skeleton-${index}`} className="inv-skeleton-row" aria-hidden="true">
+                    <td><div className="inv-skeleton inv-skeleton-inline" /></td>
+                    <td>
+                      <div className="inv-client">
+                        <div className="inv-skeleton inv-skeleton-avatar" />
+                        <div className="inv-client-info">
+                          <div className="inv-skeleton inv-skeleton-name" />
+                          <div className="inv-skeleton inv-skeleton-email" />
+                        </div>
+                      </div>
+                    </td>
+                    <td><div className="inv-skeleton inv-skeleton-amount" /></td>
+                    <td><div className="inv-skeleton inv-skeleton-tax" /></td>
+                    <td><div className="inv-skeleton inv-skeleton-date" /></td>
+                    <td><div className="inv-skeleton inv-skeleton-action" /></td>
+                  </tr>
+                ))
+              ) : paginatedInvoices.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="inv-empty">
                     No invoices found for {MONTHS[selectedMonth]} {selectedYear}.
@@ -200,26 +266,23 @@ const Invoices = () => {
                 </tr>
               ) : (
                 paginatedInvoices.map((inv) => {
-                  const clientName = inv.customerId?.clientName || "Unknown";
-                  const email      = inv.customerId?.email || "";
-                  const gst        = (inv.cgst.amount || 0) + (inv.sgst.amount || 0) + (inv.igst.amount || 0);
                   return (
                     <tr key={inv._id}>
                       <td><span className="inv-number">{inv.invoiceNumber}</span></td>
                       <td>
                         <div className="inv-client">
-                          <div className="inv-avatar" style={{ backgroundColor: getAvatarColor(clientName) }}>
-                            {getInitials(clientName)}
+                          <div className="inv-avatar" style={{ backgroundColor: getAvatarColor(inv.clientName) }}>
+                            {getInitials(inv.clientName)}
                           </div>
                           <div className="inv-client-info">
-                            <span className="inv-client-name">{clientName}</span>
-                            <span className="inv-client-email">{email}</span>
+                            <span className="inv-client-name">{inv.clientName}</span>
+                            <span className="inv-client-email">{inv.email}</span>
                           </div>
                         </div>
                       </td>
                       <td><strong>{Number(inv.totalAmount || 0).toFixed(2)}</strong></td>
-                      <td>{gst.toFixed(2)}</td>
-                      <td>{formatDate(inv.invoiceDate)}</td>
+                      <td>{inv.gst.toFixed(2)}</td>
+                      <td>{inv.formattedDate}</td>
                       <td style={{ position: "relative" }} ref={openMenuId === inv._id ? menuRef : null}>
                         <button
                           className="inv-action-btn"
@@ -255,7 +318,7 @@ const Invoices = () => {
             </tbody>
           </table>
 
-          {totalInvoices > 0 && (
+          {totalInvoices > 0 && !isLoading && (
             <div className="inv-pagination">
               <span className="inv-page-info">
                 Showing {startItem} to {endItem} of {totalInvoices} invoices

@@ -150,6 +150,8 @@ const invoiceSchema = new mongoose.Schema(
 {timestamps:true}
 );
 
+invoiceSchema.index({ userId: 1, invoiceDate: -1 });
+
 
 
 const InvoiceModel = mongoose.model("invoices", invoiceSchema);

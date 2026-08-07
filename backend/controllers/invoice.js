@@ -424,6 +424,7 @@ const getAllInvoiceByFinancialYear = async (req, res) => {
 };
 const getInvoicesByDateRange = async (req, res) => {
   try {
+        const userId = req.user.userId || req.user._id;
     let { startDate, endDate } = req.query;
     const IST = "+05:30";
 
@@ -443,10 +444,25 @@ const getInvoicesByDateRange = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid date format" });
     }
 
-    const invoices = await InvoiceModel
-      .find({ invoiceDate: { $gte: start, $lte: end } })
-      .populate("companyId")
-      .populate("customerId");
+        const invoices = await InvoiceModel
+            .find(
+                { userId, invoiceDate: { $gte: start, $lte: end } },
+                {
+                    invoiceNumber: 1,
+                    customerId: 1,
+                    totalAmount: 1,
+                    invoiceDate: 1,
+                    "cgst.amount": 1,
+                    "sgst.amount": 1,
+                    "igst.amount": 1
+                }
+            )
+            .populate({
+                path: "customerId",
+                select: "clientName email"
+            })
+            .sort({ invoiceDate: -1, createdAt: -1 })
+            .lean();
 
     res.status(200).json({ success: true, invoices, total: invoices.length });
 
