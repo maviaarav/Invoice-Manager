@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./logIn";
 import SignUp from "./signup";
 import Home from "./home";
+import LandingHome from "./landingHome";
 import SideMenu from "./sideMenu";
 import Client from "./customer";
 import Setting from "./setting";
@@ -71,6 +72,11 @@ function App() {
             <Route
                 path="/signUp"
                 element={<SignUp />}
+            />
+
+            <Route
+                path="/home"
+                element={<LandingHome />}
             />
 
             <Route
