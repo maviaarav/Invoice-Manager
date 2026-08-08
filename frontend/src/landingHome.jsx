@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logo from "./images/invoizor.png";
 import "./landingHome.css";
 
 const features = [
@@ -49,7 +50,9 @@ function LandingHome() {
         <div className="landing-page">
             <header className="landing-nav">
                 <div className="brand-block">
-                    <div className="brand-mark">I</div>
+                    <div className="brand-mark">
+                        <img src={logo} alt="Invoizor logo" />
+                    </div>
                     <div>
                         <p className="brand-kicker">Invoice Manager</p>
                         <h1 className="brand-name">Invoizor</h1>

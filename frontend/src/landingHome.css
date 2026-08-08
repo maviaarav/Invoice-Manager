@@ -44,6 +44,14 @@
     place-items: center;
     font-weight: 800;
     box-shadow: 0 16px 30px rgba(18, 51, 255, 0.24);
+    overflow: hidden;
+}
+
+.brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .brand-kicker {
