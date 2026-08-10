@@ -21,12 +21,14 @@ const PORT = process.env.PORT || 3000;
 
 const app = express()
 const allowedOrigins = [
-    "https://invoizor.me"
+  "https://invoizor.me",
+  "https://invoice-manager-lovat-eta.vercel.app"
 ];
+
 app.use(cors({
-    origin: allowedOrigins,
-    credentials: true
-}))
+  origin: allowedOrigins,
+  credentials: true
+}));
 console.log("=== APP STARTING ===");
 console.log("PORT =", process.env.PORT);
 console.log("MONGO_URI exists =", !!process.env.MONGO_URI);
