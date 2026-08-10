@@ -22,6 +22,7 @@ const PORT = process.env.PORT || 3000;
 const app = express()
 const allowedOrigins = [
   "https://invoizor.me",
+  "https://api.invoizor.me",
   "https://invoice-manager-lovat-eta.vercel.app"
 ];
 
