@@ -154,6 +154,8 @@ body{
         #4B41E1 100%
     );
 
+    background-clip:text;
+
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 }
@@ -432,12 +434,12 @@ body{
     }
 
     .Heading h1{
-        font-size:48px;
+        font-size:44px;
     }
 
     .animatedImage{
-        height: 480px;
-        max-width: 140%;
+        height: 320px;
+        max-width: 100%;
     }
 }
 
@@ -473,12 +475,26 @@ body{
     }
 
     .Heading h1{
-        font-size:48px;
+        font-size:40px;
+        letter-spacing:-1.5px;
     }
 
     .animatedImage{
-        height: 480px;
-        max-width: 140%;
+        height: 280px;
+        max-width: 100%;
+    }
+
+    .supports{
+        margin-top: 24px;
+    }
+
+    .items{
+        width:100%;
+        justify-content:flex-start;
+    }
+
+    .login{
+        padding: 24px;
     }
 }
 
@@ -488,13 +504,20 @@ body{
 
 @media(max-width:576px){
 
+    .loginPage{
+        padding:20px 16px;
+        gap:24px;
+    }
+
     .Heading h1{
-        font-size:38px;
+        font-size:32px;
         line-height:1.15;
+        letter-spacing:-1.2px;
     }
 
     .subHeading{
-        font-size:16px;
+        font-size:15px;
+        line-height:1.6;
     }
 
     .supports{
@@ -503,15 +526,43 @@ body{
     }
 
     .animatedImage{
-        height:180px;
+        height:170px;
+        margin-top: 12px;
     }
 
     .login{
-        padding:24px;
+        padding:20px;
+        border-radius:22px;
     }
 
     .LogoText{
         font-size:20px;
+    }
+
+    .inputFields label,
+    .signUpLink,
+    .errorMessage{
+        font-size:14px;
+    }
+
+    .inputbox,
+    #loginButton{
+        height:48px;
+    }
+
+    .inputIcon{
+        font-size:24px;
+    }
+
+    #googleButton{
+        font-size:14px;
+        padding:10px 16px;
+    }
+
+    .signUpLink{
+        flex-direction:column;
+        gap:4px;
+        text-align:center;
     }
 }
 .signUpLink{

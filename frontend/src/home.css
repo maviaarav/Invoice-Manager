@@ -196,3 +196,130 @@
     font-weight: 500;
     margin-top: 2px;
 }
+
+@media (max-width: 1280px) {
+    .homeContainer {
+        padding: 28px 24px;
+        gap: 24px;
+    }
+
+    .blocks {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .box {
+        flex: 1 1 calc(50% - 16px);
+        min-height: 160px;
+        padding: 18px;
+    }
+
+    .content {
+        font-size: 16px;
+    }
+
+    .number {
+        font-size: 28px;
+    }
+
+    .chartCard {
+        padding: 22px 22px 10px 22px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .headingHome h1 {
+        font-size: clamp(28px, 4vw, 40px);
+        line-height: 1.12;
+    }
+
+    #greetingText {
+        font-size: 16px;
+    }
+
+    .box {
+        flex: 1 1 calc(50% - 16px);
+    }
+}
+
+@media (max-width: 768px) {
+    .homeContainer {
+        padding: 22px 16px;
+        gap: 20px;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .blocks {
+        flex-direction: column;
+    }
+
+    .box {
+        width: 100%;
+        min-height: 140px;
+    }
+
+    .content {
+        font-size: 15px;
+    }
+
+    .number {
+        font-size: 24px;
+    }
+
+    .charts {
+        min-height: auto;
+    }
+
+    .chartCard {
+        padding: 18px 18px 8px 18px;
+    }
+
+    .chartHeader h3 {
+        font-size: 18px;
+    }
+
+    .chartHeader p,
+    .chartLoadingText {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 576px) {
+    .headingHome h1 {
+        font-size: 26px;
+        line-height: 1.15;
+    }
+
+    #greetingText {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .box {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .content {
+        font-size: 14px;
+    }
+
+    .number {
+        font-size: 22px;
+    }
+
+    .chartCard {
+        padding: 16px 14px 6px 14px;
+    }
+
+    .chartHeader h3 {
+        font-size: 17px;
+    }
+
+    .topClientName {
+        font-size: 16px !important;
+        white-space: normal;
+        word-break: break-word;
+    }
+}

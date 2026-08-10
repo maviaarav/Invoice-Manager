@@ -786,3 +786,300 @@
     color: #434654;
     font-weight: 500;
 }
+
+@media (max-width: 1366px) {
+    .previewContainer {
+        padding: 28px 24px;
+    }
+
+    .preview {
+        padding: 10px 22px 24px 22px;
+    }
+
+    .headerPreview h1,
+    .headerPreview span {
+        font-size: 30px;
+    }
+
+    .companyNamePre h1 {
+        font-size: 42px;
+    }
+
+    .shippedTo h3,
+    .billedTo h3 {
+        font-size: 22px;
+    }
+
+    .invoiceTablePreview {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .headerPreview {
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+
+    .previewHeading,
+    .button {
+        width: 100%;
+    }
+
+    .button {
+        justify-content: flex-start;
+    }
+
+    .button button {
+        width: 100%;
+        max-width: 260px;
+        height: 44px;
+        font-size: 15px;
+        padding: 10px 14px;
+    }
+
+    .headerOFInvoice {
+        flex-direction: column;
+    }
+
+    .userCompanyDetails,
+    .InvoiceDetails {
+        width: 100%;
+    }
+
+    .InvoiceDetails {
+        align-items: flex-start;
+    }
+
+    .addressDetailsPreview,
+    .infoDetailsPreview,
+    .bankdetails,
+    .signatureSection {
+        flex-direction: column;
+    }
+
+    .billedTo,
+    .shippedTo,
+    .leftInfoDetailsPreview,
+    .rightInfoDetailsPreview {
+        width: 100%;
+    }
+
+    .rightInfoDetailsPreview {
+        margin-top: 20px;
+    }
+
+    .signatureDividerVertical {
+        display: none;
+    }
+
+    .upperInfoDetails {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .previewContainer {
+        padding: 20px 14px;
+        gap: 20px;
+    }
+
+    .preview {
+        padding: 10px 14px 18px 14px;
+        border-radius: 14px;
+    }
+
+    .headerPreview h1,
+    .headerPreview span {
+        font-size: 24px;
+        line-height: 1.2;
+    }
+
+    .companyNamePre h1 {
+        font-size: 30px;
+        line-height: 1.15;
+    }
+
+    .companyOther p,
+    .companyOther span,
+    .InvoiceDetails p,
+    .InvoiceDetails span,
+    .upperSectionPreview p,
+    .upperSectionPreview span,
+    .otherDetailsBilling p,
+    .otherDetailsBilling span,
+    .amountInWord label,
+    .bankdetails label,
+    .detailsCompany p,
+    .detailsCompany span,
+    .termsAndCondition label,
+    .termsAndCondition p,
+    .declarationIntro,
+    .declarationList li,
+    .thankYouContent p {
+        font-size: 13px;
+        line-height: 1.45;
+    }
+
+    .InvoiceDetails h1 {
+        font-size: 22px;
+    }
+
+    .addressDetailsPreview {
+        gap: 14px;
+    }
+
+    .billedTo,
+    .shippedTo {
+        padding: 12px 14px;
+        gap: 12px;
+    }
+
+    .billedTo h3,
+    .shippedTo h3 {
+        font-size: 20px;
+    }
+
+    .table {
+        overflow-x: auto;
+        overflow-y: visible;
+        border-radius: 10px;
+    }
+
+    .invoiceTablePreview {
+        min-width: 960px;
+        font-size: 11px;
+    }
+
+    .invoiceTablePreview thead tr th,
+    .invoiceTablePreview tbody tr td {
+        padding: 8px 10px;
+    }
+
+    .infoDetailsPreview {
+        gap: 14px;
+    }
+
+    .leftInfoDetailsPreview,
+    .rightInfoDetailsPreview {
+        padding: 10px 14px;
+    }
+
+    .rightInfoDetailsPreview {
+        padding-bottom: 18px;
+    }
+
+    .upperInfoDetails,
+    .lowerInfo,
+    .detailsCompany,
+    .bankdetails,
+    .signatureSection,
+    .thankYouFooter {
+        gap: 12px;
+    }
+
+    .upperInfoDetails {
+        flex-direction: column;
+        padding: 12px;
+    }
+
+    .leftInfoUpper,
+    .rightInfoUpper {
+        width: 100%;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .rightInfoUpper span {
+        font-size: 15px;
+    }
+
+    .lowerInfo {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px;
+    }
+
+    .amountPreview,
+    .totalText {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .declarationDivider .line,
+    .thankYouFooter .line {
+        min-width: 16px;
+    }
+
+    .declarationBox {
+        padding: 16px;
+    }
+
+    .declarationBadge,
+    .sealBadge,
+    .forCompanyBadge {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .stampCircle {
+        width: 120px;
+        height: 120px;
+    }
+
+    .signaturePreview img {
+        width: 140px;
+        height: 64px;
+    }
+}
+
+@media (max-width: 576px) {
+    .previewContainer {
+        padding: 16px 10px;
+    }
+
+    .preview {
+        padding: 8px 12px 16px 12px;
+    }
+
+    .headerPreview h1,
+    .headerPreview span {
+        font-size: 20px;
+    }
+
+    .button button {
+        max-width: 100%;
+        font-size: 14px;
+        height: 42px;
+    }
+
+    .companyNamePre h1 {
+        font-size: 26px;
+    }
+
+    .InvoiceDetails h1 {
+        font-size: 20px;
+    }
+
+    .invoiceTablePreview {
+        min-width: 1020px;
+    }
+
+    .declarationList li {
+        gap: 10px;
+    }
+
+    .signatureSection {
+        margin-top: 24px;
+    }
+
+    .stampCircle {
+        width: 104px;
+        height: 104px;
+    }
+
+    .thankYouContent {
+        padding: 8px 12px;
+        white-space: normal;
+    }
+}

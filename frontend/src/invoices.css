@@ -513,3 +513,107 @@ tbody tr:nth-last-child(2) .inv-action-dropdown {
   top: auto;
   bottom: calc(100% + 4px);
 }
+
+@media (max-width: 1280px) {
+  .inv-container {
+    padding: 28px 24px;
+  }
+
+  .inv-header {
+    gap: 16px;
+  }
+
+  .inv-table th,
+  .inv-table td {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .inv-page {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .inv-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .inv-filters {
+    flex-wrap: wrap;
+  }
+
+  .inv-month-dropdown {
+    left: 0;
+    right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .inv-container {
+    padding: 22px 16px;
+  }
+
+  .inv-header {
+    margin-bottom: 20px;
+  }
+
+  .inv-filters {
+    gap: 10px;
+  }
+
+  .inv-table-wrapper {
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
+  .inv-table {
+    min-width: 860px;
+  }
+
+  .inv-pagination {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 576px) {
+  .inv-title {
+    font-size: 22px;
+  }
+
+  .inv-subtitle {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .inv-create-btn,
+  .inv-date-btn,
+  .inv-page-btn,
+  .inv-date-clear,
+  .inv-date-apply {
+    font-size: 12px;
+  }
+
+  .inv-date-btn,
+  .inv-create-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .inv-date-dropdown,
+  .inv-month-dropdown {
+    width: min(100vw - 32px, 320px);
+  }
+
+  .inv-table {
+    min-width: 920px;
+  }
+
+  .inv-page-info {
+    font-size: 12px;
+  }
+}

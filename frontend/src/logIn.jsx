@@ -43,9 +43,11 @@ const Login =  (e) =>{
         const passwordInput = document.getElementById('showPas');
         
         setShowPassword(!showPassword);
+                if (!passwordInput) {
+                        return;
+                }
         passwordInput.style.transition = 'opacity 0.3s ease';
         passwordInput.style.opacity = '0';
-        passw
         
         setTimeout(() => {
           passwordInput.style.opacity = '1';
