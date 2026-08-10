@@ -20,9 +20,12 @@ const GmailRouter = require('./routes/gmail')
 const PORT = process.env.PORT || 3000;
 
 const app = express()
-
+const allowedOrigins = [
+    "https://invoice-manager-lovat-eta.vercel.app",
+    "https://invoizor.me"
+];
 app.use(cors({
-    origin: 'https://invoice-manager-lovat-eta.vercel.app',
+    origin: allowedOrigins,
     credentials: true
 }))
 console.log("=== APP STARTING ===");
