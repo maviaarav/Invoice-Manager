@@ -101,7 +101,7 @@ const InvoicePreview = () => {
             formData.append("clientName", invoice.customerId.clientName);
 
             const paymentUrl = `upi://pay?pa=${invoice?.companyId?.upiID}&pn=${encodeURIComponent(invoice?.companyId?.CompanyName)}&am=${invoice?.totalAmount}&cu=INR&tn=Payment for Invoice ${invoice?.invoiceNumber}`;
-            const paymentLink = `https://invoice-manager-lovat-eta.vercel.app/pay?upi=${encodeURIComponent(paymentUrl)}`;
+            const paymentLink = `https://invoizor.me/pay?upi=${encodeURIComponent(paymentUrl)}`;
             formData.append("paymentUrl", paymentLink);
 
             const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(paymentUrl)}&size=150x150`;

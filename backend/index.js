@@ -21,7 +21,6 @@ const PORT = process.env.PORT || 3000;
 
 const app = express()
 const allowedOrigins = [
-    "https://invoice-manager-lovat-eta.vercel.app",
     "https://invoizor.me"
 ];
 app.use(cors({
