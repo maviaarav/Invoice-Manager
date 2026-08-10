@@ -3,6 +3,52 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+@media (max-width: 1280px) {
+  .invoiceContainerForm {
+    padding: 24px 24px 32px;
+    gap: 20px;
+  }
+
+  .invoiceFormHeader {
+    flex-direction: column;
+  }
+
+  .leftHeader,
+  .rightHeader,
+  .invoiceInfo {
+    width: 100%;
+  }
+
+  .Mainsection {
+    flex-direction: column;
+  }
+
+  .leftSectionInvoice,
+  .RigthSectionInvoice {
+    width: 100%;
+  }
+
+  .RigthSectionInvoice {
+    align-items: stretch;
+  }
+
+  .company,
+  .client {
+    width: 100%;
+  }
+
+  .buttonsInvoice {
+    flex-wrap: wrap;
+  }
+
+  .taxBtn,
+  .activeTaxBtn {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 140px;
+  }
+}
+
 .invoiceContainerForm {
     flex:1;
 

@@ -359,6 +359,47 @@ body{
 }
 
 /* ======================
+   SMALL LAPTOPS
+====================== */
+
+@media (max-width: 1366px) {
+    .loginPage{
+        padding: 28px 24px;
+        gap: 32px;
+    }
+
+    .textAnimated{
+        width: 55%;
+    }
+
+    .loginForm{
+        width: 45%;
+    }
+
+    .logo{
+        margin-bottom: 24px;
+    }
+
+    .Heading h1{
+        font-size: 56px;
+    }
+
+    .supports{
+        margin-top: 28px;
+    }
+
+    .animatedImage{
+        height: 260px;
+        margin-top: 24px;
+    }
+
+    .login{
+        min-height: auto;
+        padding: 28px;
+    }
+}
+
+/* ======================
    TABLET
 ====================== */
 

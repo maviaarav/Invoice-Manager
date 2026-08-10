@@ -274,6 +274,43 @@ input{
     width: 60%;
 }
 /* ===========================
+   SMALL LAPTOPS
+=========================== */
+
+@media (max-width: 1280px){
+
+    .settingContainer{
+        padding:24px;
+        gap:24px;
+    }
+
+    .headingSetting{
+        padding:18px;
+    }
+
+    .logoCompany{
+        width:160px;
+        height:160px;
+    }
+
+    #nameInput{
+        font-size:34px;
+    }
+
+    .otherDetailsCompany{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .TaXBlock,
+    .ContactInfoBlock,
+    .bankDetailsBlock{
+        min-height:320px;
+        padding:20px;
+    }
+
+}
+
+/* ===========================
    TABLET
 =========================== */
 

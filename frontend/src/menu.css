@@ -185,6 +185,40 @@ width: 100%;
     opacity:1;
 }
 /* =========================
+   SMALL LAPTOPS
+========================= */
+
+@media (max-width:1280px){
+
+    :root{
+        --sidebar-width:220px;
+    }
+
+    .side-menu{
+        padding:22px 16px;
+    }
+
+    #menuText{
+        font-size:26px;
+    }
+
+    .profilePhoto{
+        margin-bottom:24px;
+        padding:8px;
+    }
+
+    .link-menu{
+        min-height:58px;
+        padding:0 14px;
+    }
+
+    .link-menu span{
+        font-size:15px;
+    }
+
+}
+
+/* =========================
    TABLET
 ========================= */
 
