@@ -4,7 +4,6 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./logIn";
 import SignUp from "./signup";
 import Home from "./home";
-import LandingHome from "./landingHome";
 import SideMenu from "./sideMenu";
 import Client from "./customer";
 import Setting from "./setting";
@@ -23,6 +22,14 @@ import Pay from "./pay"
 import Terms from "./terms"
 import "./App-2.css";
 
+function LandingHomeRedirect() {
+    useEffect(() => {
+        window.location.replace("/landingHome.html");
+    }, []);
+
+    return <h1>Loading...</h1>;
+}
+
 
 function App() {
 
@@ -40,7 +47,7 @@ function App() {
 
                 setUser(response.data.user);
 
-            } catch (err) {
+                } catch {
 
     setUser(null);;
 
@@ -76,7 +83,7 @@ function App() {
 
             <Route
                 path="/home"
-                element={<LandingHome />}
+                element={<LandingHomeRedirect />}
             />
 
             <Route

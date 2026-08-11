@@ -144,7 +144,7 @@ function LandingHome() {
                     </p>
                 </section>
 
-                <section className="content-section">
+                <section className="content-section" id="terms">
                     <div className="section-heading">
                         <p>How It Works</p>
                         <h3>Simple steps from setup to sending</h3>
@@ -159,7 +159,7 @@ function LandingHome() {
                     </ol>
                 </section>
 
-                <section className="content-section" id="terms">
+                <section className="content-section">
                     <div className="section-heading">
                         <p>Security & Privacy</p>
                         <h3>Protection built into the workflow</h3>
@@ -207,8 +207,8 @@ function LandingHome() {
                 </div>
 
                 <div className="footer-links">
-                    <a href="/privacy">Privacy Policy</a>
-                    <a href="/terms">Terms of Service</a>
+                    <Link to="/privacy">Privacy Policy</Link>
+                    <Link to="/terms">Terms of Service</Link>
                     <a href="mailto:maviaarav29@gmail.com">Contact Us</a>
                 </div>
             </footer>
