@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/src/images/invoizor.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoizor</title>
+    <style>
+        :root {
+            color-scheme: light;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #0f172a;
+            background:
+                radial-gradient(circle at top left, rgba(76, 110, 245, 0.18), transparent 32%),
+                radial-gradient(circle at top right, rgba(17, 24, 39, 0.08), transparent 24%),
+                linear-gradient(180deg, #f6f8ff 0%, #eef3ff 100%);
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .landing-page {
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .landing-nav,
+        .hero-section,
+        .content-section,
+        .landing-footer {
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        .landing-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            padding: 12px 0 28px;
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(10px);
+            z-index: 2;
+        }
+
+        .brand-block {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-mark {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #1233ff, #00b4d8);
+            color: white;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            box-shadow: 0 16px 30px rgba(18, 51, 255, 0.24);
+            overflow: hidden;
+        }
+
+        .brand-mark img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .brand-kicker {
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #54617d;
+            margin: 0 0 2px;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-links a,
+        .footer-links a {
+            color: #334155;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover,
+        .footer-links a:hover {
+            color: #1233ff;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .primary-button,
+        .secondary-button,
+        .ghost-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding: 14px 22px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .primary-button:hover,
+        .secondary-button:hover,
+        .ghost-button:hover {
+            transform: translateY(-1px);
+        }
+
+        .primary-button {
+            background: linear-gradient(135deg, #1233ff, #00b4d8);
+            color: white;
+            box-shadow: 0 18px 36px rgba(18, 51, 255, 0.22);
+        }
+
+        .secondary-button,
+        .ghost-button {
+            background: rgba(255, 255, 255, 0.8);
+            color: #1233ff;
+            border: 1px solid rgba(18, 51, 255, 0.12);
+        }
+
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 28px;
+            align-items: center;
+            padding: 38px 0 30px;
+        }
+
+        .hero-copy h2 {
+            font-size: clamp(3rem, 7vw, 5.4rem);
+            line-height: 0.95;
+            margin: 10px 0 18px;
+            letter-spacing: -0.05em;
+        }
+
+        .eyebrow,
+        .section-heading p {
+            color: #1233ff;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .hero-text,
+        .section-copy,
+        .privacy-card p,
+        .screenshot-placeholder p {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #475569;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .hero-panel {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.24);
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 30px 60px rgba(15, 23, 42, 0.08);
+            display: grid;
+            gap: 16px;
+        }
+
+        .panel-top,
+        .panel-card {
+            border-radius: 22px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(241, 245, 255, 0.92));
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .panel-top span,
+        .panel-card p {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .panel-top strong,
+        .panel-card strong {
+            font-size: 18px;
+            color: #0f172a;
+        }
+
+        .panel-card.muted {
+            justify-content: flex-start;
+        }
+
+        .content-section {
+            padding: 26px 0;
+        }
+
+        .section-heading {
+            margin-bottom: 18px;
+        }
+
+        .section-heading h3 {
+            font-size: clamp(1.6rem, 3vw, 2.5rem);
+            margin: 8px 0 0;
+        }
+
+        .section-copy {
+            max-width: 860px;
+        }
+
+        .feature-grid,
+        .privacy-grid,
+        .screenshot-grid {
+            display: grid;
+            gap: 18px;
+        }
+
+        .feature-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .feature-card,
+        .privacy-card,
+        .screenshot-card {
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            border-radius: 24px;
+            box-shadow: 0 16px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .feature-card {
+            padding: 24px;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            font-size: 28px;
+            background: linear-gradient(135deg, rgba(18, 51, 255, 0.12), rgba(0, 180, 216, 0.12));
+            margin-bottom: 18px;
+        }
+
+        .feature-card h4 {
+            font-size: 20px;
+            margin: 0 0 10px;
+        }
+
+        .feature-card p {
+            color: #5b6475;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .highlight-section {
+            padding: 28px 26px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(18, 51, 255, 0.08), rgba(0, 180, 216, 0.08));
+            border: 1px solid rgba(18, 51, 255, 0.12);
+        }
+
+        .emphasis-copy {
+            max-width: 980px;
+            color: #334155;
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .step-list li {
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            border-radius: 22px;
+            padding: 18px;
+            min-height: 150px;
+        }
+
+        .step-list span {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: #1233ff;
+            color: white;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .step-list p {
+            color: #334155;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .privacy-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .privacy-card {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 20px 22px;
+        }
+
+        .privacy-card span {
+            color: #1233ff;
+            font-size: 28px;
+            line-height: 1;
+        }
+
+        .screenshot-grid {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .screenshot-card {
+            padding: 16px;
+        }
+
+        .screenshot-frame {
+            height: 100%;
+            border-radius: 18px;
+            background: linear-gradient(180deg, #ffffff, #edf3ff);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            overflow: hidden;
+        }
+
+        .screenshot-browser {
+            display: flex;
+            gap: 8px;
+            padding: 12px 14px;
+            background: rgba(15, 23, 42, 0.03);
+        }
+
+        .screenshot-browser span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #cbd5e1;
+        }
+
+        .screenshot-placeholder {
+            min-height: 210px;
+            display: grid;
+            align-content: center;
+            gap: 10px;
+            padding: 22px;
+            text-align: left;
+            background:
+                radial-gradient(circle at top right, rgba(18, 51, 255, 0.12), transparent 32%),
+                radial-gradient(circle at bottom left, rgba(0, 180, 216, 0.12), transparent 28%);
+        }
+
+        .screenshot-placeholder strong {
+            font-size: 20px;
+            color: #0f172a;
+        }
+
+        .landing-footer {
+            margin-top: 24px;
+            padding: 28px 0 40px;
+            border-top: 1px solid rgba(148, 163, 184, 0.28);
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .landing-footer h3 {
+            margin: 0 0 8px;
+        }
+
+        .landing-footer p {
+            margin: 0 0 8px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 1280px) {
+            .landing-page {
+                padding: 20px;
+            }
+
+            .hero-section {
+                gap: 24px;
+                padding: 24px 0 20px;
+            }
+
+            .hero-copy h2 {
+                font-size: clamp(2.4rem, 4.8vw, 3.6rem);
+            }
+
+            .feature-grid,
+            .screenshot-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .step-list {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .hero-section,
+            .feature-grid,
+            .screenshot-grid,
+            .step-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .privacy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .landing-nav {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .landing-page {
+                padding: 18px;
+            }
+
+            .hero-section,
+            .feature-grid,
+            .screenshot-grid,
+            .step-list {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links,
+            .nav-actions,
+            .hero-actions,
+            .footer-links {
+                width: 100%;
+            }
+
+            .nav-links {
+                justify-content: flex-start;
+                gap: 12px 16px;
+            }
+
+            .nav-actions {
+                justify-content: flex-start;
+            }
+
+            .hero-copy h2 {
+                font-size: 3.2rem;
+            }
+
+            .hero-text,
+            .section-copy,
+            .privacy-card p,
+            .screenshot-placeholder p {
+                font-size: 16px;
+            }
+
+            .landing-footer {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-page">
+        <header class="landing-nav">
+            <div class="brand-block">
+                <div class="brand-mark">
+                    <img src="/assets/invoizor-D4yDC2d1.png" alt="Invoizor logo" />
+                </div>
+                <div>
+                    
+                    <h1 class="brand-name">Invoizor</h1>
+                </div>
+            </div>
+
+            <nav class="nav-links" aria-label="Primary">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms</a>
+                <a href="#contact">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a class="ghost-button" href="/login">Sign In</a>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero-section" id="home">
+                <div class="hero-copy">
+                    <p class="eyebrow">Secure invoice management</p>
+                    <h2>Invoizor</h2>
+                    <p class="hero-text">
+                        Create, manage, and send professional GST invoices securely from one place.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="primary-button" href="/signUp">Get Started</a>
+                        <a class="secondary-button" href="/login">Sign In</a>
+                    </div>
+                </div>
+
+                <div class="hero-panel">
+                    <div class="panel-top">
+                        <span>Invoice status</span>
+                        <strong>GST ready</strong>
+                    </div>
+                    <div class="panel-card">
+                        <div>
+                            <p>Invoices sent this month</p>
+                            <strong>128</strong>
+                        </div>
+                        <div>
+                            <p>Customers managed</p>
+                            <strong>42</strong>
+                        </div>
+                    </div>
+                    <div class="panel-card muted">
+                        <p>Gmail connection is optional and only used when you choose to send invoices from your account.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section" id="about">
+                <div class="section-heading">
+                    <p>What the App Does</p>
+                    <h3>Built for businesses and freelancers</h3>
+                </div>
+                <p class="section-copy">
+                    Invoizor is a web application that helps businesses and freelancers create, organize, and send professional invoices. Users can manage customers, companies, and invoice records from a secure dashboard.
+                </p>
+            </section>
+
+            <section class="content-section" id="features">
+                <div class="section-heading">
+                    <p>Key Features</p>
+                    <h3>Everything needed for invoice workflows</h3>
+                </div>
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">📄</div>
+                        <h4>Create GST invoices</h4>
+                        <p>Generate professional invoices with GST-ready fields in a few steps.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">👥</div>
+                        <h4>Manage customers</h4>
+                        <p>Keep all client details organized in one secure dashboard.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">🏢</div>
+                        <h4>Manage company details</h4>
+                        <p>Store business information once and reuse it across invoices.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">📧</div>
+                        <h4>Send invoices through Gmail</h4>
+                        <p>Connect Gmail when needed and send invoices directly from your account.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">📥</div>
+                        <h4>Download invoices as PDF</h4>
+                        <p>Export polished invoice PDFs ready to share or archive.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-icon" aria-hidden="true">📊</div>
+                        <h4>Track invoice history</h4>
+                        <p>Review invoice status, history, and customer activity from one place.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="content-section highlight-section" id="privacy">
+                <div class="section-heading">
+                    <p>Why Google Access is Required</p>
+                    <h3>Only when you choose to connect Gmail</h3>
+                </div>
+                <p class="section-copy emphasis-copy">
+                    Invoice Manager requests Google account access only when a user chooses to connect their Gmail account. This permission is used exclusively to send invoices directly from the user's own Gmail account. We do not read, modify, delete, or share the user's emails.
+                </p>
+            </section>
+
+            <section class="content-section" id="terms">
+                <div class="section-heading">
+                    <p>How It Works</p>
+                    <h3>Simple steps from setup to sending</h3>
+                </div>
+                <ol class="step-list">
+                    <li><span>1</span><p>Create an account.</p></li>
+                    <li><span>2</span><p>Add your company and customers.</p></li>
+                    <li><span>3</span><p>Generate an invoice.</p></li>
+                    <li><span>4</span><p>Connect Gmail (optional).</p></li>
+                    <li><span>5</span><p>Send invoices directly from your Gmail account.</p></li>
+                </ol>
+            </section>
+
+            <section class="content-section">
+                <div class="section-heading">
+                    <p>Security & Privacy</p>
+                    <h3>Protection built into the workflow</h3>
+                </div>
+                <div class="privacy-grid">
+                    <div class="privacy-card"><span aria-hidden="true">•</span><p>Your data remains private.</p></div>
+                    <div class="privacy-card"><span aria-hidden="true">•</span><p>Google data is used only for requested functionality.</p></div>
+                    <div class="privacy-card"><span aria-hidden="true">•</span><p>We never sell or share user information.</p></div>
+                    <div class="privacy-card"><span aria-hidden="true">•</span><p>OAuth authentication is used for secure access.</p></div>
+                </div>
+            </section>
+
+            <section class="content-section" aria-labelledby="screenshots-title">
+                <div class="section-heading">
+                    <p id="screenshots-title">Screenshots</p>
+                    <h3>What the app looks like</h3>
+                </div>
+                <div class="screenshot-grid">
+                    <article class="screenshot-card">
+                        <div class="screenshot-frame">
+                            <div class="screenshot-browser"><span></span><span></span><span></span></div>
+                            <div class="screenshot-placeholder">
+                                <strong>Dashboard</strong>
+                                <p>Overview of invoices, customers, and business activity.</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="screenshot-card">
+                        <div class="screenshot-frame">
+                            <div class="screenshot-browser"><span></span><span></span><span></span></div>
+                            <div class="screenshot-placeholder">
+                                <strong>Invoice creation page</strong>
+                                <p>Fast invoice builder with customer and GST details.</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="screenshot-card">
+                        <div class="screenshot-frame">
+                            <div class="screenshot-browser"><span></span><span></span><span></span></div>
+                            <div class="screenshot-placeholder">
+                                <strong>Invoice preview</strong>
+                                <p>Clean preview before you download or send the invoice.</p>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="screenshot-card">
+                        <div class="screenshot-frame">
+                            <div class="screenshot-browser"><span></span><span></span><span></span></div>
+                            <div class="screenshot-placeholder">
+                                <strong>Customer management</strong>
+                                <p>All client records organized in one place.</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer class="landing-footer" id="contact">
+            <div>
+                <h3>Contact Information</h3>
+                <p>Email: <a href="mailto:maviaarav29@gmail.com">maviaarav29@gmail.com</a></p>
+                <p>Developer: Aarav Mavi</p>
+            </div>
+
+            <div class="footer-links">
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/terms">Terms of Service</a>
+                <a href="mailto:maviaarav29@gmail.com">Contact Us</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
