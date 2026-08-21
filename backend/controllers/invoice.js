@@ -674,18 +674,17 @@ const getAllInvoiceByFinancialYear = async (req, res) => {
            Count only invoices from the selected
            financial year.
         */
-        const invoiceCount =
-            await InvoiceModel.countDocuments({
-                userId,
-                financialYear
-            });
+        const InvoiceCount = await InvoiceModel.countDocuments({
+    userId,
+    financialYear
+});
 
-        return res.status(200).json({
-            success: true,
-            Msg: "Invoices Fetched Successfully",
-            invoices,
-            invoiceCount
-        });
+return res.status(200).json({
+    success: true,
+    Msg: "Invoices Fetched Successfully",
+    invoices,
+    InvoiceCount
+});
 
     } catch (error) {
         console.error(
