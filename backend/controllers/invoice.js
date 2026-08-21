@@ -451,8 +451,11 @@ const updateInvoice = async (req, res) => {
             });
         }
 
-        const userId = req.user.userId || req.user._id;
-        const invoiceId = req.params.id;
+        const userId =
+            req.user.userId || req.user._id;
+
+        const invoiceId =
+            req.params.id;
 
         const {
             companyId,
@@ -471,103 +474,169 @@ const updateInvoice = async (req, res) => {
             ServiceOrderDate
         } = req.body;
 
-        /* -------------------------
+        console.log(
+            "UPDATE INVOICE ID:",
+            invoiceId
+        );
+
+        console.log(
+            "UPDATE INVOICE BODY:",
+            req.body
+        );
+
+        /* =====================================================
            VALIDATE ITEMS
-        ------------------------- */
-        if (!Array.isArray(items) || items.length === 0) {
+        ===================================================== */
+
+        if (
+            !Array.isArray(items) ||
+            items.length === 0
+        ) {
             return res.status(400).json({
                 success: false,
-                Msg: "Invoice must contain at least one item."
+                Msg:
+                    "Invoice must contain at least one item."
             });
         }
 
-        /* -------------------------
+        /* =====================================================
            CALCULATE AMOUNTS
-        ------------------------- */
-        const calculations = CalculateInvoiceAmount({
-            items,
-            taxType,
-            cgstRate,
-            sgstRate,
-            igstRate
-        });
+        ===================================================== */
 
-        /* -------------------------
-           UPDATE INVOICE
-        ------------------------- */
-        const invoice = await InvoiceModel.findOneAndUpdate(
-            {
-                _id: invoiceId,
-                userId
-            },
-            {
-                companyId,
-                customerId,
-
-                taxType,
-
+        const calculations =
+            CalculateInvoiceAmount({
                 items,
+                taxType,
+                cgstRate,
+                sgstRate,
+                igstRate
+            });
 
-                shippingAddress,
-                billingAddress,
-                placeOfSupply,
+        /* =====================================================
+           UPDATE INVOICE
+        ===================================================== */
 
-                PoNumber,
-                PODate,
-
-                ServiceOrderNumber,
-                ServiceOrderDate,
-
-                subtotal: calculations.subtotal,
-
-                cgst: {
-                    rate: calculations.cgst.rate,
-                    amount: calculations.cgst.amount
+        const invoice =
+            await InvoiceModel.findOneAndUpdate(
+                {
+                    _id: invoiceId,
+                    userId
                 },
+                {
+                    companyId,
+                    customerId,
 
-                sgst: {
-                    rate: calculations.sgst.rate,
-                    amount: calculations.sgst.amount
+                    taxType,
+
+                    items,
+
+                    shippingAddress,
+                    billingAddress,
+
+                    placeOfSupply,
+
+                    PoNumber,
+                    PODate,
+
+                    ServiceOrderNumber,
+                    ServiceOrderDate,
+
+                    subtotal:
+                        calculations.subtotal,
+
+                    cgst: {
+                        rate:
+                            calculations
+                                .cgst
+                                .rate,
+
+                        amount:
+                            calculations
+                                .cgst
+                                .amount
+                    },
+
+                    sgst: {
+                        rate:
+                            calculations
+                                .sgst
+                                .rate,
+
+                        amount:
+                            calculations
+                                .sgst
+                                .amount
+                    },
+
+                    igst: {
+                        rate:
+                            calculations
+                                .igst
+                                .rate,
+
+                        amount:
+                            calculations
+                                .igst
+                                .amount
+                    },
+
+                    totalTax:
+                        calculations.totalTax,
+
+                    totalAmount:
+                        calculations.totalAmount
                 },
+                {
+                    returnDocument:
+                        "after",
 
-                igst: {
-                    rate: calculations.igst.rate,
-                    amount: calculations.igst.amount
-                },
+                    runValidators: true
+                }
+            );
 
-                totalTax: calculations.totalTax,
-                totalAmount: calculations.totalAmount
-            },
-            {
-                new: true,
-                runValidators: true
-            }
-        );
+        /* =====================================================
+           NOT FOUND
+        ===================================================== */
 
         if (!invoice) {
             return res.status(404).json({
                 success: false,
-                Msg: "Invoice Not Found"
+                Msg:
+                    "Invoice Not Found"
             });
         }
 
+        /* =====================================================
+           SUCCESS
+        ===================================================== */
+
         return res.status(200).json({
             success: true,
-            Msg: "Invoice Updated Successfully",
+
+            Msg:
+                "Invoice Updated Successfully",
+
             invoice
         });
 
     } catch (error) {
-        console.error("UPDATE INVOICE ERROR:", error);
+
+        console.error(
+            "UPDATE INVOICE ERROR:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
-            Msg: "Error while Updating Invoice",
-            error: error.message
+
+            Msg:
+                "Error while Updating Invoice",
+
+            error:
+                error.message
         });
     }
 };
-
 
 /* =========================================================
    GET INVOICES BY FINANCIAL YEAR
