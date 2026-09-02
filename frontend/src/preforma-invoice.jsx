@@ -117,6 +117,24 @@ const ProformaInvoices = () => {
     window.location.href = "/proforma-invoice-form";
   }
 
+  const handleEditInvoice = async (invoiceId) => {
+    try {
+      const response = await instance.get(`/proforma/get/${invoiceId}`);
+      const invoice = response.data.invoice || response.data;
+
+      localStorage.setItem("editingInvoice", JSON.stringify(invoice));
+      window.location.href = "/proforma-invoice-form";
+    } catch (err) {
+      console.error("Failed to load proforma invoice for editing:", err);
+      setError(
+        err.response?.data?.Msg ||
+          "Failed to load proforma invoice for editing."
+      );
+    } finally {
+      setOpenMenuId(null);
+    }
+  };
+
   return (
     <div className="inv-page">
       <div className="inv-container">
@@ -230,10 +248,7 @@ const ProformaInvoices = () => {
 
                         {openMenuId === inv._id && (
                           <div className="inv-action-dropdown">
-                            <button className="inv-action-item" onClick={() => {
-                              localStorage.setItem("editingInvoice", JSON.stringify(inv));
-                              window.location.href = `/proforma-invoice-form`;
-                            }}>
+                            <button className="inv-action-item" onClick={() => handleEditInvoice(inv._id)}>
                               Edit
                             </button>
                             <button className="inv-action-item" onClick={() => (window.location.href = `/proforma-invoice/preview/${inv._id}`)}>
