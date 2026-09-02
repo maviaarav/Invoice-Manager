@@ -61,7 +61,7 @@ res.cookie("token", token, {
     path: "/",
     maxAge: 7 * 24 * 60 * 60 * 1000
 });
-    return res.status(200).json({success: true})
+    return res.status(200).json({success: true, token})
     }
     catch(error){
          return res.status(401).json({

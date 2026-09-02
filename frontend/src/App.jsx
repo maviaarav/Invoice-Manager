@@ -37,6 +37,14 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const tokenFromQuery = new URLSearchParams(window.location.search).get("token");
+
+        if (tokenFromQuery) {
+            localStorage.setItem("authToken", tokenFromQuery);
+            const url = new URL(window.location.href);
+            url.searchParams.delete("token");
+            window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
+        }
 
         const checkAuth = async () => {
 

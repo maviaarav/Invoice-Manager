@@ -29,6 +29,9 @@ const Login =  (e) =>{
             console.log("response.Msg", response.Msg);
             
             if(response.data.success === true){
+                    if (response.data.token) {
+                         localStorage.setItem("authToken", response.data.token);
+                    }
                window.location.href = '/';
             }
             

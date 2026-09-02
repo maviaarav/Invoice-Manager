@@ -1,7 +1,12 @@
 const { getUser } = require('../utils/auth');
 
 const restrictToLogin = (req, res, next) => {
-    const token = req.cookies?.token || req.cookies.UUID
+    const authHeader = req.headers.authorization || "";
+    const bearerToken = authHeader.startsWith("Bearer ")
+        ? authHeader.slice(7)
+        : null;
+
+    const token = bearerToken || req.cookies?.token || req.cookies.UUID
 
     if (!token) {
         return res.status(401).json({ message: "Unauthorized" });

@@ -85,7 +85,7 @@ res.cookie("token", token, {
     maxAge: 7 * 24 * 60 * 60 * 1000
 });
 
-return res.redirect("https://invoizor.me/");
+return res.redirect(`https://invoizor.me/?token=${encodeURIComponent(token)}`);
     }catch(error){
         console.log(error)
         res.status(500).json({message: "Connection failed"})
