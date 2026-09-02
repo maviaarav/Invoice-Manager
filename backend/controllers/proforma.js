@@ -68,13 +68,13 @@ const getFinancialYear = (date = new Date()) => {
 
 
 
-// const getInvoiceNumber = async (financialYear) => {
-//     const count = await ProformaInvoiceModel.countDocuments({ financialYear });
+const getInvoiceNumber = async (financialYear) => {
+    const count = await ProformaInvoiceModel.countDocuments({ financialYear });
 
-//     const nextNumber = count + 1;
+    const nextNumber = count + 1;
 
-//     return `PI/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
-// };
+    return `PI/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
+};
 
 
 const createInvoice = async (req, res) => {

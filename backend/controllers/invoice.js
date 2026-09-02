@@ -171,6 +171,7 @@ const createInvoice = async (req, res) => {
 
             taxType,
             invoiceNumber,
+            
             financialYear,
 
             invoiceDate: new Date(),
