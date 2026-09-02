@@ -1,450 +1,848 @@
-const ProformaInvoiceModel = require("../models/proformaInvoice");
+    const ProformaInvoiceModel = require("../models/proformaInvoice");
 
-const CalculateInvoiceAmount = ({
-    items,
-    taxType,
-    cgstRate = 0,
-    sgstRate = 0,
-    igstRate = 0
-}) => {
+    const CalculateInvoiceAmount = ({
+        items = [],
+        taxType,
+        cgstRate = 0,
+        sgstRate = 0,
+        igstRate = 0
+    }) => {
+        const safeItems = Array.isArray(items) ? items : [];
 
-    const subtotal = items.reduce(
-        (sum, item) => sum + Number(item.amount || 0),
-        0
-    );
-
-    const taxableAmount = items
-        .filter(item => item.isTaxable)
-        .reduce(
+        const subtotal = safeItems.reduce(
             (sum, item) => sum + Number(item.amount || 0),
             0
         );
 
-    let cgstAmount = 0;
-    let sgstAmount = 0;
-    let igstAmount = 0;
+        const taxableAmount = safeItems
+            .filter((item) => item.isTaxable === true)
+            .reduce(
+                (sum, item) => sum + Number(item.amount || 0),
+                0
+            );
 
-    if (taxType === "CGST_SGST") {
-        cgstAmount = taxableAmount * cgstRate / 100;
-        sgstAmount = taxableAmount * sgstRate / 100;
-    }
+        const safeCgstRate = Number(cgstRate || 0);
+        const safeSgstRate = Number(sgstRate || 0);
+        const safeIgstRate = Number(igstRate || 0);
 
-    if (taxType === "IGST") {
-        igstAmount = taxableAmount * igstRate / 100;
-    }
+        let cgstAmount = 0;
+        let sgstAmount = 0;
+        let igstAmount = 0;
 
-    const totalTax = cgstAmount + sgstAmount + igstAmount;
+        if (taxType === "CGST_SGST") {
+            cgstAmount = (taxableAmount * safeCgstRate) / 100;
+            sgstAmount = (taxableAmount * safeSgstRate) / 100;
+        }
 
-    const totalAmount = subtotal + totalTax;
+        if (taxType === "IGST") {
+            igstAmount = (taxableAmount * safeIgstRate) / 100;
+        }
 
-    return {
-        subtotal,
-        cgst: {
-            rate: cgstRate,
-            amount: cgstAmount
-        },
-        sgst: {
-            rate: sgstRate,
-            amount: sgstAmount
-        },
-        igst: {
-            rate: igstRate,
-            amount: igstAmount
-        },
-        totalTax,
-        totalAmount
-    };
-};
+        const totalTax =
+            cgstAmount +
+            sgstAmount +
+            igstAmount;
 
+        const totalAmount =
+            subtotal +
+            totalTax;
 
-const getFinancialYear = (date = new Date()) => {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-
-    return month >= 4
-        ? `${year}-${year + 1}`
-        : `${year - 1}-${year}`;
-};
-
-
-
-const getInvoiceNumber = async (financialYear) => {
-    const count = await ProformaInvoiceModel.countDocuments({ financialYear });
-
-    const nextNumber = count + 1;
-
-    return `PI/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
-};
-
-
-const createInvoice = async (req, res) => {
-
-    try {
-
-        const {
-            companyId,
-            billingAddress,
-            customerId,
-            items,
-            taxType,
-            shippingAddress,
-            invoiceNumber,
-            placeOfSupply,
-            cgstRate,
-            sgstRate,
-            igstRate,
-            PoNumber,
-            PODate,
-            ServiceOrderNumber,
-            ServiceOrderDate
-        } = req.body;
-        console.log("REQ BODY:", req.body);
-        console.log("TAX TYPE:", req.body.taxType);
-        const userId = req.user.userId || req.user._id;
-
-        const financialYear = getFinancialYear();
-
-
-        const calculations = CalculateInvoiceAmount({
-            items,
-            taxType,
-            cgstRate,
-            sgstRate,
-            igstRate
-        });
-             
-        const invoice = await ProformaInvoiceModel.create({
-            userId,
-            companyId,
-            customerId,
-            taxType,
-            invoiceNumber,
-            financialYear,
-            invoiceDate: new Date().toLocaleDateString("en-IN",{ day: "numeric", month: "long", year: "numeric" }),
-            shippingAddress,
-            billingAddress,
-            placeOfSupply,
-            PoNumber,
-            PODate,
-            ServiceOrderNumber,
-            ServiceOrderDate,
-
-            items,
-
-            subtotal: calculations.subtotal,
+        return {
+            subtotal,
 
             cgst: {
-                rate: cgstRate || 0,
-                amount: calculations.cgst.amount
+                rate: safeCgstRate,
+                amount: cgstAmount
             },
 
             sgst: {
-                rate: sgstRate || 0,
-                amount: calculations.sgst.amount
+                rate: safeSgstRate,
+                amount: sgstAmount
             },
 
             igst: {
-                rate: igstRate || 0,
-                amount: calculations.igst.amount
+                rate: safeIgstRate,
+                amount: igstAmount
             },
 
-            totalTax: calculations.totalTax,
-            totalAmount: calculations.totalAmount
-        });
-
-        return res.status(201).json({
-            Msg: "Invoice Created Successfully",
-            invoice
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            Msg: "Error while Creating Invoice",
-            error: error.message
-        });
-    }
-};
+            totalTax,
+            totalAmount
+        };
+    };
 
 
-const getInvoices = async (req, res) => {
-    try {
+    /* =========================================================
+    GET FINANCIAL YEAR
+    Example:
+    April 2026 -> 2026-2027
+    March 2027 -> 2026-2027
+    ========================================================= */
+    const getFinancialYear = (date = new Date()) => {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
 
-        const userId = req.user.userId || req.user._id;
-
-        const invoices = await ProformaInvoiceModel
-            .find({ userId })
-            .populate("companyId")
-            .populate("customerId")
-            .sort({ createdAt: -1 });
-        const invoiceCount = await ProformaInvoiceModel.countDocuments({ userId });
-        if (!invoices || invoices.length === 0) {
-            return res.status(404).json({
-                Msg: "No Invoices Found"
-            });
-        } 
-
-        return res.status(200).json({
-            Msg: "Invoices Fetched Successfully",
-            invoices,
-            invoiceCount
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            Msg: "Error while Fetching Invoice",
-            error: error.message
-        });
-    }
-};
+        return month >= 4
+            ? `${year}-${year + 1}`
+            : `${year - 1}-${year}`;
+    };
 
 
-const getSingleInvoice = async (req, res) => {
-    try {
-
-        const userId = req.user.userId || req.user._id;
-        const invoiceId = req.params.id;
-
-        const invoice = await ProformaInvoiceModel
-            .findOne({ _id: invoiceId, userId })
-            .populate("companyId")
-            .populate("customerId");
-
-        if (!invoice) {
-            return res.status(404).json({
-                Msg: "Invoice Not Found"
-            });
-        }
-
-        return res.status(200).json({
-            Msg: "Invoice Fetched Successfully",
-            invoice
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            Msg: "Error while Fetching Invoice",
-            error: error.message
-        });
-    }
-};
-
-
-const deleteInvoice = async (req, res) => {
-    try {
-
-        const userId = req.user.userId || req.user._id;
-        const invoiceId = req.params.id;
-
-        const invoice = await ProformaInvoiceModel.findOneAndDelete({
-            _id: invoiceId,
-            userId
-        });
-
-        if (!invoice) {
-            return res.status(404).json({
-                Msg: "Invoice Not Found"
-            });
-        }
-
-        return res.status(200).json({
-            Msg: "Invoice Deleted Successfully",
-            invoice
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            Msg: "Error while Deleting Invoice",
-            error: error.message
-        });
-    }
-};
-
-
-
-const monthlyIncome = async (req,res) =>{
-    try{
-        const userId = req.user.userId || req.user._id;
-        const { year, month } = req.params
-        const startdate = new Date(year, month-1, 1)
-        const endDate = new Date(year, month,1)
-        const invoices = await ProformaInvoiceModel.find({
-            userId,
-            invoiceDate: {
-                $gte: startdate,
-                $lt: endDate
-            }
-        })
-        const totalIncome = invoices.reduce(
-            (sum, inv) => sum + inv.totalAmount, 0
-        )
-        res.status(201).json({
-        month,
-        year,
-        totalIncome,
-        totalInvoices: invoices.length
-        })
-    }
-    catch(error){
-        return res.status(403).json({Msg: "Error while Calculating Monthly Income", error: error.message})
-    }
-}
-
-
-
-
-
-const updateInvoice = async (req, res) => {
-    try {
-
-        const userId = req.user.userId || req.user._id;
-        const invoiceId = req.params.id;
-
-        const {
-            companyId,
-            customerId,
-            items,
-            taxType,
-            cgstRate,
-            sgstRate,
-            igstRate,
-            shippingAddress,
-            billingAddress,
-            placeOfSupply,
-            PoNumber,
-            PODate,
-            ServiceOrderNumber,
-            ServiceOrderDate
-        } = req.body;
-
-        const calculations = CalculateInvoiceAmount({
-            items,
-            taxType,
-            cgstRate,
-            sgstRate,
-            igstRate
-        });
-
-        const invoice = await ProformaInvoiceModel.findOneAndUpdate(
-            { _id: invoiceId, userId },
-            {
+    /* =========================================================
+    CREATE INVOICE
+    ========================================================= */
+    const createInvoice = async (req, res) => {
+        try {
+            const {
                 companyId,
+                billingAddress,
                 customerId,
                 items,
+                taxType,
+                invoiceNumber,
                 shippingAddress,
+                placeOfSupply,
+                cgstRate,
+                sgstRate,
+                igstRate,
+                PoNumber,
+                PODate,
+                ServiceOrderNumber,
+                ServiceOrderDate
+            } = req.body;
+
+            console.log("REQ BODY:", req.body);
+            console.log("TAX TYPE:", taxType);
+
+            /* -------------------------
+            CHECK USER
+            ------------------------- */
+            if (!req.user) {
+                return res.status(401).json({
+                    success: false,
+                    Msg: "Unauthorized. User not found."
+                });
+            }
+
+            const userId = req.user.userId || req.user._id;
+
+            if (!userId) {
+                return res.status(401).json({
+                    success: false,
+                    Msg: "Unauthorized. User ID not found."
+                });
+            }
+
+            /* -------------------------
+            VALIDATE ITEMS
+            ------------------------- */
+            if (!Array.isArray(items) || items.length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    Msg: "Invoice must contain at least one item."
+                });
+            }
+
+            /* -------------------------
+            FINANCIAL YEAR
+            ------------------------- */
+            const financialYear = getFinancialYear();
+
+            /* -------------------------
+            CALCULATE AMOUNTS
+            ------------------------- */
+            const calculations = CalculateInvoiceAmount({
+                items,
+                taxType,
+                cgstRate,
+                sgstRate,
+                igstRate
+            });
+
+            /* -------------------------
+            CREATE INVOICE
+            ------------------------- */
+            const invoice = await ProformaInvoiceModel.create({
+                userId,
+                companyId,
+                customerId,
+
+                taxType,
+                invoiceNumber,
+                
+                financialYear,
+
+                invoiceDate: new Date(),
+
                 billingAddress,
+                shippingAddress,
+                placeOfSupply,
+
+                PoNumber,
+                PODate,
+
+                ServiceOrderNumber,
+                ServiceOrderDate,
+
+                items,
+
                 subtotal: calculations.subtotal,
 
                 cgst: {
-                    rate: cgstRate || 0,
+                    rate: calculations.cgst.rate,
                     amount: calculations.cgst.amount
                 },
 
                 sgst: {
-                    rate: sgstRate || 0,
+                    rate: calculations.sgst.rate,
                     amount: calculations.sgst.amount
                 },
 
                 igst: {
-                    rate: igstRate || 0,
+                    rate: calculations.igst.rate,
                     amount: calculations.igst.amount
                 },
 
                 totalTax: calculations.totalTax,
                 totalAmount: calculations.totalAmount
-            },
-            { new: true }
-        );
+            });
 
-        if (!invoice) {
-            return res.status(404).json({
-                Msg: "Invoice Not Found"
+            return res.status(201).json({
+                success: true,
+                Msg: "Invoice Created Successfully",
+                invoice
+            });
+
+        } catch (error) {
+            console.error("CREATE INVOICE ERROR:", error);
+
+            return res.status(500).json({
+                success: false,
+                Msg: "Error while Creating Invoice",
+                error: error.message
             });
         }
+    };
 
-        return res.status(200).json({
-            Msg: "Invoice Updated Successfully",
-            invoice
-        });
 
-    } catch (error) {
-        return res.status(500).json({
-            Msg: "Error while Updating Invoice",
-            error: error.message
-        });
-    }
-};
+    /* =========================================================
+    GET ALL INVOICES
+    ========================================================= */
+    const getInvoices = async (req, res) => {
+        try {
+            if (!req.user) {
+                return res.status(401).json({
+                    success: false,
+                    Msg: "Unauthorized"
+                });
+            }
 
-    
-const getAllInvoiceByFinancialYear = async (req, res) => {
-    try {
+            const userId = req.user.userId || req.user._id;
 
-        const userId = req.user.userId || req.user._id;
-        const financialYear = req.params.id;
+            const invoices = await ProformaInvoiceModel
+                .find({ userId })
+                .populate("companyId")
+                .populate("customerId")
+                .sort({ createdAt: -1 });
 
-        const invoices = await ProformaInvoiceModel
-            .find({ userId, financialYear })
-            .populate("companyId")
-            .populate("customerId")
-            .sort({ createdAt: -1 });
-        const InvoiceCount = await ProformaInvoiceModel.countDocuments({userId})
-        if (!invoices || invoices.length === 0) {
-            return res.status(404).json({
-                Msg: "No Invoices Found for the specified financial year"
+            const invoiceCount = await ProformaInvoiceModel.countDocuments({
+                userId
+            });
+
+            return res.status(200).json({
+                success: true,
+                Msg: "Invoices Fetched Successfully",
+                invoices,
+                invoiceCount
+            });
+
+        } catch (error) {
+            console.error("GET INVOICES ERROR:", error);
+
+            return res.status(500).json({
+                success: false,
+                Msg: "Error while Fetching Invoice",
+                error: error.message
             });
         }
-        return res.status(200).json({
-            Msg: "Invoices Fetched Successfully",
-            invoices,
-            InvoiceCount
-        });
+    };
 
-    } catch (error) {
-        return res.status(500).json({
-            Msg: "Error while Fetching Invoice",
-            error: error.message
-        });
-    }
-};
-const getInvoicesByDateRange = async (req, res) => {
-  try {
-    let { startDate, endDate } = req.query;
-    const IST = "+05:30";
 
-    if (!startDate || !endDate) {
-      const now = new Date();
-      const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-      const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-      const pad = (n) => String(n).padStart(2, "0");
-      if (!startDate) startDate = `${firstDay.getFullYear()}-${pad(firstDay.getMonth()+1)}-${pad(firstDay.getDate())}`;
-      if (!endDate) endDate = `${lastDay.getFullYear()}-${pad(lastDay.getMonth()+1)}-${pad(lastDay.getDate())}`;
-    }
+    /* =========================================================
+    GET SINGLE INVOICE
+    ========================================================= */
+    const getSingleInvoice = async (req, res) => {
+        try {
+            if (!req.user) {
+                return res.status(401).json({
+                    success: false,
+                    Msg: "Unauthorized"
+                });
+            }
 
-    const start = new Date(`${startDate}T00:00:00${IST}`);
-    const end = new Date(`${endDate}T23:59:59.999${IST}`);
+            const userId = req.user.userId || req.user._id;
+            const invoiceId = req.params.id;
 
-    if (isNaN(start) || isNaN(end)) {
-      return res.status(400).json({ success: false, message: "Invalid date format" });
-    }
+            const invoice = await ProformaInvoiceModel
+                .findOne({
+                    _id: invoiceId,
+                    userId
+                })
+                .populate("companyId")
+                .populate("customerId");
 
-    const invoices = await ProformaInvoiceModel
-      .find({ invoiceDate: { $gte: start, $lte: end } })
-      .populate("companyId")
-      .populate("customerId");
+            if (!invoice) {
+                return res.status(404).json({
+                    success: false,
+                    Msg: "Invoice Not Found"
+                });
+            }
 
-    res.status(200).json({ success: true, invoices, total: invoices.length });
+            return res.status(200).json({
+                success: true,
+                Msg: "Invoice Fetched Successfully",
+                invoice
+            });
 
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
+        } catch (error) {
+            console.error("GET SINGLE INVOICE ERROR:", error);
 
-module.exports = {
-    createInvoice,
-    getInvoices,
-    getSingleInvoice,
-    deleteInvoice,
-    updateInvoice,
-    getAllInvoiceByFinancialYear,
-    monthlyIncome,
-    getInvoicesByDateRange
-};
+            return res.status(500).json({
+                success: false,
+                Msg: "Error while Fetching Invoice",
+                error: error.message
+            });
+        }
+    };
+
+
+    /* =========================================================
+    DELETE INVOICE
+    ========================================================= */
+    const deleteInvoice = async (req, res) => {
+        try {
+            if (!req.user) {
+                return res.status(401).json({
+                    success: false,
+                    Msg: "Unauthorized"
+                });
+            }
+
+            const userId = req.user.userId || req.user._id;
+            const invoiceId = req.params.id;
+
+            const invoice = await ProformaInvoiceModel.findOneAndDelete({
+                _id: invoiceId,
+                userId
+            });
+
+            if (!invoice) {
+                return res.status(404).json({
+                    success: false,
+                    Msg: "Invoice Not Found"
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                Msg: "Invoice Deleted Successfully",
+                invoice
+            });
+
+        } catch (error) {
+            console.error("DELETE INVOICE ERROR:", error);
+
+            return res.status(500).json({
+                success: false,
+                Msg: "Error while Deleting Invoice",
+                error: error.message
+            });
+        }
+    };
+
+
+    /* =========================================================
+    MONTHLY INCOME
+    ========================================================= */
+    const monthlyIncome = async (req, res) => {
+        try {
+            if (!req.user) {
+                return res.status(401).json({
+                    success: false,
+                    Msg: "Unauthorized"
+                });
+            }
+
+            const userId = req.user.userId || req.user._id;
+
+            const { year, month } = req.params;
+
+            const numericYear = Number(year);
+            const numericMonth = Number(month);
+
+            if (
+                !Number.isInteger(numericYear) ||
+                !Number.isInteger(numericMonth) ||
+                numericMonth < 1 ||
+                numericMonth > 12
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    Msg: "Invalid year or month"
+                });
+            }
+
+            const startDate = new Date(
+                numericYear,
+                numericMonth - 1,
+                1
+            );
+
+            const endDate = new Date(
+                numericYear,
+                numericMonth,
+                1
+            );
+
+            const invoices = await ProformaInvoiceModel.find({
+                userId,
+                invoiceDate: {
+                    $gte: startDate,
+                    $lt: endDate
+                }
+            });
+
+            const totalIncome = invoices.reduce(
+                (sum, invoice) =>
+                    sum + Number(invoice.totalAmount || 0),
+                0
+            );
+
+            return res.status(200).json({
+                success: true,
+                month: numericMonth,
+                year: numericYear,
+                totalIncome,
+                totalInvoices: invoices.length
+            });
+
+        } catch (error) {
+            console.error("MONTHLY INCOME ERROR:", error);
+
+            return res.status(500).json({
+                success: false,
+                Msg: "Error while Calculating Monthly Income",
+                error: error.message
+            });
+        }
+    };
+
+
+    /* =========================================================
+    UPDATE INVOICE
+    ========================================================= */
+    const updateInvoice = async (req, res) => {
+        try {
+            if (!req.user) {
+                return res.status(401).json({
+                    success: false,
+                    Msg: "Unauthorized"
+                });
+            }
+
+            const userId =
+                req.user.userId || req.user._id;
+
+            const invoiceId =
+                req.params.id;
+
+            const {
+                companyId,
+                customerId,
+                items,
+                taxType,
+                cgstRate,
+                sgstRate,
+                igstRate,
+                shippingAddress,
+                billingAddress,
+                placeOfSupply,
+                PoNumber,
+                PODate,
+                ServiceOrderNumber,
+                ServiceOrderDate
+            } = req.body;
+
+            console.log(
+                "UPDATE INVOICE ID:",
+                invoiceId
+            );
+
+            console.log(
+                "UPDATE INVOICE BODY:",
+                req.body
+            );
+
+            /* =====================================================
+            VALIDATE ITEMS
+            ===================================================== */
+
+            if (
+                !Array.isArray(items) ||
+                items.length === 0
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    Msg:
+                        "Invoice must contain at least one item."
+                });
+            }
+
+            /* =====================================================
+            CALCULATE AMOUNTS
+            ===================================================== */
+
+            const calculations =
+                CalculateInvoiceAmount({
+                    items,
+                    taxType,
+                    cgstRate,
+                    sgstRate,
+                    igstRate
+                });
+
+            /* =====================================================
+            UPDATE INVOICE
+            ===================================================== */
+
+            const invoice =
+                await ProformaInvoiceModel.findOneAndUpdate(
+                    {
+                        _id: invoiceId,
+                        userId
+                    },
+                    {
+                        companyId,
+                        customerId,
+
+                        taxType,
+
+                        items,
+
+                        shippingAddress,
+                        billingAddress,
+
+                        placeOfSupply,
+
+                        PoNumber,
+                        PODate,
+
+                        ServiceOrderNumber,
+                        ServiceOrderDate,
+
+                        subtotal:
+                            calculations.subtotal,
+
+                        cgst: {
+                            rate:
+                                calculations
+                                    .cgst
+                                    .rate,
+
+                            amount:
+                                calculations
+                                    .cgst
+                                    .amount
+                        },
+
+                        sgst: {
+                            rate:
+                                calculations
+                                    .sgst
+                                    .rate,
+
+                            amount:
+                                calculations
+                                    .sgst
+                                    .amount
+                        },
+
+                        igst: {
+                            rate:
+                                calculations
+                                    .igst
+                                    .rate,
+
+                            amount:
+                                calculations
+                                    .igst
+                                    .amount
+                        },
+
+                        totalTax:
+                            calculations.totalTax,
+
+                        totalAmount:
+                            calculations.totalAmount
+                    },
+                    {
+                        returnDocument:
+                            "after",
+
+                        runValidators: true
+                    }
+                );
+
+            /* =====================================================
+            NOT FOUND
+            ===================================================== */
+
+            if (!invoice) {
+                return res.status(404).json({
+                    success: false,
+                    Msg:
+                        "Invoice Not Found"
+                });
+            }
+
+            /* =====================================================
+            SUCCESS
+            ===================================================== */
+
+            return res.status(200).json({
+                success: true,
+
+                Msg:
+                    "Invoice Updated Successfully",
+
+                invoice
+            });
+
+        } catch (error) {
+
+            console.error(
+                "UPDATE INVOICE ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+
+                Msg:
+                    "Error while Updating Invoice",
+
+                error:
+                    error.message
+            });
+        }
+    };
+
+    /* =========================================================
+    GET INVOICES BY FINANCIAL YEAR
+    ========================================================= */
+    const getAllInvoiceByFinancialYear = async (req, res) => {
+        try {
+            if (!req.user) {
+                return res.status(401).json({
+                    success: false,
+                    Msg: "Unauthorized"
+                });
+            }
+
+            const userId = req.user.userId || req.user._id;
+
+            const financialYear = req.params.id;
+
+            if (!financialYear) {
+                return res.status(400).json({
+                    success: false,
+                    Msg: "Financial year is required"
+                });
+            }
+
+            const invoices = await ProformaInvoiceModel
+                .find({
+                    userId,
+                    financialYear
+                })
+                .populate("companyId")
+                .populate("customerId")
+                .sort({ createdAt: -1 });
+
+            /* IMPORTANT:
+            Count only invoices from the selected
+            financial year.
+            */
+            const InvoiceCount = await ProformaInvoiceModel.countDocuments({
+        userId,
+        financialYear
+    });
+
+    return res.status(200).json({
+        success: true,
+        Msg: "Invoices Fetched Successfully",
+        invoices,
+        InvoiceCount
+    });
+
+        } catch (error) {
+            console.error(
+                "GET FINANCIAL YEAR INVOICES ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+                Msg: "Error while Fetching Invoice",
+                error: error.message
+            });
+        }
+    };
+
+
+    /* =========================================================
+    GET INVOICES BY DATE RANGE
+    ========================================================= */
+    const getInvoicesByDateRange = async (req, res) => {
+        try {
+            if (!req.user) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Unauthorized"
+                });
+            }
+
+            const userId = req.user.userId || req.user._id;
+
+            let { startDate, endDate } = req.query;
+
+            const IST = "+05:30";
+
+            /* -------------------------
+            DEFAULT CURRENT MONTH
+            ------------------------- */
+            if (!startDate || !endDate) {
+                const now = new Date();
+
+                const firstDay = new Date(
+                    now.getFullYear(),
+                    now.getMonth(),
+                    1
+                );
+
+                const lastDay = new Date(
+                    now.getFullYear(),
+                    now.getMonth() + 1,
+                    0
+                );
+
+                const pad = (number) =>
+                    String(number).padStart(2, "0");
+
+                if (!startDate) {
+                    startDate =
+                        `${firstDay.getFullYear()}-` +
+                        `${pad(firstDay.getMonth() + 1)}-` +
+                        `${pad(firstDay.getDate())}`;
+                }
+
+                if (!endDate) {
+                    endDate =
+                        `${lastDay.getFullYear()}-` +
+                        `${pad(lastDay.getMonth() + 1)}-` +
+                        `${pad(lastDay.getDate())}`;
+                }
+            }
+
+            /* -------------------------
+            CREATE DATE OBJECTS
+            ------------------------- */
+            const start = new Date(
+                `${startDate}T00:00:00${IST}`
+            );
+
+            const end = new Date(
+                `${endDate}T23:59:59.999${IST}`
+            );
+
+            if (
+                Number.isNaN(start.getTime()) ||
+                Number.isNaN(end.getTime())
+            ) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid date format"
+                });
+            }
+
+            if (start > end) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Start date cannot be greater than end date"
+                });
+            }
+
+            /* -------------------------
+            FETCH INVOICES
+            ------------------------- */
+            const invoices = await ProformaInvoiceModel
+                .find(
+                    {
+                        userId,
+                        invoiceDate: {
+                            $gte: start,
+                            $lte: end
+                        }
+                    },
+                    {
+                        invoiceNumber: 1,
+                        customerId: 1,
+                        totalAmount: 1,
+                        invoiceDate: 1,
+                        "cgst.amount": 1,
+                        "sgst.amount": 1,
+                        "igst.amount": 1
+                    }
+                )
+                .populate({
+                    path: "customerId",
+                    select: "clientName email"
+                })
+                .sort({
+                    invoiceDate: -1,
+                    createdAt: -1
+                })
+                .lean();
+
+            return res.status(200).json({
+                success: true,
+                invoices,
+                total: invoices.length
+            });
+
+        } catch (error) {
+            console.error(
+                "GET INVOICES BY DATE RANGE ERROR:",
+                error
+            );
+
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
+    };
+
+
+    /* =========================================================
+    EXPORT CONTROLLERS
+    ========================================================= */
+    module.exports = {
+        createInvoice,
+        getInvoices,
+        getSingleInvoice,
+        deleteInvoice,
+        updateInvoice,
+        getAllInvoiceByFinancialYear,
+        monthlyIncome,
+        getInvoicesByDateRange
+    };
