@@ -10,7 +10,7 @@ router.delete('/delete/:id', restrictToLogin, deleteInvoice);
 router.put('/update/:id', restrictToLogin, updateInvoice);
 router.get('/year/:id', restrictToLogin, getAllInvoiceByFinancialYear);
 router.get('/income/:year/:month', restrictToLogin, monthlyIncome);
-router.get("/filter", getInvoicesByDateRange);
+router.get("/filter", restrictToLogin, getInvoicesByDateRange);
 
 
 

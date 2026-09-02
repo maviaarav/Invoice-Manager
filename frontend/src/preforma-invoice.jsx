@@ -54,7 +54,7 @@ const ProformaInvoices = () => {
   };
   const deleteInvoice = async (invoiceId) => {
     try {
-      await instance.delete(`/invoice/delete/${invoiceId}`);
+      await instance.delete(`/proforma/delete/${invoiceId}`);
       setInvoices((prev) => prev.filter((inv) => inv._id !== invoiceId));
       setOpenMenuId(null);
       fetchInvoices(); // Refresh the list after deletion

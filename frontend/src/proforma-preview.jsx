@@ -29,6 +29,25 @@ const ProformaInvoicePreview = () => {
         fetchInvoice();
     }, []);
 
+    const handleDeleteInvoice = async () => {
+        const shouldDelete = window.confirm("Delete this proforma invoice?");
+
+        if (!shouldDelete) {
+            return;
+        }
+
+        try {
+            await instance.delete(`/proforma/delete/${id}`);
+            window.location.href = "/proforma-invoices";
+        } catch (error) {
+            console.error("Error deleting invoice:", error);
+            window.alert(
+                error.response?.data?.Msg ||
+                "Failed to delete invoice. Please try again later."
+            );
+        }
+    };
+
     if (!invoice) {
         return <h2>Loading...</h2>;
     }
@@ -101,6 +120,14 @@ const ProformaInvoicePreview = () => {
                 <div className="button">
                     <button type="button" onClick={handleDownloadPdf}>
                         Download Pdf
+                    </button>
+                    <button
+                        type="button"
+                        className="deleteButton"
+                        onClick={handleDeleteInvoice}
+                    >
+                        <Delete16Regular />
+                        Delete
                     </button>
                 </div>
             </div>
