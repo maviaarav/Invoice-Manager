@@ -19,6 +19,7 @@ const ProformaForm = () => {
   const [cgstAmount, setCgstAmount] = useState(0);
   const [sgstAmount, setSgstAmount] = useState(0);
   const [igstAmount, setIgstAmount] = useState(0);
+   const [commonDesc, setCommonDesc] = useState("");
   const [placeOfSupply, setPlaceOfSupply] = useState("");
   const [invoiceDate, setInvoiceDate] = useState(0);
   const [invoiceNumber, setInvoiceNumber] = useState("");
@@ -255,6 +256,7 @@ setTaxableAmount(taxableSubtotal);
     const data = response.data.company;
     setCompanyId(data._id);
     setCompany(data);
+    setCommonDesc(data.CommonDesc || "");
 
     setPlaceOfSupply((prev) => prev || data.PlaceOfSupply || "");
   } catch (error) {
@@ -307,7 +309,9 @@ const fetchInvoiceNumber = async () => {
     console.log("Error while fetching invoice number", error);
   }
 };
-
+  const copyDescription = async () => {
+    await navigator.clipboard.writeText(commonDesc)
+  }
 const CreateInvoice = async () => {
   try {
     if (editingInvoice) {
@@ -601,6 +605,9 @@ useEffect(() => {
                 </option>
               ))}
             </select>
+          </div>
+          <div className="CommonDescription">
+            <button onClick={copyDescription} className="activeTaxBtn">Copy Your Description</button>
           </div>
         </div>
       </div>
