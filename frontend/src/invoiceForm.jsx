@@ -443,75 +443,24 @@ const InvoiceForm = () => {
      ONLY USED FOR NEW INVOICES.
   ========================================================= */
 
-  const fetchInvoiceNumber =
-    async () => {
-      const financialYear =
-        getFinancialYear();
+  const fetchInvoiceNumber = async () => {
+  try {
+    const response = await instance.get(
+      "/invoice/next-invoice-number"
+    );
 
-      let nextInvoiceNumber =
-        `INV/${financialYear}/0001`;
-
-      try {
-        const response =
-          await instance.get(
-            `/invoice/year/${financialYear}`
-          );
-
-        const invoices =
-          response.data.invoices ||
-          [];
-
-        if (invoices.length > 0) {
-          const highestNumber =
-            invoices.reduce(
-              (max, invoice) => {
-                const parts =
-                  invoice.invoiceNumber?.split(
-                    "/"
-                  );
-
-                if (
-                  !parts ||
-                  parts.length !== 3
-                ) {
-                  return max;
-                }
-
-                const num =
-                  parseInt(
-                    parts[2],
-                    10
-                  );
-
-                if (
-                  isNaN(num)
-                ) {
-                  return max;
-                }
-
-                return num > max
-                  ? num
-                  : max;
-              },
-              0
-            );
-
-          nextInvoiceNumber =
-            `INV/${financialYear}/${String(
-              highestNumber + 1
-            ).padStart(4, "0")}`;
-        }
-      } catch (error) {
-        console.log(
-          "No existing invoices found, defaulting to first invoice.",
-          error
-        );
-      } finally {
-        setInvoiceNumber(
-          nextInvoiceNumber
-        );
-      }
-    };
+    if (response.data.success) {
+      setInvoiceNumber(
+        response.data.invoiceNumber
+      );
+    }
+  } catch (error) {
+    console.error(
+      "Error fetching invoice number:",
+      error
+    );
+  }
+};
 
   /* =========================================================
      LOAD EDITING INVOICE

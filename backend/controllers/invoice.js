@@ -698,6 +698,52 @@ return res.status(200).json({
     }
 };
 
+const getNextInvoiceNumber = async (req, res) => {
+  try {
+    const companyId = req.user.companyId;
+    const financialYear = getFinancialYear();
+
+    const lastInvoice = await Invoice.findOne({
+      companyId,
+      financialYear,
+    })
+      .sort({ invoiceNumber: -1 })
+      .select("invoiceNumber")
+      .lean();
+
+    let nextNumber = 1;
+
+    if (lastInvoice?.invoiceNumber) {
+      const parts = lastInvoice.invoiceNumber.split("/");
+
+      if (parts.length === 3) {
+        const currentNumber = parseInt(parts[2], 10);
+
+        if (!isNaN(currentNumber)) {
+          nextNumber = currentNumber + 1;
+        }
+      }
+    }
+
+    const invoiceNumber =
+      `INV/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
+
+    return res.status(200).json({
+      success: true,
+      invoiceNumber,
+    });
+
+  } catch (error) {
+    console.error("Error generating next invoice number:", error);
+
+    return res.status(500).json({
+      success: false,
+      Msg: "Error while generating invoice number",
+      error: error.message,
+    });
+  }
+};
+
 /* =========================================================
    GET INVOICES COUNT BY FINANCIAL YEAR
 ========================================================= */
@@ -896,6 +942,7 @@ module.exports = {
     deleteInvoice,
     updateInvoice,
     getAllInvoiceByFinancialYear,
+    getNextInvoiceNumber,
     monthlyIncome,
     getInvoiceCount,
     getInvoicesByDateRange

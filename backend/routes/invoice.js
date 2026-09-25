@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { restrictToLogin } = require('../middlewares/auth');
-const { createInvoice, getInvoices,getSingleInvoice,deleteInvoice,updateInvoice,getAllInvoiceByFinancialYear,monthlyIncome,getInvoicesByDateRange,getInvoiceCount} = require('../controllers/invoice');
+const { createInvoice, getInvoices,getSingleInvoice,deleteInvoice,updateInvoice,getAllInvoiceByFinancialYear,monthlyIncome,getInvoicesByDateRange,getInvoiceCount,getNextInvoiceNumber} = require('../controllers/invoice');
 
 router.post('/create', restrictToLogin, createInvoice);
 router.get('/get', restrictToLogin, getInvoices);
@@ -12,7 +12,7 @@ router.get('/year/:id', restrictToLogin, getAllInvoiceByFinancialYear);
 router.get('/countyear/:id', restrictToLogin, getInvoiceCount);
 router.get('/income/:year/:month', restrictToLogin, monthlyIncome);
 router.get("/filter", restrictToLogin, getInvoicesByDateRange);
-
+router.get("/next-invoice-number", restrictToLogin, getNextInvoiceNumber);
 
 
 
