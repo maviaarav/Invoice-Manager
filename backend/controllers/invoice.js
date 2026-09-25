@@ -703,7 +703,7 @@ const getNextInvoiceNumber = async (req, res) => {
     const companyId = req.user.companyId;
     const financialYear = getFinancialYear();
 
-    const lastInvoice = await Invoice.findOne({
+    const lastInvoice = await InvoiceModel.findOne({
       companyId,
       financialYear,
     })
