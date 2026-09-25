@@ -712,6 +712,8 @@ const getInvoiceCount = async (req, res) => {
         }
 
         const userId = req.user.userId || req.user._id;
+
+        // Get financial year from URL
         const financialYear = req.params.id;
 
         if (!financialYear) {
@@ -722,8 +724,8 @@ const getInvoiceCount = async (req, res) => {
         }
 
         const InvoiceCount = await InvoiceModel.countDocuments({
-            userId,
-            financialYear
+            userId: userId,
+            financialYear: financialYear
         });
 
         return res.status(200).json({
