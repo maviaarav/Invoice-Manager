@@ -127,22 +127,17 @@ const ProformaForm = () => {
 
   const convertInvoice = async () => {
   try {
-    // Generate a fresh, real invoice number from the invoice sequence
-    // (separate from the proforma sequence — do not reuse the proforma number)
-    const financialYear = getFinancialYear();
-    const invoiceRes = await instance.get(`/invoice/year/${financialYear}`);
-    const existingInvoices = invoiceRes.data.invoices || [];
+    // Get a fresh invoice number from the backend
+    const invoiceNumberResponse = await instance.get(
+      "/invoice/next-invoice-number"
+    );
 
-    let newInvoiceNumber = `INV/${financialYear}/0001`;
-    if (existingInvoices.length > 0) {
-      const highestNumber = existingInvoices.reduce((max, invoice) => {
-        const parts = invoice.invoiceNumber?.split("/");
-        if (!parts || parts.length !== 3) return max;
-        const num = parseInt(parts[2], 10);
-        return isNaN(num) ? max : Math.max(num, max);
-      }, 0);
-      newInvoiceNumber = `INV/${financialYear}/${String(highestNumber + 1).padStart(4, "0")}`;
+    if (!invoiceNumberResponse.data.success) {
+      throw new Error("Failed to generate invoice number");
     }
+
+    const newInvoiceNumber =
+      invoiceNumberResponse.data.invoiceNumber;
 
     const response = await instance.post("/invoice/create", {
       companyId,
@@ -152,7 +147,7 @@ const ProformaForm = () => {
       sgstRate,
       igstRate,
       placeOfSupply,
-      invoiceNumber: newInvoiceNumber, // ✅ now actually sent
+      invoiceNumber: newInvoiceNumber,
       shippingAddress,
       items,
       billingAddress,
@@ -163,19 +158,24 @@ const ProformaForm = () => {
     });
 
     const data = response.data;
+
     setSuccess("✅ Invoice created successfully!");
     clearForm();
     localStorage.removeItem("editingInvoice");
     setError(null);
+
     console.log("Invoice created successfully:", data);
   } catch (error) {
     console.error("Error saving invoice:", error);
+
     setError(
-      error.response?.data?.Msg || "Failed to save invoice. Please try again."
+      error.response?.data?.Msg ||
+        "Failed to save invoice. Please try again."
     );
+
     setSuccess(null);
   }
-};
+};;
   const handleRemoveItem = (index) => {
     const updatedItems = items.filter((_, i) => i !== index);
     setItems(updatedItems);
