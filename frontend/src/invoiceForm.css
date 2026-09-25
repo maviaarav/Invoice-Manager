@@ -528,6 +528,15 @@ text-align: left;
 .createBtn:hover{
   background-color: #6A11CB;
 }
+.CommonDescription{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.CommonDescription button:hover{
+  background-color: #6A11CB;
+}
 /* Chrome, Safari, Edge, Opera */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
