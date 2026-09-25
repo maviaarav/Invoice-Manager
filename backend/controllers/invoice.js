@@ -703,27 +703,30 @@ const getNextInvoiceNumber = async (req, res) => {
     const companyId = req.user.companyId;
     const financialYear = getFinancialYear();
 
-    const lastInvoice = await InvoiceModel.findOne({
+        const invoices = await InvoiceModel.find({
       companyId,
       financialYear,
     })
-      .sort({ invoiceNumber: -1 })
       .select("invoiceNumber")
       .lean();
 
-    let nextNumber = 1;
+        const nextNumber =
+            invoices.reduce((highestNumber, invoice) => {
+                const invoiceNumber = invoice?.invoiceNumber || "";
+                const match = invoiceNumber.match(/(\d+)$/);
 
-    if (lastInvoice?.invoiceNumber) {
-      const parts = lastInvoice.invoiceNumber.split("/");
+                if (!match) {
+                    return highestNumber;
+                }
 
-      if (parts.length === 3) {
-        const currentNumber = parseInt(parts[2], 10);
+                const currentNumber = parseInt(match[1], 10);
 
-        if (!isNaN(currentNumber)) {
-          nextNumber = currentNumber + 1;
-        }
-      }
-    }
+                if (Number.isNaN(currentNumber)) {
+                    return highestNumber;
+                }
+
+                return Math.max(highestNumber, currentNumber);
+            }, 0) + 1;
 
     const invoiceNumber =
       `INV/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
