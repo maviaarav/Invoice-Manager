@@ -454,6 +454,7 @@ const InvoiceForm = () => {
         response.data.invoiceNumber
       );
     }
+    console.log(response.data);
   } catch (error) {
     console.error(
       "Error fetching invoice number:",
