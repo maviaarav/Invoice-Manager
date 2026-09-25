@@ -732,7 +732,6 @@ const getNextInvoiceNumber = async (req, res) => {
       success: true,
       invoiceNumber,
     });
-
   } catch (error) {
     console.error("Error generating next invoice number:", error);
 
