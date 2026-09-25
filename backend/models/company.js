@@ -49,6 +49,9 @@ const companySchema = new mongoose.Schema({
     required: true,
     unique: true
    },
+   CommonDesc: {
+    type: String
+   },
    IFSCCode: {
     type: String,
     required: true,

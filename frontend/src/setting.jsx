@@ -12,6 +12,7 @@ const Setting = () => {
     const [companyEmail, setCompanyEmail] = useState("");
     const [companyPhone, setCompanyPhone] = useState("");
     const [companyAddress, setCompanyAddress] = useState("");
+    const [CommonDesc, setCommonDesc] = useState("")
     const [bankAccount, setBankAccount] = useState("");
     const [taxId, setTaxId] = useState("");
     const [panNumber, setPanNumber] = useState("");
@@ -38,6 +39,7 @@ const Setting = () => {
         setCompanyName(data.CompanyName);
         setOwnerName(data.OwnerName)
         setCompanyEmail(data.Email) 
+        setCommonDesc(data.CommonDesc)
         setCompanyPhone(data.phoneNumber) 
         setCompanyAddress(data.Address) 
         setBankAccount(data.AccountNumber) 
@@ -113,6 +115,8 @@ const Setting = () => {
                 <input type="text" value={panNumber || "N/A"} readOnly />
                 <label>Terms and Conditions</label>
                 <textarea className="textArea" value={termsAndCondition} readOnly />
+                <label>Common Description</label>
+                <textarea className="textArea" value={CommonDesc} readOnly />
             </div>
             <div className="ContactInfoBlock">
                   <h2 className="textBlock"> <div className="iconCompany"><ContactCard32Filled /> </div> Contact Info</h2>

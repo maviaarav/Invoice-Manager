@@ -11,6 +11,7 @@ const createCompany = async (req,res) =>{
             phoneNumber,
             panNumber,
             GSTNumber,
+            CommonDesc,
             Address,
             BankName,
             AccountNumber,
@@ -73,6 +74,7 @@ const createCompany = async (req,res) =>{
             OwnerName,
             phoneNumber,
             Email,
+            CommonDesc,
             panNumber,
             GSTNumber,
             Address,
@@ -121,6 +123,7 @@ const updateCompany = async (req,res) =>{
             CompanyName,
             OwnerName,
             GSTNumber,
+            CommonDesc,
             Address,
             BankName,
             panNumber,
@@ -189,6 +192,7 @@ const updateCompany = async (req,res) =>{
             phoneNumber || company.phoneNumber
         company.Email = Email || company.Email
         company.termsAndCondition = termsAndCondition || company.termsAndCondition
+        company.CommonDesc = CommonDesc || company.CommonDesc
         company.upiID = upiID || company.upiID
         await company.save()
 

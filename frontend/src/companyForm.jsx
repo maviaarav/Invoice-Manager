@@ -12,6 +12,7 @@ const CompanyForm = () =>{
     const [companyPhone, setCompanyPhone] = useState("");
     const [companyAddress, setCompanyAddress] = useState("");
     const [bankAccount, setBankAccount] = useState("");
+    const [CommonDesc, setCommonDesc] = useState("");
     const [taxId, setTaxId] = useState("");
     const [panNumber, setPanNumber] = useState("");
    const [ifscCode, setIfscCode] = useState("");
@@ -41,6 +42,7 @@ const CompanyForm = () =>{
     formData.append("CompanyName", companyName);
     formData.append("OwnerName", ownerName);
     formData.append("Email", companyEmail);
+    formData.append("CommonDesc", CommonDesc)
     formData.append("phoneNumber", companyPhone);
     formData.append("Address", companyAddress);
     formData.append("BankName", bankName);
@@ -81,6 +83,8 @@ const CompanyForm = () =>{
         formData.append("Email", companyEmail);
         formData.append("phoneNumber", companyPhone);
         formData.append("Address", companyAddress);
+        formData.append("CommonDesc", CommonDesc);
+
         formData.append("BankName", bankName);
         formData.append("AccountNumber", accountNumber);
         formData.append("BranchName", BranchName);
@@ -132,6 +136,7 @@ setError(
         setCompanyAddress(companyData.Address || "");
         setBankName(companyData.BankName || "");
         setAccountNumber(companyData.AccountNumber || "");
+        setCommonDesc(companyData.CommonDesc || "");
         setBranchName(companyData.BranchName || "");
         setTaxId(companyData.GSTNumber || "");
         setPanNumber(companyData.panNumber || "");
@@ -150,6 +155,7 @@ setError(
         setBankName("");
         setAccountNumber("");
         setBranchName("");
+        setCommonDesc("")
         setTaxId("");
         setPanNumber("");
         setIfscCode("");
@@ -279,6 +285,14 @@ standards.</p>
                     <textarea
                         value={companyAddress}
                         onChange={(e) => setCompanyAddress(e.target.value)}
+                    />
+                </div>
+                <div className="largeInput">
+                    
+                    <label>Common Description</label>
+                    <textarea
+                        value={CommonDesc}
+                        onChange={(e) => setCommonDesc(e.target.value)}
                     />
                 </div>
 
