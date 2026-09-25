@@ -1,5 +1,4 @@
 const InvoiceModel = require("../models/invoice");
-const CompanyModel = require("../models/company");
 
 /* =========================================================
    CALCULATE INVOICE AMOUNT
@@ -704,19 +703,8 @@ const getNextInvoiceNumber = async (req, res) => {
         const userId = req.user.userId || req.user._id;
     const financialYear = getFinancialYear();
 
-        const company = await CompanyModel.findOne({ userId })
-            .select("_id")
-            .lean();
-
-        if (!company?._id) {
-            return res.status(404).json({
-                success: false,
-                Msg: "Company profile not found",
-            });
-        }
-
         const invoices = await InvoiceModel.find({
-            companyId: company._id,
+            userId,
       financialYear,
     })
       .select("invoiceNumber")
