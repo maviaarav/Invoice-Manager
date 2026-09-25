@@ -50,6 +50,7 @@ const InvoiceForm = () => {
   const [placeOfSupply, setPlaceOfSupply] =
     useState("");
 
+  const [commonDesc, setCommonDesc] = useState("");
   const [invoiceDate, setInvoiceDate] =
     useState("");
 
@@ -99,6 +100,7 @@ const InvoiceForm = () => {
   const [items, setItems] = useState([
     createEmptyItem(),
   ]);
+
 
   const [subtotal, setSubtotal] =
     useState(0);
@@ -372,13 +374,7 @@ const InvoiceForm = () => {
       setCompanyId(data._id);
       setCompany(data);
 
-      /*
-       * Only use company's PlaceOfSupply
-       * for a NEW invoice.
-       *
-       * When editing, the existing invoice
-       * value has already been loaded.
-       */
+      setCommonDesc(data.CommonDesc || "");
 
       const storedEditingInvoice =
         localStorage.getItem(
@@ -398,6 +394,9 @@ const InvoiceForm = () => {
     }
   };
 
+  const copyDescription = async () => {
+    await navigator.clipboard.writeText(commonDesc)
+  }
   /* =========================================================
      FETCH CLIENTS
   ========================================================= */
@@ -1500,6 +1499,10 @@ const InvoiceForm = () => {
 
             </select>
 
+          </div>
+
+          <div className="CommonDescription">
+            <button onClick={copyDescription} className="activeTaxBtn">Copy Your Description</button>
           </div>
 
         </div>
