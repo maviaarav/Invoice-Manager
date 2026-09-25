@@ -701,47 +701,28 @@ return res.status(200).json({
 const getNextInvoiceNumber = async (req, res) => {
   try {
     const companyId = req.user.companyId;
-    const financialYear = getFinancialYear();
 
     const invoices = await InvoiceModel.find({
       companyId,
-      invoiceNumber: {
-        $regex: `^INV/${financialYear}/`,
-      },
     })
-      .select("invoiceNumber")
+      .select("invoiceNumber financialYear companyId")
       .lean();
 
-    let highestNumber = 0;
-
-    for (const invoice of invoices) {
-      const parts = invoice.invoiceNumber?.split("/");
-
-      if (parts?.length === 3) {
-        const currentNumber = parseInt(parts[2], 10);
-
-        if (!isNaN(currentNumber) && currentNumber > highestNumber) {
-          highestNumber = currentNumber;
-        }
-      }
-    }
-
-    const nextNumber = highestNumber + 1;
-
-    const invoiceNumber =
-      `INV/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
+    console.log("COMPANY ID:", companyId);
+    console.log("INVOICES:", invoices);
 
     return res.status(200).json({
       success: true,
-      invoiceNumber,
+      companyId,
+      count: invoices.length,
+      invoices,
     });
 
   } catch (error) {
-    console.error("Error generating next invoice number:", error);
+    console.error("Error:", error);
 
     return res.status(500).json({
       success: false,
-      Msg: "Error while generating invoice number",
       error: error.message,
     });
   }
