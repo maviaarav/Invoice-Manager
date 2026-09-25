@@ -533,6 +533,7 @@ text-align: left;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 20px;
 }
 .CommonDescription button:hover{
   background-color: #6A11CB;
