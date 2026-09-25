@@ -702,34 +702,36 @@ return res.status(200).json({
    GET INVOICES COUNT BY FINANCIAL YEAR
 ========================================================= */
 
-const getInvoiceCount =  async (req,res) =>{
-    try{
-        if(!req.user){
+const getInvoiceCount = async (req, res) => {
+    try {
+        if (!req.user) {
             return res.status(401).json({
                 success: false,
                 Msg: "Unauthorized"
             });
         }
 
-        const userId = req.user.userId || req.user._id
-        const financial_year = req.params.id
-        if (!financialYear) {
+        const userId = req.user.userId || req.user._id;
+        const financial_year = req.params.id;
+
+        if (!financial_year) {
             return res.status(400).json({
                 success: false,
                 Msg: "Financial year is required"
             });
         }
-        const InvoiceCount = await InvoiceModel.countDocuments(
-            {
-                userId,
-                financial_year
-            }
-        )
+
+        const InvoiceCount = await InvoiceModel.countDocuments({
+            userId,
+            financial_year
+        });
+
         return res.status(200).json({
-    success: true,
-    Msg: "Invoice Count Fetched Successfully",
-    InvoiceCount
-});
+            success: true,
+            Msg: "Invoice Count Fetched Successfully",
+            InvoiceCount
+        });
+
     } catch (error) {
         console.error(
             "GET FINANCIAL YEAR INVOICES COUNT ERROR:",
@@ -742,8 +744,7 @@ const getInvoiceCount =  async (req,res) =>{
             error: error.message
         });
     }
-     
-}
+};
 
 
 
