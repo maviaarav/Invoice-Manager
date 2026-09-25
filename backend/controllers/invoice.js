@@ -671,14 +671,11 @@ const getAllInvoiceByFinancialYear = async (req, res) => {
             .populate("customerId")
             .sort({ createdAt: -1 });
 
-        /* IMPORTANT:
-           Count only invoices from the selected
-           financial year.
-        */
         const InvoiceCount = await InvoiceModel.countDocuments({
     userId,
     financialYear
 });
+
 
 return res.status(200).json({
     success: true,
@@ -700,6 +697,50 @@ return res.status(200).json({
         });
     }
 };
+
+/* =========================================================
+   GET INVOICES COUNT BY FINANCIAL YEAR
+========================================================= */
+
+const getInvoiceCount =  async (req,res) =>{
+    try{
+        if(!req.user){
+            return res.status(401).json({
+                success: false,
+                Msg: "Unauthorized"
+            });
+        }
+
+        const userId = req.user.userId || req.user._id
+        const financial_year = req.params.id
+        const InvoiceCount = await InvoiceModel.countDocuments(
+            {
+                userId,
+                financial_year
+            }
+        )
+        return res.status(200).json({
+    success: true,
+    Msg: "Invoice Count Fetched Successfully",
+    InvoiceCount
+});
+    } catch (error) {
+        console.error(
+            "GET FINANCIAL YEAR INVOICES COUNT ERROR:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            Msg: "Error while Fetching Invoice count",
+            error: error.message
+        });
+    }
+     
+}
+
+
+
 
 
 /* =========================================================
@@ -847,5 +888,6 @@ module.exports = {
     updateInvoice,
     getAllInvoiceByFinancialYear,
     monthlyIncome,
+    getInvoiceCount,
     getInvoicesByDateRange
 };

@@ -60,7 +60,7 @@ function Home() {
     };
     const getInvoice = async () => {
         try {
-            const response = await instance.get(`/invoice/year/${financialYear}`);
+            const response = await instance.get(`/invoice/countyear/${financialYear}`);
             setNumberOfInvoices(response.data.InvoiceCount)
         } catch (error) {
             console.log(error)
