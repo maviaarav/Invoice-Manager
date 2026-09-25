@@ -700,23 +700,50 @@ return res.status(200).json({
 
 const getNextInvoiceNumber = async (req, res) => {
   try {
-    const companyId = req.user.companyId;
+        const userId = req.user.userId || req.user._id;
+        const financialYear = getFinancialYear();
 
-    const invoices = await InvoiceModel.find({
-      companyId,
-    })
-      .select("invoiceNumber financialYear companyId")
-      .lean();
+        const invoices = await InvoiceModel.find({
+            userId,
+        })
+            .select("invoiceNumber financialYear")
+            .lean();
 
-    console.log("COMPANY ID:", companyId);
-    console.log("INVOICES:", invoices);
+        const targetPrefix = `INV/${financialYear}/`;
 
-    return res.status(200).json({
-      success: true,
-      companyId,
-      count: invoices.length,
-      invoices,
-    });
+        const nextNumber =
+            invoices.reduce((highestNumber, invoice) => {
+                const invoiceNumber = invoice?.invoiceNumber || "";
+                const belongsToCurrentYear =
+                    invoice?.financialYear === financialYear ||
+                    invoiceNumber.startsWith(targetPrefix);
+
+                if (!belongsToCurrentYear) {
+                    return highestNumber;
+                }
+
+                const match = invoiceNumber.match(/(\d+)$/);
+
+                if (!match) {
+                    return highestNumber;
+                }
+
+                const currentNumber = parseInt(match[1], 10);
+
+                if (Number.isNaN(currentNumber)) {
+                    return highestNumber;
+                }
+
+                return Math.max(highestNumber, currentNumber);
+            }, 0) + 1;
+
+        const invoiceNumber =
+            `INV/${financialYear}/${String(nextNumber).padStart(4, "0")}`;
+
+        return res.status(200).json({
+            success: true,
+            invoiceNumber,
+        });
 
   } catch (error) {
     console.error("Error:", error);
