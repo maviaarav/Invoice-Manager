@@ -127,21 +127,13 @@ const ProformaForm = () => {
 
   const convertInvoice = async () => {
   try {
-    // Generate a fresh, real invoice number from the invoice sequence
-    // (separate from the proforma sequence — do not reuse the proforma number)
-    const financialYear = getFinancialYear();
-    const invoiceRes = await instance.get(`/invoice/year/${financialYear}`);
-    const existingInvoices = invoiceRes.data.invoices || [];
+    const invoiceRes = await instance.get("/invoice/next-invoice-number");
 
-    let newInvoiceNumber = `INV/${financialYear}/0001`;
-    if (existingInvoices.length > 0) {
-      const highestNumber = existingInvoices.reduce((max, invoice) => {
-        const parts = invoice.invoiceNumber?.split("/");
-        if (!parts || parts.length !== 3) return max;
-        const num = parseInt(parts[2], 10);
-        return isNaN(num) ? max : Math.max(num, max);
-      }, 0);
-      newInvoiceNumber = `INV/${financialYear}/${String(highestNumber + 1).padStart(4, "0")}`;
+    const newInvoiceNumber =
+      invoiceRes.data?.invoiceNumber;
+
+    if (!newInvoiceNumber) {
+      throw new Error("Invoice number could not be generated");
     }
 
     const response = await instance.post("/invoice/create", {
