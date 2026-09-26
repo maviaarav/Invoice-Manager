@@ -382,6 +382,10 @@ const monthlyIncome = async (req, res) => {
         const numericYear = Number(year);
         const numericMonth = Number(month);
 
+        const monthName = new Date(2026, numericMonth - 1).toLocaleString("en-US", {
+            month: "long",
+        })
+
         if (
             !Number.isInteger(numericYear) ||
             !Number.isInteger(numericMonth) ||
@@ -420,11 +424,42 @@ const monthlyIncome = async (req, res) => {
             0
         );
 
+        const totalTaxableAmount = invoices.reduce(
+            (sum, invoice) => 
+                sum + Number(invoice.subtotal || 0),
+            0
+        )
+        const TotalTax = invoices.reduce(
+            (sum, invoice) => 
+                sum + Number(invoice.totalTax || 0),
+            0
+        )
+        const TotalCgst = invoices.reduce(
+            (sum, invoice) => 
+                sum + Number(invoice.cgst.amount || 0),
+            0
+        )
+        const TotalSgst = invoices.reduce(
+            (sum, invoice) => 
+                sum + Number(invoice.sgst.amount || 0),
+            0)
+
+        const TotalIgst = invoices.reduce(
+            (sum, invoice) => 
+                sum + Number(invoice.igst.amount || 0),
+            0
+        )
+
         return res.status(200).json({
             success: true,
-            month: numericMonth,
+            month: monthName,
             year: numericYear,
             totalIncome,
+            totalTaxableAmount,
+            TotalTax,
+            TotalCgst,
+            TotalSgst,
+            TotalIgst,
             totalInvoices: invoices.length
         });
 
