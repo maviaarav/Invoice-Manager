@@ -14,14 +14,16 @@
     background:#F8F9FF;
 }
 .profileImage{
-    width:200px;
-    height:200px;
-    margin-top:20px;
-    display:flex;
-    align-items:center;
-    background-size: cover;
-    justify-content:center;
+    width: 200px;
+    height: 200px;
+    margin-top: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     border-radius: 50%;
+    object-fit: contain;
 }
 .headingSetting{
     display:flex;
