@@ -482,7 +482,8 @@ const invoiceAnnualReport = async (req,res) => {
                 Msg: "Unauthorized"
             });
         }
-        const userid = req.user.id || req.user._id
+         const userId =
+            req.user.userId || req.user._id;
         const financialYear = req.params.id
 
          if (!financialYear) {
@@ -493,7 +494,7 @@ const invoiceAnnualReport = async (req,res) => {
         }
 
         const invoices = await InvoiceModel.find({
-            userid,
+            userId,
             financialYear
         })
 
