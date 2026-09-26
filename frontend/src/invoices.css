@@ -19,7 +19,116 @@ background: #f8f9ff;
   color: #1a1a2e;
 }
 .annual_Report{
-
+  width: 100%;
+  max-width: 100%;
+  min-height: 190px;
+  padding: 28px 52px;
+  border: 1px solid #e1e5f4;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+  color: #1a1a2e;
+  background: linear-gradient(108deg, #ffffff 0%, #fbfbff 63%, #f0f0ff 100%);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 18px rgba(68, 75, 150, 0.05);
+  border-radius: 18px;
+  overflow: hidden;
+}
+.rightAnn{
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.reportIcon{
+  width: 82px;
+  height: 82px;
+  flex: 0 0 82px;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4f46e5;
+  font-size: 46px;
+  background: #e8e8ff;
+}
+.rightText{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+.rightText h3{
+  color: #17213D;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+}
+.rightText p{
+  color: #64748B;
+  font-size: 17px;
+  font-weight: 400;
+  margin: 0;
+}
+.leftAnn{
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 42px;
+}
+.report-year-btn,
+.report-view-btn {
+  height: 74px;
+  border-radius: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font: inherit;
+  cursor: pointer;
+}
+.report-year-btn {
+  min-width: 320px;
+  padding: 0 24px;
+  color: #556784;
+  background: #fff;
+  border: 1px solid #dce2f1;
+  box-shadow: 0 2px 5px rgba(42, 54, 100, 0.04);
+  font-size: 23px;
+}
+.report-year-btn svg {
+  color: #7d8ba5;
+  font-size: 30px;
+}
+.report-chevron {
+  color: #8b98ac;
+  font-size: 17px;
+  margin-left: auto;
+}
+.report-view-btn {
+  min-width: 250px;
+  padding: 0 28px;
+  color: #fff;
+  background: #4932ee;
+  border: 1px solid #4932ee;
+  box-shadow: 0 8px 18px rgba(73, 50, 238, 0.2);
+  font-size: 23px;
+  font-weight: 600;
+  transition: background 0.18s, transform 0.18s;
+}
+.report-view-btn:hover {
+  background: #3922d4;
+  transform: translateY(-1px);
+}
+.report-view-btn svg {
+  font-size: 30px;
 }
 /* ── Header ── */
 .inv-header {
@@ -538,6 +647,22 @@ tbody tr:nth-last-child(2) .inv-action-dropdown {
     min-height: 100vh;
   }
 
+  .annual_Report {
+    padding: 24px 28px;
+    gap: 24px;
+  }
+
+  .leftAnn {
+    gap: 16px;
+  }
+
+  .report-year-btn,
+  .report-view-btn {
+    min-width: auto;
+    padding: 0 18px;
+    font-size: 16px;
+  }
+
   .inv-header {
     flex-direction: column;
     align-items: flex-start;
@@ -583,6 +708,49 @@ tbody tr:nth-last-child(2) .inv-action-dropdown {
 }
 
 @media (max-width: 576px) {
+  .annual_Report {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 22px 18px;
+  }
+
+  .rightAnn,
+  .leftAnn {
+    width: 100%;
+  }
+
+  .reportIcon {
+    width: 64px;
+    height: 64px;
+    flex-basis: 64px;
+    border-radius: 14px;
+    font-size: 34px;
+  }
+
+  .rightAnn {
+    gap: 14px;
+  }
+
+  .rightText h3 {
+    font-size: 24px;
+  }
+
+  .rightText p {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .leftAnn {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .report-year-btn,
+  .report-view-btn {
+    width: 100%;
+    height: 58px;
+  }
+
   .inv-title {
     font-size: 22px;
   }

@@ -14,6 +14,7 @@ import ClientForm from "./clientform";
 import CompanyForm from "./companyForm";
 import InvoiceForm from "./invoiceForm";
 import InvoicePreview from "./invoicePreview";
+import AnnualReport from "./AnnualReport";
 import ProformaInvoices from "./preforma-invoice";
 import ProformaForm from "./proformaForm";
 import ProformaInvoicePreview from "./proforma-preview";
@@ -206,6 +207,18 @@ function App() {
                     </ProtectedRoute>
                 }
             />
+            <Route
+                path="/annual-report/:id"
+                element={
+                    <ProtectedRoute user={user}>
+                        <div className="layout">
+                            <SideMenu />
+                            <AnnualReport />
+                        </div>
+                    </ProtectedRoute>
+                }
+            />
+            
             <Route
                 path="/proforma-invoice-form"
                 element={

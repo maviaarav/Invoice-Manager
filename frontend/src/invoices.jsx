@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import instance from "./api/axios";
+import {
+  CalendarLtrFilled,
+  DataBarVerticalAscendingFilled,
+  EyeFilled,
+} from "@fluentui/react-icons";
 import "./invoices.css";
 
 const MONTHS = [
@@ -55,7 +60,7 @@ const Invoices = () => {
 
   const [openMenuId, setOpenMenuId] = useState(null);
 
-  const itemsPerPage = 8;
+  const itemsPerPage = 6;
 
   const menuRef = useRef(null);
   const pickerRef = useRef(null);
@@ -269,6 +274,10 @@ const Invoices = () => {
      GET /invoice/get/:id
   ========================================================= */
 
+  
+
+
+
   const editInvoice = async (invoiceId) => {
     try {
       setOpenMenuId(null);
@@ -451,6 +460,7 @@ const Invoices = () => {
     <div className="inv-page">
       <div className="inv-container">
 
+
         {/* =================================================
             HEADER
         ================================================= */}
@@ -485,7 +495,36 @@ const Invoices = () => {
 
 
         <div className="annual_Report">
-          
+          <div className="rightAnn">
+            <div className="reportIcon">
+              <DataBarVerticalAscendingFilled />
+            </div>
+            <div className="rightText">
+              <h3>Annual Report</h3>
+              <p>View your business performance summary in one place.</p>
+            </div>
+          </div>
+          <div className="leftAnn">
+            <button
+              className="report-year-btn"
+              type="button"
+              onClick={() => setShowPicker((p) => !p)}
+              aria-expanded={showPicker}
+              aria-label="Select report year"
+            >
+              <CalendarLtrFilled />
+              <span>{selectedYear} - {selectedYear + 1}</span>
+              <span className="report-chevron">▼</span>
+            </button>
+            <button
+              className="report-view-btn"
+              type="button"
+              onClick={() => window.location.href = `/annual-report/${selectedYear}-${selectedYear + 1}`}
+            >
+              <EyeFilled />
+              <span>View Report</span>
+            </button>
+          </div>
         </div>
 
         {/* =================================================
