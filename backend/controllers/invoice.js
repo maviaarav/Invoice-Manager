@@ -499,28 +499,34 @@ const invoiceAnnualReport = async (req,res) => {
 
         const totalRevenue = invoices.reduce(
             (sum, invoice) => 
-                sum + Number(invoice.totalAmount || 0)
+                sum + Number(invoice.totalAmount || 0),
+            0
         )
         const totalTaxableAmount = invoices.reduce(
             (sum, invoice) => 
-                sum + Number(invoice.subtotal || 0)
+                sum + Number(invoice.subtotal || 0),
+            0
         )
         const TotalTax = invoices.reduce(
             (sum, invoice) => 
-                sum + Number(invoice.totalTax || 0)
+                sum + Number(invoice.totalTax || 0),
+            0
         )
         const TotalCgst = invoices.reduce(
             (sum, invoice) => 
-                sum + Number(invoice.cgst.amount || 0)
+                sum + Number(invoice.cgst?.amount || 0),
+            0
         )
         const TotalSgst = invoices.reduce(
             (sum, invoice) => 
-                sum + Number(invoice.sgst.amount || 0)
+                sum + Number(invoice.sgst?.amount || 0),
+            0
         )
 
         const TotalIgst = invoices.reduce(
             (sum, invoice) => 
-                sum + Number(invoice.igst.amount || 0)
+                sum + Number(invoice.igst?.amount || 0),
+            0
         )
         const [startYear, endYear] = financialYear.split("-").map(Number);
 
