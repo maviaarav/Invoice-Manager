@@ -189,7 +189,11 @@
     white-space: nowrap;
     max-width: 100%;
 }
-
+.gst{
+    margin-top: 10px;
+    font-size: 14px;
+    color: #6B7280;
+}
 .topClientAmount {
     font-size: 12px;
     color: #6B7280;

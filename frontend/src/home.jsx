@@ -22,6 +22,8 @@ function Home() {
     const [month, setMonth] = useState(new Date().getMonth() + 1)
     const [year, setYear] = useState(new Date().getFullYear())
     const [revenueData, setRevenueData] = useState([]);
+    const [monthName, setMonthName] = useState(new Date().toLocaleString("default", { month: "long" }));
+    const [totalGstCollected, setTotalGstCollected] = useState(0);
     const [chartLoading, setChartLoading] = useState(true);
     const [topClient, setTopClient] = useState(null);
 
@@ -72,6 +74,7 @@ function Home() {
         try {
             const response = await instance.get(`/invoice/income/${year}/${month}`)
             setMonthlyIncome(response.data.totalIncome)
+            setTotalGstCollected(response.data.TotalTax)
         } catch (error) {
             console.log(error)
         }
@@ -197,7 +200,10 @@ function Home() {
                     <div className="content">
                         <p>Monthly Revenue</p>
                         <div className="number">
-                            ₹{monthlyIncome}
+                            ₹{monthlyIncome.toLocaleString("en-IN")}
+                        </div>
+                        <div className="gst">
+                            {totalGstCollected > 0 ? <strong>₹{totalGstCollected.toLocaleString("en-IN")} GST collected</strong> : "No GST collected"}
                         </div>
                     </div>
                 </div>
