@@ -482,16 +482,18 @@ const invoiceAnnualReport = async (req,res) => {
                 Msg: "Unauthorized"
             });
         }
-         const userId =
-            req.user.userId || req.user._id;
-        const financialYear = req.params.id
+         const userId = req.user.userId || req.user._id;
 
-         if (!financialYear) {
+        const financialYear = req.params.id;
+
+        if (!financialYear) {
             return res.status(400).json({
                 success: false,
                 Msg: "Financial year is required"
             });
         }
+
+         
 
         const invoices = await InvoiceModel.find({
             userId,
