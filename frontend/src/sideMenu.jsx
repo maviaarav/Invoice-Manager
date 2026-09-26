@@ -12,11 +12,14 @@ import {
 
 function SideMenu() {
     const [userProfile, setUserProfile] = useState({});
+    const [profileImage, setProfileImage] = useState(null);
     const fetchProfile = async () => {
         try{
             const response = await instance.get('/user/getUserProfile');
             const data = response.data;
             setUserProfile(data);
+            const profilePicture = data.profilePicture.replace(/=s\d+(-c)?$/, '=s400');
+            setProfileImage(profilePicture);
 
         }catch(err){
             console.log(err);
@@ -86,7 +89,7 @@ function SideMenu() {
                    <div className="iconPhoto">
                     {userProfile && (
     <img
-        src={userProfile.profilePicture}
+        src={profileImage}
         alt="Profile"
         referrerPolicy="no-referrer"
     />
