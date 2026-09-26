@@ -13,7 +13,7 @@ router.get('/countyear/:id', restrictToLogin, getInvoiceCount);
 router.get('/income/:year/:month', restrictToLogin, monthlyIncome);
 router.get("/filter", restrictToLogin, getInvoicesByDateRange);
 router.get("/next-invoice-number", restrictToLogin, getNextInvoiceNumber);
-router.get("/annual-report/:financialYear", restrictToLogin, invoiceAnnualReport);
+router.get("/annual-report/:id", restrictToLogin, invoiceAnnualReport);
 
 
 module.exports = router;
