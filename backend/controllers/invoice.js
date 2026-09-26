@@ -474,6 +474,117 @@ const monthlyIncome = async (req, res) => {
     }
 };
 
+const invoiceAnnualReport = async (req,res) => {
+    try{
+       if (!req.user) {
+            return res.status(401).json({
+                success: false,
+                Msg: "Unauthorized"
+            });
+        }
+        const userid = req.user.id || req.user._id
+        const financialYear = req.params.id
+
+         if (!financialYear) {
+            return res.status(400).json({
+                success: false,
+                Msg: "Financial year is required"
+            });
+        }
+
+        const invoices = await InvoiceModel.find({
+            userid,
+            financialYear
+        })
+
+        const totalRevenue = invoices.reduce(
+            (sum, invoice) => 
+                sum + Number(invoice.totalAmount || 0)
+        )
+        const totalTaxableAmount = invoices.reduce(
+            (sum, invoice) => 
+                sum + Number(invoice.subtotal || 0)
+        )
+        const TotalTax = invoices.reduce(
+            (sum, invoice) => 
+                sum + Number(invoice.totalTax || 0)
+        )
+        const TotalCgst = invoices.reduce(
+            (sum, invoice) => 
+                sum + Number(invoice.cgst.amount || 0)
+        )
+        const TotalSgst = invoices.reduce(
+            (sum, invoice) => 
+                sum + Number(invoice.sgst.amount || 0)
+        )
+
+        const TotalIgst = invoices.reduce(
+            (sum, invoice) => 
+                sum + Number(invoice.igst.amount || 0)
+        )
+        const [startYear, endYear] = financialYear.split("-").map(Number);
+
+const months = [
+    { name: "April", month: 4, year: startYear },
+    { name: "May", month: 5, year: startYear },
+    { name: "June", month: 6, year: startYear },
+    { name: "July", month: 7, year: startYear },
+    { name: "August", month: 8, year: startYear },
+    { name: "September", month: 9, year: startYear },
+    { name: "October", month: 10, year: startYear },
+    { name: "November", month: 11, year: startYear },
+    { name: "December", month: 12, year: startYear },
+    { name: "January", month: 1, year: endYear },
+    { name: "February", month: 2, year: endYear },
+    { name: "March", month: 3, year: endYear }
+].map(({ name, month, year }) => {
+
+    const monthInvoices = invoices.filter(invoice => {
+        const invoiceDate = new Date(invoice.invoiceDate);
+
+        return (
+            invoiceDate.getMonth() + 1 === month &&
+            invoiceDate.getFullYear() === year
+        );
+    });
+
+    const revenue = monthInvoices.reduce(
+        (sum, invoice) =>
+            sum + Number(invoice.totalAmount || 0),
+        0
+    );
+
+    return {
+        month: name,
+        revenue
+    };
+});
+        return res.status(200).json({
+            success: true,
+            year: financialYear,
+            totalRevenue,
+            totalTaxableAmount,
+            TotalTax,
+            TotalCgst,
+            TotalSgst,
+            TotalIgst,
+            totalInvoices: invoices.length,
+
+            months
+        });
+
+    }catch (error) {
+        console.error("Annual Report ERROR:", error);
+
+        return res.status(500).json({
+            success: false,
+            Msg: "Error while generating Annual Report",
+            error: error.message
+        });
+    }
+}
+
+
 
 /* =========================================================
    UPDATE INVOICE
@@ -990,5 +1101,6 @@ module.exports = {
     getNextInvoiceNumber,
     monthlyIncome,
     getInvoiceCount,
-    getInvoicesByDateRange
+    getInvoicesByDateRange,
+    invoiceAnnualReport
 };
