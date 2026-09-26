@@ -26,6 +26,7 @@ const Setting = () => {
    const [phoneNumber, setPhoneNumber] = useState("");
    const [upiID, setUpiID] = useState("");
     const [companyProfile, setCompanyProfile] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
 
     const [error, setError] = useState('')
     const [editingCompany, setEditingCompany] = useState(null);
@@ -60,8 +61,13 @@ const Setting = () => {
 
     }
    }
+   const handleProfileImage = async (req,res) =>{
+    const fetchImage = await instance.get('/user/getUserProfile')
+    setProfileImage(fetchImage.data.profilePicture)
+   }
    useEffect(() => {
     fetchCompanyProfile();
+    handleProfileImage();
    }, []);
    const renderCompanyForm = () =>{
         window.location.href = "/companyForm"
@@ -88,8 +94,9 @@ const Setting = () => {
        {companyProfile && (
     <div className="companyProfileContainer" >
 <div className="headingSetting">
-            <div className="logoCompany">   
-            </div>
+            {profileImage ? (<img src={profileImage} className="profileImage" alt="Profile" />) : <div className="logoCompany">   
+            </div>}
+            
         <div className="companyInfo">
             <div className="info">
                <div className="edit"

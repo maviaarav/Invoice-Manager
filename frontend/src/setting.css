@@ -13,7 +13,16 @@
     gap:30px;
     background:#F8F9FF;
 }
-
+.profileImage{
+    width:200px;
+    height:200px;
+    margin-top:20px;
+    display:flex;
+    align-items:center;
+    background-size: cover;
+    justify-content:center;
+    border-radius: 50%;
+}
 .headingSetting{
     display:flex;
     align-items:center;
