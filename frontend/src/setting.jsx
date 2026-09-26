@@ -63,7 +63,8 @@ const Setting = () => {
    }
    const handleProfileImage = async (req,res) =>{
     const fetchImage = await instance.get('/user/getUserProfile')
-    setProfileImage(fetchImage.data.profilePicture)
+    const profilePicture = fetchImage.data.profilePicture.replace(/=s\d+(-c)?$/, '=s400');
+    setProfileImage(profilePicture)
    }
    useEffect(() => {
     fetchCompanyProfile();
