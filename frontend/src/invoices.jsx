@@ -60,7 +60,7 @@ const Invoices = () => {
 
   const [openMenuId, setOpenMenuId] = useState(null);
 
-  const itemsPerPage = 6;
+  const itemsPerPage = 5;
 
   const menuRef = useRef(null);
   const pickerRef = useRef(null);
