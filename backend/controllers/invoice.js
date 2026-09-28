@@ -565,27 +565,27 @@ const months = [
 
     const totalTaxableAmount = monthInvoices.reduce(
         (sum, invoice) =>
-            sum + Number(invoice.totalTaxableAmount || 0),
+            sum + Number(invoice.subtotal || 0),
         0
     );
     const TotalTax = monthInvoices.reduce(
         (sum, invoice) =>
-            sum + Number(invoice.TotalTax || 0),
+            sum + Number(invoice.totalTax || 0),
         0
     );
     const TotalCgst = monthInvoices.reduce(
         (sum, invoice) =>
-            sum + Number(invoice.TotalCgst || 0),
+            sum + Number(invoice.cgst?.amount || 0),
         0
     );
     const TotalSgst = monthInvoices.reduce(
         (sum, invoice) =>
-            sum + Number(invoice.TotalSgst || 0),
+            sum + Number(invoice.sgst?.amount || 0),
         0
     );
     const TotalIgst = monthInvoices.reduce(
         (sum, invoice) =>
-            sum + Number(invoice.TotalIgst || 0),
+            sum + Number(invoice.igst?.amount || 0),
         0
     );
 
