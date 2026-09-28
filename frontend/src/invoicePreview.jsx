@@ -80,7 +80,7 @@ const InvoicePreview = () => {
             html2pdf().set(buildPdfOptions(element)).from(element).save();
         }, 200);
     };
-
+  
     const handleSendInvoice = async (emailList) => {
         try {
             setIsSending(true);

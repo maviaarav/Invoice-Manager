@@ -588,6 +588,39 @@ const months = [
             sum + Number(invoice.igst?.amount || 0),
         0
     );
+    const quarter1 = ["April", "May", "June"];
+    const quarter2 = ["July", "August", "September"];
+    const quarter3 = ["October", "November", "December"];
+    const quarter4 = ["January", "February", "March"];
+
+    const quarterAmount1 = quarter1.reduce(
+        (sum, month) => {
+            const monthData = months.find(m => m.name === month)
+            return sum + (monthData ? monthData.revenue : 0);
+
+        },0
+    )
+    const quarterAmount2 = quarter2.reduce(
+        (sum, month) => {
+            const monthData = months.find(m => m.name === month)
+            return sum + (monthData ? monthData.revenue : 0);
+        },
+        0
+    )
+    const quarterAmount3 = quarter3.reduce(
+        (sum, month) => {
+            const monthData = months.find(m => m.name === month)
+            return sum + (monthData ? monthData.revenue : 0);
+        },
+        0
+    )
+    const quarterAmount4 = quarter4.reduce(
+        (sum, month) => {
+            const monthData = months.find(m => m.name === month)
+            return sum + (monthData ? monthData.revenue : 0);
+        },
+        0
+    )
 
     return {
         month: name,
@@ -596,7 +629,11 @@ const months = [
         TotalSgst,
         TotalIgst,
         TotalTax,
-        totalTaxableAmount
+        totalTaxableAmount,
+        quarterAmount1,
+        quarterAmount2,
+        quarterAmount3,
+        quarterAmount4
     };
 });
         return res.status(200).json({
