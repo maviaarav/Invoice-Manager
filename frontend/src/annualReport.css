@@ -219,7 +219,7 @@
     gap: 20px;
 }
 .boxes-annual{
-    width: 300px;
+    width: auto;
     height: auto;
     border: 1px solid #D8E2EE;
     border-radius: 12px;
