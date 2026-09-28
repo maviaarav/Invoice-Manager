@@ -362,7 +362,54 @@ const deleteInvoice = async (req, res) => {
     }
 };
 
+const onlyRequiredFields = async (req, res) => {
+    try{
+        if(!req.user){
+            return res.status(401).json({
+                success: false,
+                Msg: "Unauthorized"
+            });
+        }
+        const userId = req.user.userId || req.user._id;
+        const financialYear = req.params.id;
 
+        if(!financialYear){
+            return res.status(400).json({
+                success: false,
+                Msg: "Financial year is required"
+            });
+        }
+
+        const invoices = await InvoiceModel.find({
+            userId,
+            financialYear,
+
+        }, {invoiceNumber: 1, invoiceDate: 1,  subtotal: 1, totalTax: 1, totalAmount:1, cgst: 1, sgst: 1, igst:1}).populate("companyId", {CompanyName:1}).populate("customerId", {clientName:1, gstNumber: 1}).sort({invoiceDate: 1, createdAt: 1}).lean()
+
+        const register = invoices.map(invoice => ({
+            invoiceNumber: invoice.invoiceNumber,
+            invoiceDate: invoice.invoiceDate,
+            companyName: invoice.companyId?.CompanyName || null,
+            customerName: invoice.customerId?.clientName || null,
+            customerGstNumber: invoice.customerId?.gstNumber || null,
+            subtotal: invoice.subtotal,
+            totalTax: invoice.totalTax,
+            totalAmount: invoice.totalAmount,
+            cgstAmount: invoice.cgst?.amount || 0,
+            sgstAmount: invoice.sgst?.amount || 0,
+            igstAmount: invoice.igst?.amount || 0
+        }))
+        res.json(register)
+    }catch(error){
+        console.error("onlyRequiredFields INVOICE ERROR:", error);
+
+        return res.status(500).json({
+            success: false,
+            Msg: "Error while onlyRequiredFields Invoice",
+            error: error.message
+        });
+    }
+}
 /* =========================================================
    MONTHLY INCOME
 ========================================================= */
@@ -1183,5 +1230,6 @@ module.exports = {
     monthlyIncome,
     getInvoiceCount,
     getInvoicesByDateRange,
-    invoiceAnnualReport
+    invoiceAnnualReport,
+    onlyRequiredFields
 };
