@@ -563,9 +563,40 @@ const months = [
         0
     );
 
+    const totalTaxableAmount = monthInvoices.reduce(
+        (sum, invoice) =>
+            sum + Number(invoice.totalTaxableAmount || 0),
+        0
+    );
+    const TotalTax = monthInvoices.reduce(
+        (sum, invoice) =>
+            sum + Number(invoice.TotalTax || 0),
+        0
+    );
+    const TotalCgst = monthInvoices.reduce(
+        (sum, invoice) =>
+            sum + Number(invoice.TotalCgst || 0),
+        0
+    );
+    const TotalSgst = monthInvoices.reduce(
+        (sum, invoice) =>
+            sum + Number(invoice.TotalSgst || 0),
+        0
+    );
+    const TotalIgst = monthInvoices.reduce(
+        (sum, invoice) =>
+            sum + Number(invoice.TotalIgst || 0),
+        0
+    );
+
     return {
         month: name,
-        revenue
+        revenue,
+        TotalCgst,
+        TotalSgst,
+        TotalIgst,
+        TotalTax,
+        totalTaxableAmount
     };
 });
         return res.status(200).json({
