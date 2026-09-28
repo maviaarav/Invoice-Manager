@@ -630,10 +630,6 @@ const months = [
         TotalIgst,
         TotalTax,
         totalTaxableAmount,
-        quarterAmount1,
-        quarterAmount2,
-        quarterAmount3,
-        quarterAmount4
     };
 });
         return res.status(200).json({
@@ -645,6 +641,10 @@ const months = [
             TotalCgst,
             TotalSgst,
             TotalIgst,
+            quarterAmount1,
+            quarterAmount2,
+            quarterAmount3,
+            quarterAmount4,
             totalInvoices: invoices.length,
 
             months
