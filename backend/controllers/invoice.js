@@ -498,7 +498,7 @@ const invoiceAnnualReport = async (req,res) => {
         const invoices = await InvoiceModel.find({
             userId,
             financialYear
-        })
+        }).populate("companyId");
 
         const totalRevenue = invoices.reduce(
             (sum, invoice) => 
@@ -638,6 +638,7 @@ const months = [
         return res.status(200).json({
             success: true,
             year: financialYear,
+            company: invoices[0]?.companyId || null,
             totalRevenue,
             totalTaxableAmount,
             TotalTax,

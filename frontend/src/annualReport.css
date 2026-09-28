@@ -5,10 +5,274 @@
     font-family: 'Inter', sans-serif;
 }
 .annual-report-container {
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 40px 5%;
     display: flex;
     flex-direction: column;
+    gap: 30px;
+    background: #F8F9FF;
+}
+.previewHeading1{
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.previewHeading1 span{
+    font-size: 34px;
+    color: #1F4FE0;
+    text-decoration: underline;
+}
+.annual-report{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    border-radius: 12px;
+    overflow-y: visible;
+    border: 1px solid #D8E2EE;
+    background-color: white;
+    padding: 10px 30px 30px 30px;
+}
+.header{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding:  0 28px;
     align-items: center;
-    padding: 20px;
-    background-color: #f9fafb;
-    min-height: 100vh;
+    justify-content: space-between;
+    padding: 10px 30px 10px 30px;
+    border-bottom: 1px solid #D8E2EE;
+}
+.leftSide-annual{
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.rightSide-annual{
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.logoA{
+    width: 70px;
+    height: 50px;
+    background-image: url(/src/images/invoizor.png);
+    background-size: cover;
+    background-position: center;
+}
+.textAnnual{
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+.textAnnual h3{
+    font-size: 24px;
+    color: black;
+    font-weight: bolder;
+}
+.textAnnual p{
+    font-size: 14px;
+    color: #64748B;
+}
+.rightSide-annualP{
+    padding: 10px;
+    font-size: 14px;
+    color: #7C3AED;
+    background-color: #F5F3FF;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.annualP{
+    padding: 4px 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+.annualP h3{
+    font-size: 18px;
+    color: #0F172A;
+}
+.subject-annual{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: space-between;
+    background-color: #F8FAFF;
+    padding: 20px 24px 20px 24px;
+    border-radius: 12px;
+    border: 1px solid #E0E9F6;
+}
+.left-subject{
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.right-subject{
+    width: 50%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+}
+.leftUpper{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+.leftUpper h2{
+    font-size: 20px;
+    color: #0F172A;
+    font-weight: bold;
+}
+.right-subject h2{
+     font-size: 18px;
+    color: #0F172A;
+    font-weight: bold;
+}
+.left-subject span, .right-subject span{
+    font-size: 14px;
+    color: #64748B;
+    font-weight: 500;
+}
+.left-subject p, .right-subject p{
+    font-size: 14px;
+    color: #0F172A;
+    font-weight: bolder;
+}
+#dot{
+    color: #1E293B
+}
+.reportgenerated, .accounting{
+    width: auto;
+    height: auto;
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.activeGst{
+    width: auto;
+    height: auto;
+    padding: 3px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ECFDF5;
+    border-radius: 30px;
+    margin-top: -6px;
+    background-color: #D1FAE5;
+    border: 1px solid #A7F3D0;
+}
+.activeGst p{
+    font-size: 12px;
+    color: #059669;
+    font-weight: bold;
+}
+.heading-annual-1{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.heading-annual-1 h1{
+    font-size: 26px;
+    color: #1E293B;
+      margin: 0px;
+    font-weight: bold;
+}
+.heading-annual-1 p{
+    font-size: 14px;
+      margin: 0;
+    color: #64748B;
+}
+.heading-annual-1 span{
+      margin: 0;
+    color: #2563EB;
+}
+.box-container-annual{
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+.boxes-annual{
+    width: 300px;
+    height: auto;
+    border: 1px solid #D8E2EE;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 18px;
+    gap: 20px;
+}
+.box-upper{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.icon-annual{
+    width: 50px;
+    height: 50px;
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #F1F5FD;
+    color: #2563EB;
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.box-lower{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
+}
+.boxes-annual p{
+    font-size: 14px;
+    font-weight: bolder;
+
+}
+.box-lower h1{
+    margin: 0;
+    font-size: 32px;
+    color: black;
+    font-weight: bolder;
+    letter-spacing: 1px;
+}
+.box-lower p{
+    margin: 0;
+    font-size: 14px;
+    color: #64748B;
+    font-weight: 500;
+    letter-spacing: 1px;
 }

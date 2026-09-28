@@ -493,8 +493,9 @@ const Invoices = () => {
           </div>
         )}
 
-
-        <div className="annual_Report">
+  {
+    invoices.length > 0 && (
+      <div className="annual_Report">
           <div className="rightAnn">
             <div className="reportIcon">
               <DataBarVerticalAscendingFilled />
@@ -526,7 +527,9 @@ const Invoices = () => {
             </button>
           </div>
         </div>
-
+    )
+  }
+        
         {/* =================================================
             MONTH FILTER
         ================================================= */}
