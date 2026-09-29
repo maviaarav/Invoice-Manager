@@ -4,6 +4,8 @@ import {
 
     BarChart,
     Bar,
+    PieChart,
+    Pie,
     XAxis,
     YAxis,
     CartesianGrid,
@@ -79,14 +81,29 @@ const fetchReport = async () => {
     }
 
     const annualRevenueText = `₹${(report.totalRevenue / 100000).toFixed(2)}L`;
+    const gstDistribution = [
+        { name: "CGST", value: Number(report.TotalCgst || 0), color: "#2563EB" },
+        { name: "SGST", value: Number(report.TotalSgst || 0), color: "#7C3AED" },
+        { name: "IGST", value: Number(report.TotalIgst || 0), color: "#CBD5E1" }
+    ];
+    const totalGst = gstDistribution.reduce((sum, item) => sum + item.value, 0);
+    const gstPercentage = (value) =>
+        totalGst === 0 ? "0.0" : ((value / totalGst) * 100).toFixed(1);
 
     return (
         <div className="annual-report-container">
             <div className="headerPreview">
-                <div className="previewHeading1">
+                 <div className="previewHeading1">
                         <h1>Annual Revenue & GST Report for <span>#FY { id }</span></h1>
                     </div>
             </div>
+           
+            <div className="pages">
+                <div className="reportPage">
+
+               
+           
+            
             <div className="annual-report">
                 <div className="header">
                     <div className="leftSide-annual">
@@ -347,13 +364,153 @@ const fetchReport = async () => {
             </div>
 
         </div>
+                            
+                            <div className="gstbreakdown">
+                                <div className="leftGstBreakdown">
+                                    <h2>GST Statutory Breakdown</h2>
+                                    <div className="gst-table">
+
+                {/* HEADER */}
+                <div className="gst-row gst-header">
+
+                    <div className="gst-component">
+                        TAX COMPONENT
+                    </div>
+
+                    <div className="gst-base">
+                        TAXABLE BASE
+                    </div>
+
+                    <div className="gst-amount">
+                        TAX AMOUNT
+                    </div>
+
+                </div>
+
+
+                {/* CGST */}
+                <div className="gst-row">
+
+                    <div className="gst-component">
+                        Central GST (CGST 9%)
+                    </div>
+
+                    <div className="gst-base">
+                        {report.TotalCgst == 0 ? "₹0" : `₹${report.totalTaxableAmount.toLocaleString("en-IN")}`}
+                    </div>
+
+                    <div className="gst-amount gst-blue">
+                      {report.TotalCgst == 0 ? "₹0" : `₹${report.TotalCgst.toLocaleString("en-IN")}`}
+                    </div>
+
+                </div>
+
+
+                {/* SGST */}
+                <div className="gst-row">
+
+                    <div className="gst-component">
+                        State GST (SGST 9%)
+                    </div>
+
+                    <div className="gst-base">
+                         {report.TotalSgst == 0 ? "₹0" : `₹${report.totalTaxableAmount.toLocaleString("en-IN")}`}
+                    </div>
+
+                    <div className="gst-amount gst-purple">
+                        {report.TotalSgst == 0 ? "₹0" : `₹${report.TotalSgst.toLocaleString("en-IN")}`}
+                    </div>
+
+                </div>
+
+
+                {/* IGST */}
+                <div className="gst-row">
+
+                    <div className="gst-component">
+                        Integrated GST (IGST 18%)
+                    </div>
+
+                    <div className="gst-base">
+                        {report.TotalIgst == 0 ? "₹0" : `₹${report.totalTaxableAmount.toLocaleString("en-IN")}`}
+                    </div>
+
+                    <div className="gst-amount gst-blue">
+                        {report.TotalIgst == 0 ? "₹0" : `₹${report.TotalIgst.toLocaleString("en-IN")}`}
+                    </div>
+
+                </div>
+
+
+                {/* TOTAL */}
+                <div className="gst-total">
+
+                    <div className="gst-component">
+                        Total GST Liability
+                    </div>
+
+                    <div className="gst-amount">
+                       {report.totalTaxableAmount == 0 ? "₹0" : `₹${report.totalTaxableAmount.toLocaleString("en-IN")}`}
+                    </div>
+
+                    <div className="gst-amount gst-total-amount">
+                       {report.TotalTax == 0 ? "₹0" : `₹${report.TotalTax.toLocaleString("en-IN")}`}
+                    </div>
+
+                </div>
+
+            </div>
+                                </div>
+                                <div className="RightGstBreakdown">
+                                    <h2>GST Distribution</h2>
+                                    <div className="gst-distribution-content">
+                                        <div className="gst-donut">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <PieChart>
+                                                    <Pie
+                                                        data={gstDistribution}
+                                                        dataKey="value"
+                                                        nameKey="name"
+                                                        innerRadius="58%"
+                                                        outerRadius="82%"
+                                                        startAngle={180}
+                                                        endAngle={-180}
+                                                        paddingAngle={0}
+                                                        stroke="none"
+                                                    >
+                                                        {gstDistribution.map((item) => (
+                                                            <Cell key={item.name} fill={item.color} />
+                                                        ))}
+                                                    </Pie>
+                                                </PieChart>
+                                            </ResponsiveContainer>
+                                            <div className="gst-donut-total">
+                                                <strong>{formatRevenue(totalGst)}</strong>
+                                                <span>TOTAL GST</span>
+                                            </div>
+                                        </div>
+                                        <div className="gst-distribution-legend">
+                                            {gstDistribution.map((item) => (
+                                                <div className={`gst-legend-item${item.value === 0 ? " is-empty" : ""}`} key={item.name}>
+                                                    <span className="gst-legend-label">
+                                                        <span className="gst-legend-dot" style={{ backgroundColor: item.color }} />
+                                                        {item.name}
+                                                    </span>
+                                                    <span>({gstPercentage(item.value)}%)</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
   
 
             </div>
+             </div>
             
            
-            
+             </div>
         </div>
     );
 }

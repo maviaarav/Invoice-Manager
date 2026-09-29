@@ -4,25 +4,50 @@
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
 }
+@page{
+    size: A4 portrait;
+    margin: 12mm;
+}
 .annual-report-container {
-    flex: 1;
-    height: 100vh;
-    overflow-y: auto;
+    width: 100%;
+    min-height: 100vh;
+
     padding: 40px 5%;
+    box-sizing: border-box;
+
     display: flex;
     flex-direction: column;
-    gap: 30px;
+
     background: #F8F9FF;
+
+    overflow-y: auto;
+}
+.pages {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 30px;
+    margin-top: 40px;
 }
 .previewHeading1{
-    width: auto;
+    width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
+.previewHeading1 h1{
+    max-width: 100%;
+    margin: 0;
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1.1;
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+}
 .previewHeading1 span{
-    font-size: 34px;
+    font-size: 44px;
     color: #1F4FE0;
     text-decoration: underline;
 }
@@ -331,8 +356,290 @@ margin: 0;
 
     white-space: nowrap;
 }
+.gstbreakdown{
+    width: 100%;
+   height: auto;
+   display: flex;
+   flex-direction: row;
+    gap: 20px;
 
+}
+.leftGstBreakdown{
+    width: 60%;
+    height: auto;
+    border: 1px solid #D8E2EE;
+    border-radius: 12px;
+    padding: 30px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.RightGstBreakdown{
+    width: 40%;
+    height: auto;
+    border: 1px solid #D8E2EE;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    padding: 20px 30px;
+}
+.leftGstBreakdown h2, .RightGstBreakdown h2{
+margin: 0;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    color: #172033;
+}
+.gst-distribution-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    min-height: 260px;
+}
+.gst-donut{
+    width: 220px;
+    height: 220px;
+    position: relative;
+    flex: 0 0 220px;
+}
+.gst-donut-total{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+.gst-donut-total strong{
+    color: #111827;
+    font-size: 24px;
+}
+.gst-donut-total span{
+    color: #64748B;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+}
+.gst-distribution-legend{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #334155;
+    font-size: 18px;
+    white-space: nowrap;
+}
+.gst-legend-item,
+.gst-legend-label{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.reportPage {
+    width: 100%;
+
+    min-height: 297mm;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 30px;
+
+    background: #ffffff;
+
+    break-after: page;
+    page-break-after: always;
+
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+.reportPage:last-child {
+    break-after: auto;
+    page-break-after: auto;
+}
+.reportPage .boxes-annual,
+.reportPage .revenue-card,
+.reportPage .gstbreakdown,
+.reportPage .leftGstBreakdown,
+.reportPage .RightGstBreakdown {
+
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+.gst-row,
+.gst-total,
+.gst-header{
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+.gst-legend-item{
+    gap: 4px;
+}
+.gst-legend-dot{
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.gst-legend-item.is-empty{
+    color: #94A3B8;
+}
+
+.gst-table {
+    width: 100%;
+}
+
+
+/* =========================
+   ROW
+========================= */
+
+.gst-row {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        0.65fr
+        0.55fr;
+
+    align-items: center;
+
+    min-height: 70px;
+
+    border-bottom: 1px solid #edf1f5;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.gst-header {
+    min-height: 70px;
+
+    background: #f8fafc;
+
+    border-bottom: 1px solid #dce4ed;
+
+    color: #63748f;
+    border-radius: 12px 12px 0 0;
+
+    font-weight: bolder;
+}
+
+
+/* =========================
+   COLUMNS
+========================= */
+
+.gst-component {
+    padding-left: 24px;
+}
+
+.gst-base {
+    text-align: right;
+    font-weight: 500;
+    color: #1E293B;
+    padding-right: 24px;
+
+}
+.gst-amount {
+    text-align: right;
+    font-weight: bolder;
+    color: #1E293B;
+    padding-right: 24px;
+
+}
+
+
+/* =========================
+   NORMAL TEXT
+========================= */
+
+.gst-row:not(.gst-header) {
+
+    color: #202b3f;
+
+    font-weight: 400;
+}
+
+
+/* =========================
+   TAX AMOUNT
+========================= */
+
+.gst-blue {
+    color: #1E3A8A;
+
+    font-weight: 700;
+}
+
+.gst-purple {
+    color: #4939d6;
+
+    font-weight: 700;
+}
+
+
+/* =========================
+   TOTAL ROW
+========================= */
+.gst-total {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        0.65fr
+        0.55fr;
+
+    align-items: center;
+
+    min-height: 70px;
+
+    background: #f7f9fc;
+
+    border-top: 1px solid #cbd6e2;
+
+
+    font-weight: bolder;
+
+    color: #111a2e;
+}
+
+
+.gst-total .gst-component {
+    padding-left: 24px;
+}
+
+
+.gst-total-amount {
+    color: #2563eb;
+
+    font-weight: 800;
+}
 @media (max-width: 700px){
+    .previewHeading1 h1{
+        font-size: 30px;
+    }
+
+    .gstbreakdown{
+        flex-direction: column;
+    }
+
+    .leftGstBreakdown,
+    .RightGstBreakdown{
+        width: 100%;
+    }
+
+    .gst-distribution-content{
+        flex-direction: column;
+    }
+
     .revenue-card{
         padding: 22px 16px 16px;
     }
@@ -350,4 +657,157 @@ margin: 0;
         height: 280px;
         min-height: 280px;
     }
+}
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+        margin: 12mm;
+    }
+
+
+    html,
+    body {
+        width: 100%;
+
+        margin: 0;
+        padding: 0;
+
+        background: #ffffff;
+    }
+
+
+    /* Remove browser preview spacing */
+
+    .annual-report-container {
+        width: 100%;
+
+        min-height: 0;
+        height: auto;
+
+        margin: 0;
+        padding: 0;
+
+        display: block;
+
+        background: #ffffff;
+
+        overflow: visible;
+    }
+
+
+    /* Pages should not add gaps in PDF */
+
+    .pages {
+        width: 100%;
+
+        margin: 0;
+        padding: 0;
+
+        display: block;
+    }
+
+
+    /* =====================================
+       ONE .reportPage = ONE A4 PDF PAGE
+    ===================================== */
+
+    .reportPage {
+
+        width: 100%;
+
+        height: 273mm;
+        min-height: 273mm;
+
+        box-sizing: border-box;
+
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 8mm;
+
+        background: #ffffff;
+
+        break-after: page;
+        page-break-after: always;
+
+        break-inside: avoid;
+        page-break-inside: avoid;
+
+        overflow: hidden;
+    }
+
+
+    /* Last page */
+
+    .reportPage:last-child {
+
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+
+    /* =====================================
+       ANNUAL REPORT CONTENT
+    ===================================== */
+
+    .reportPage .annual-report {
+
+        width: 100%;
+        height: 100%;
+
+        box-sizing: border-box;
+
+        margin: 0;
+
+        padding: 5mm;
+
+        overflow: visible;
+
+        border-radius: 0;
+    }
+
+
+    /* =====================================
+       PREVENT CARDS FROM SPLITTING
+    ===================================== */
+
+    .reportPage .boxes-annual,
+    .reportPage .revenue-card,
+    .reportPage .gstbreakdown,
+    .reportPage .leftGstBreakdown,
+    .reportPage .RightGstBreakdown {
+
+        break-inside: avoid;
+        page-break-inside: avoid;
+
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+
+    /* =====================================
+       CHART SIZE IN PDF
+    ===================================== */
+
+    .reportPage .revenue-chart {
+
+        height: 72mm;
+        min-height: 72mm;
+    }
+
+    .reportPage .previewHeading1 h1{
+        font-size: 23px;
+        line-height: 1.15;
+        margin: 0;
+    }
+
+    .reportPage .previewHeading1 span{
+        font-size: 0.8em;
+    }
+
 }
