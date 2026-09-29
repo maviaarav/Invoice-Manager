@@ -1,5 +1,18 @@
 import "./annualReport.css";
 import { useState, useEffect } from "react";
+import {
+
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    LabelList,
+    Cell
+
+} from "recharts";
 import { useParams } from "react-router-dom";
 import instance from "./api/axios";
 import {
@@ -12,7 +25,10 @@ const AnnualReport = () => {
     const [invoice, setInvoice] = useState(null);
     const [report, setReport] = useState(null)
     const [company, setCompany] = useState(null)
+    const [months, setMonths] = useState([]);
     const { id } = useParams();
+
+
 
 
     const fetchCompanyDetails = async () =>{
@@ -38,6 +54,7 @@ const fetchReport = async () => {
     try{
         const response = await instance.get(`/invoice/annual-report/${id}`)
         setReport(response.data)
+        setMonths(response.data.months)
     }catch(error){
          console.error("Error fetching report:", error);
     }
@@ -51,6 +68,18 @@ const fetchReport = async () => {
     if (!invoice || !report || !company) {
         return <h2>Loading...</h2>;
     }
+    const formatRevenue = (value) => {
+        if (value >= 100000) {
+            return (value / 100000).toFixed(2) + "L";
+        }
+         if (value >= 1000) {
+            return `₹${(value / 1000).toFixed(0)}K`;
+        }
+        return `₹${value}`;
+    }
+
+    const annualRevenueText = `₹${(report.totalRevenue / 100000).toFixed(2)}L`;
+
     return (
         <div className="annual-report-container">
             <div className="headerPreview">
@@ -172,6 +201,155 @@ const fetchReport = async () => {
                     </div>
                 </div>
             </div>
+            <div className="revenue-card">
+
+            {/* HEADER */}
+
+            <div className="chartRevenuee">
+
+                <div>
+
+                    <h2>
+                        Monthly Revenue Trajectory
+                    </h2>
+
+                    <p>
+                        Revenue accrued month-by-month
+                        across 12 fiscal months (INR)
+                    </p>
+
+                </div>
+
+
+                {/* ANNUAL REVENUE */}
+
+                <div className="annual-revenue">
+
+                    {annualRevenueText} Annual Gross
+
+                </div>
+
+            </div>
+
+
+            {/* GRAPH */}
+
+            <div className="revenue-chart">
+
+                <ResponsiveContainer
+                    width="100%"
+                    height="100%"
+                >
+
+                    <BarChart
+                        data={months}
+
+                        margin={{
+                            top: 35,
+                            right: 20,
+                            left: 10,
+                            bottom: 5
+                        }}
+
+                        barCategoryGap="28%"
+                    >
+
+                        {/* HORIZONTAL DASHED LINES */}
+
+                        <CartesianGrid
+                            vertical={false}
+                            strokeDasharray="4 4"
+                        />
+
+
+                        {/* MONTHS */}
+
+                        <XAxis
+                            dataKey="month"
+                            axisLine={false}
+                            tickLine={false}
+                            tick={{
+                                fontSize: 17
+                            }}
+                            tickFormatter={(month) =>
+                                month.substring(0, 3)
+                            }
+                        />
+
+
+                        {/* LEFT NUMBERS */}
+
+                        <YAxis
+                            axisLine={false}
+                            tickLine={false}
+                            tickFormatter={(value) =>
+                                `${value / 100000}L`
+                            }
+                        />
+
+
+                        {/* HOVER TOOLTIP */}
+
+                        <Tooltip
+                            formatter={(value) => [
+                                formatRevenue(value),
+                                "Revenue"
+                            ]}
+                        />
+
+
+                        {/* BARS */}
+
+                        <Bar
+                            dataKey="revenue"
+                            radius={[
+                                8,
+                                8,
+                                0,
+                                0
+                            ]}
+                        >
+
+                            {/* VALUE ABOVE BAR */}
+
+                            <LabelList
+                                dataKey="revenue"
+                                position="top"
+                                formatter={formatRevenue}
+                                style={{
+                                    fontSize: 15,
+                                    fontWeight: 600
+                                }}
+                            />
+
+
+                            {/* BAR COLORS */}
+
+                            {months.map((item, index) => (
+
+                                <Cell
+                                    key={index}
+                                    fill={
+                                        index >= 8
+                                            ? "#4F46E5"
+                                            : "#3478E5"
+                                    }
+                                />
+
+                            ))}
+
+                        </Bar>
+
+                    </BarChart>
+
+                </ResponsiveContainer>
+
+            </div>
+
+        </div>
+
+  
+
             </div>
             
            
