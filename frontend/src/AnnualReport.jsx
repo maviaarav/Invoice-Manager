@@ -509,7 +509,33 @@ const fetchReport = async () => {
             </div>
              </div>
             
-           
+           <div className="reportPage">
+            <div className="annual-report">
+                <div className="header">
+                    <div className="leftSide-annual">
+                        <div className="logoA"></div>
+                        <div className="textAnnual">
+                            <h3>INVOIZOR</h3>
+                            <p>Simple Invoicing. Smarter Business.</p>
+                        </div>
+                    </div>
+                    <div className="rightSide-annual">
+                        <div className="annualP">
+                                 <p className="rightSide-annualP">STATUTORY DOCUMENT</p>
+                                   <h3>FY { id }</h3>
+                        </div>
+                      
+                           
+                        </div>
+                        
+                        
+                        </div>
+                        <div className="heading-annual-1">
+                <h1>Financial <span>Analysis & Diagnostics</span></h1>
+                <p>Granular month-by-month financial ledger, benchmark invoice statistics, and client contribution analysis.</p>
+            </div>
+            </div>
+           </div>
              </div>
         </div>
     );

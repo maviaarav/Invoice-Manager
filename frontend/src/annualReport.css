@@ -9,7 +9,9 @@
     margin: 12mm;
 }
 .annual-report-container {
-    width: 100%;
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 0;
     min-height: 100vh;
 
     padding: 40px 5%;
@@ -20,11 +22,12 @@
 
     background: #F8F9FF;
 
+    overflow-x: hidden;
     overflow-y: auto;
 }
 .pages {
     width: 100%;
-
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
 
@@ -41,7 +44,7 @@
 .previewHeading1 h1{
     max-width: 100%;
     margin: 0;
-    font-size: clamp(28px, 4vw, 48px);
+    font-size: clamp(28px, 3vw, 40px);
     line-height: 1.1;
     letter-spacing: 0;
     overflow-wrap: anywhere;
@@ -53,6 +56,7 @@
 }
 .annual-report{
     width: 100%;
+    min-width: 0;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -440,8 +444,8 @@ margin: 0;
 }
 .reportPage {
     width: 100%;
-
-    min-height: 297mm;
+    border-radius: 12px;
+    min-height: auto;
 
     box-sizing: border-box;
 
