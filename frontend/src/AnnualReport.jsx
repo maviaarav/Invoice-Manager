@@ -18,8 +18,8 @@ const AnnualReport = () => {
     const fetchCompanyDetails = async () =>{
         try{
             const response = await instance.get('/company/only-company-and-owner-details')
-            setCompany(response.data.company)
-            console.log(response.data.company)
+            const companyData = response.data.company;
+            setCompany(Array.isArray(companyData) ? companyData[0] || null : companyData);
         }catch(error){
             console.log("error while fetching compnay details for annual", error)
         }
