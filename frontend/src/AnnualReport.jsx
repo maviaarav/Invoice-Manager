@@ -1,5 +1,7 @@
 import "./annualReport.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import {
 
     BarChart,
@@ -28,6 +30,8 @@ const AnnualReport = () => {
     const [report, setReport] = useState(null)
     const [company, setCompany] = useState(null)
     const [months, setMonths] = useState([]);
+    const [isDownloading, setIsDownloading] = useState(false);
+    const reportPagesRef = useRef(null);
     const { id } = useParams();
 
 
@@ -35,7 +39,7 @@ const AnnualReport = () => {
 
     const fetchCompanyDetails = async () =>{
         try{
-            const response = await instance.get('/company/only-company-and-owner-details')
+            const response = await instance.get('/company/get')
             const companyData = response.data.company;
             setCompany(Array.isArray(companyData) ? companyData[0] || null : companyData);
         }catch(error){
@@ -126,6 +130,105 @@ const fetchReport = async () => {
     const totalGst = gstDistribution.reduce((sum, item) => sum + item.value, 0);
     const gstPercentage = (value) =>
         totalGst === 0 ? "0.0" : ((value / totalGst) * 100).toFixed(1);
+    const formatRegisterDate = (date) =>
+        new Date(date).toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        });
+    const registerPeriod = invoice.length
+        ? `${formatRegisterDate(invoice[0].invoiceDate)} - ${formatRegisterDate(invoice[invoice.length - 1].invoiceDate)}`
+        : "No invoice period";
+
+    const handleDownloadPdf = async () => {
+    if (!reportPagesRef.current || isDownloading) return;
+
+    setIsDownloading(true);
+
+    try {
+        const reportPages = Array.from(
+            reportPagesRef.current.querySelectorAll(".reportPage")
+        );
+
+        const SCALE = 4;
+        const PX_TO_MM = 25.4 / 96;
+
+        let pdf = null;
+
+        for (let i = 0; i < reportPages.length; i++) {
+            const reportPage = reportPages[i];
+
+            // Get the ACTUAL rendered size of the page
+            const rect = reportPage.getBoundingClientRect();
+
+            const width = Math.ceil(rect.width);
+            const height = Math.ceil(rect.height);
+
+            // Capture at high resolution
+            const canvas = await html2canvas(reportPage, {
+                scale: SCALE,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: "#ffffff",
+                logging: false,
+
+                width: width,
+                height: height,
+
+                windowWidth: document.documentElement.clientWidth,
+                windowHeight: document.documentElement.clientHeight,
+
+                scrollX: 0,
+                scrollY: -window.scrollY
+            });
+
+            // Convert the REAL CSS pixel size to mm
+            const pdfWidth = width * PX_TO_MM;
+            const pdfHeight = height * PX_TO_MM;
+
+            const orientation =
+                pdfWidth > pdfHeight ? "landscape" : "portrait";
+
+            if (i === 0) {
+                pdf = new jsPDF({
+                    unit: "mm",
+                    format: [pdfWidth, pdfHeight],
+                    orientation: orientation,
+                    compress: true
+                });
+            } else {
+                pdf.addPage(
+                    [pdfWidth, pdfHeight],
+                    orientation
+                );
+            }
+
+            // Add image at exactly the page dimensions
+            pdf.addImage(
+                canvas.toDataURL("image/png"),
+                "PNG",
+                0,
+                0,
+                pdfWidth,
+                pdfHeight,
+                undefined,
+                "FAST"
+            );
+        }
+
+        if (pdf) {
+            pdf.save(`Annual-Report-FY-${id}.pdf`);
+        }
+
+    } catch (error) {
+        console.error(
+            "Error downloading annual report PDF:",
+            error
+        );
+    } finally {
+        setIsDownloading(false);
+    }
+};
 
     return (
         <div className="annual-report-container">
@@ -133,9 +236,12 @@ const fetchReport = async () => {
                  <div className="previewHeading1">
                         <h1>Annual Revenue & GST Report for <span>#FY { id }</span></h1>
                     </div>
+                 <button className="download-report-button" type="button" onClick={handleDownloadPdf} disabled={isDownloading}>
+                    {isDownloading ? "Preparing PDF..." : "Download PDF"}
+                 </button>
             </div>
            
-            <div className="pages">
+            <div className="pages" ref={reportPagesRef}>
                 <div className="reportPage">
 
                
@@ -548,7 +654,7 @@ const fetchReport = async () => {
             
            <div className="reportPage">
             <div className="annual-report">
-                <div className="header">
+                <div className="header-annual">
                     <div className="leftSide-annual">
                         <div className="logoA"></div>
                         <div className="textAnnual">
@@ -617,7 +723,7 @@ const fetchReport = async () => {
             {report.months.map((min, index) => (
                 <tr key={index}>
                     <td>{min.month}</td>
-                    <td>{min.invoiceCount || 0}</td>
+                    <td>{min.NumberOfInvoices || 0}</td>
                     <td>
                         ₹{Number(min.totalTaxableAmount || 0).toLocaleString("en-IN")}
                     </td>
@@ -662,6 +768,121 @@ const fetchReport = async () => {
 
             </div>
            </div>
+           <div className="reportPage">
+                <div className="annual-report">
+                    <div className="header-annual">
+                    <div className="leftSide-annual">
+                        <div className="logoA"></div>
+                        <div className="textAnnual">
+                            <h3>INVOIZOR</h3>
+                            <p>Simple Invoicing. Smarter Business.</p>
+                        </div>
+                    </div>
+                    <div className="rightSide-annual">
+                        <div className="annualP">
+                                 <p className="rightSide-annualP">STATUTORY DOCUMENT</p>
+                                   <h3>FY { id }</h3>
+                        </div>
+                      
+                           
+                        </div>
+
+                        
+                        
+                        </div>
+                        <div className="heading-annual-1">
+                <h1>Invoice <span>Register</span></h1>
+                <p>Chronological ledger of official tax invoices issued during the fiscal year.</p>
+            </div>
+            <div className="register-meta">
+                <div className="register-meta-details">
+                    <span>Entries: <strong>001 - {String(invoice.length).padStart(3, "0")}</strong></span>
+                    <span className="register-meta-separator">•</span>
+                    <span>Period: <strong>{registerPeriod}</strong></span>
+                </div>
+                <span className="register-batch">Page Batch 1</span>
+            </div>
+            <div className="invoice-register-table-wrap">
+                <table className="invoice-register-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>INVOICE NO.</th>
+                            <th>DATE</th>
+                            <th>CUSTOMER</th>
+                            <th>TAXABLE VALUE</th>
+                            <th>CGST</th>
+                            <th>SGST</th>
+                            <th>IGST</th>
+                            <th>TOTAL (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {invoice.map((currentInvoice, index) => (
+                            <tr key={`${currentInvoice.invoiceNumber}-${index}`}>
+                                <td>{index + 1}</td>
+                                <td>{currentInvoice.invoiceNumber || "-"}</td>
+                                <td>{formatRegisterDate(currentInvoice.invoiceDate)}</td>
+                                <td>{currentInvoice.customerName || "Unassigned Client"}</td>
+                                <td>₹{Number(currentInvoice.subtotal || 0).toLocaleString("en-IN")}</td>
+                                <td>₹{Number(currentInvoice.cgstAmount || 0).toLocaleString("en-IN")}</td>
+                                <td>₹{Number(currentInvoice.sgstAmount || 0).toLocaleString("en-IN")}</td>
+                                <td>₹{Number(currentInvoice.igstAmount || 0).toLocaleString("en-IN")}</td>
+                                <td>₹{Number(currentInvoice.totalAmount || 0).toLocaleString("en-IN")}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="audit-summary">
+                        <div className="audit-summary-header">
+                            <h1>Annual Statutory Audit Summary</h1>
+                            <span>Accrual Verified</span>
+                        </div>
+
+                        <div className="audit-summary-metrics">
+                            <div>
+                                <p>GROSS REVENUE</p>
+                                <strong>₹{report.totalRevenue.toLocaleString("en-IN")}</strong>
+                            </div>
+                            <div>
+                                <p>TAXABLE REVENUE</p>
+                                <strong>₹{report.totalTaxableAmount.toLocaleString("en-IN")}</strong>
+                            </div>
+                            <div>
+                                <p>TOTAL GST ACCRUED</p>
+                                <strong className="audit-summary-accent">₹{report.TotalTax.toLocaleString("en-IN")}</strong>
+                            </div>
+                        </div>
+
+                        <div className="audit-summary-breakdown">
+                            <strong>CGST (9%): ₹{report.TotalCgst.toLocaleString("en-IN")}</strong>
+                            <strong>SGST (9%): ₹{report.TotalSgst.toLocaleString("en-IN")}</strong>
+                            <strong>IGST: ₹{report.TotalIgst.toLocaleString("en-IN")}</strong>
+                            <strong>Total Invoices: {report.totalInvoices} Docs</strong>
+                        </div>
+
+                        <div className="audit-summary-footer">
+                            <div>
+                                <p>DOCUMENT AUTHENTICITY CODE:</p>
+                                <p>FY-{id} / INVOIZOR-LEDGER</p>
+                                <p>Validated by Invoizor Secure Ledger</p>
+                            </div>
+                            <div className="audit-summary-signatory">
+                                {company.signature ? (
+                                    <img className="audit-signature" src={company.signature} alt="Authorized signature" />
+                                ) : (
+                                    <strong>Authorized Signatory</strong>
+                                )}
+                                <p>AUTHORIZED SIGNATORY</p>
+                                <span>{company.CompanyName || "Company name unavailable"}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+           </div>
+          
              </div>
         </div>
     );

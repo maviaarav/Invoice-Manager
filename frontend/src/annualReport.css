@@ -27,10 +27,8 @@
 }
 .pages {
     width: 100%;
-    border-radius: 12px;
     display: flex;
     flex-direction: column;
-
     gap: 30px;
     margin-top: 40px;
 }
@@ -53,6 +51,21 @@
     font-size: 44px;
     color: #1F4FE0;
     text-decoration: underline;
+}
+.download-report-button{
+    align-self: flex-start;
+    padding: 12px 20px;
+    border: 1px solid #2563EB;
+    border-radius: 8px;
+    background: #2563EB;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.download-report-button:disabled{
+    opacity: 0.65;
+    cursor: wait;
 }
 .annual-report{
     width: 100%;
@@ -444,14 +457,13 @@ margin: 0;
 }
 .reportPage {
     width: 100%;
-    border-radius: 12px;
-    min-height: auto;
+    height: auto;
+    min-height: 0;
 
     box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
-
     gap: 30px;
 
     background: #ffffff;
@@ -461,6 +473,11 @@ margin: 0;
 
     break-inside: avoid;
     page-break-inside: avoid;
+}
+
+.reportPage:last-child {
+    break-after: auto;
+    page-break-after: auto;
 }
 .reportPage:last-child {
     break-after: auto;
@@ -663,158 +680,6 @@ margin: 0;
     }
 }
 
-@media print {
-
-    @page {
-        size: A4 portrait;
-        margin: 12mm;
-    }
-
-
-    html,
-    body {
-        width: 100%;
-
-        margin: 0;
-        padding: 0;
-
-        background: #ffffff;
-    }
-
-
-    /* Remove browser preview spacing */
-
-    .annual-report-container {
-        width: 100%;
-
-        min-height: 0;
-        height: auto;
-
-        margin: 0;
-        padding: 0;
-
-        display: block;
-
-        background: #ffffff;
-
-        overflow: visible;
-    }
-
-
-    /* Pages should not add gaps in PDF */
-
-    .pages {
-        width: 100%;
-
-        margin: 0;
-        padding: 0;
-
-        display: block;
-    }
-
-
-    /* =====================================
-       ONE .reportPage = ONE A4 PDF PAGE
-    ===================================== */
-
-    .reportPage {
-
-        width: 100%;
-
-        height: 273mm;
-        min-height: 273mm;
-
-        box-sizing: border-box;
-
-        margin: 0;
-        padding: 0;
-
-        display: flex;
-        flex-direction: column;
-
-        gap: 8mm;
-
-        background: #ffffff;
-
-        break-after: page;
-        page-break-after: always;
-
-        break-inside: avoid;
-        page-break-inside: avoid;
-
-        overflow: hidden;
-    }
-
-
-    /* Last page */
-
-    .reportPage:last-child {
-
-        break-after: auto;
-        page-break-after: auto;
-    }
-
-
-    /* =====================================
-       ANNUAL REPORT CONTENT
-    ===================================== */
-
-    .reportPage .annual-report {
-
-        width: 100%;
-        height: 100%;
-
-        box-sizing: border-box;
-
-        margin: 0;
-
-        padding: 5mm;
-
-        overflow: visible;
-
-        border-radius: 0;
-    }
-
-
-    /* =====================================
-       PREVENT CARDS FROM SPLITTING
-    ===================================== */
-
-    .reportPage .boxes-annual,
-    .reportPage .revenue-card,
-    .reportPage .gstbreakdown,
-    .reportPage .leftGstBreakdown,
-    .reportPage .RightGstBreakdown {
-
-        break-inside: avoid;
-        page-break-inside: avoid;
-
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-    }
-
-
-    /* =====================================
-       CHART SIZE IN PDF
-    ===================================== */
-
-    .reportPage .revenue-chart {
-
-        height: 72mm;
-        min-height: 72mm;
-    }
-
-    .reportPage .previewHeading1 h1{
-        font-size: 23px;
-        line-height: 1.15;
-        margin: 0;
-    }
-
-    .reportPage .previewHeading1 span{
-        font-size: 0.8em;
-    }
-
-}
 
 .blocks-annual-2{
     width: 100%;
@@ -1035,4 +900,248 @@ margin: 0;
 .client-contribution-table td:last-child {
     font-weight: 700;
     color: #2563eb;
+}
+
+.register-meta {
+    width: 100%;
+    min-height: 92px;
+    padding: 24px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    border: 1px solid #dbe4f0;
+    border-radius: 18px;
+    background: #f8faff;
+    color: #52627a;
+    font-size: 20px;
+    box-sizing: border-box;
+}
+
+.register-meta-details {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.register-meta strong {
+    color: #111a2e;
+    font-weight: 700;
+}
+
+.register-meta-separator {
+    color: #52627a;
+    font-weight: 700;
+}
+
+.audit-summary {
+    width: 100%;
+    min-height: 500px;
+    padding: 48px 50px 42px;
+    border: 1px solid #b8d5ff;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #f8faff 0%, #eef4ff 100%);
+    color: #111a2e;
+    box-sizing: border-box;
+}
+
+.audit-summary-header,
+.audit-summary-metrics,
+.audit-summary-breakdown,
+.audit-summary-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.audit-summary-header h1 {
+    margin: 0;
+    font-size: 30px;
+    color: #111a2e;
+}
+
+.audit-summary-header span {
+    padding: 10px 20px;
+    border-radius: 24px;
+    background: #dceaff;
+    color: #2563eb;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.audit-summary-metrics {
+    gap: 36px;
+    padding: 38px 0 34px;
+}
+
+.audit-summary-metrics > div {
+    flex: 1;
+}
+
+.audit-summary p {
+    margin: 0;
+}
+
+.audit-summary-metrics p {
+    color: #64748b;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.audit-summary-metrics strong {
+    display: block;
+    margin-top: 8px;
+    font-size: 34px;
+}
+
+.audit-summary-accent {
+    color: #2563eb;
+}
+
+.audit-summary-breakdown {
+    gap: 24px;
+    padding: 32px 0;
+    border-top: 1px solid #d5e2f4;
+    border-bottom: 1px solid #d5e2f4;
+    font-size: 18px;
+}
+
+.audit-summary-footer {
+    align-items: flex-end;
+    gap: 30px;
+    padding-top: 58px;
+}
+
+.audit-summary-footer > div:first-child {
+    color: #8ca1c0;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.audit-summary-signatory {
+    text-align: right;
+}
+
+.audit-signature {
+    display: block;
+    width: 180px;
+    max-height: 62px;
+    margin: 0 0 8px auto;
+    object-fit: contain;
+    object-position: right center;
+}
+
+.audit-summary-signatory strong {
+    display: block;
+    color: #263f91;
+    font-size: 38px;
+    font-weight: 500;
+}
+
+.audit-summary-signatory p {
+    margin-top: 8px;
+    color: #334155;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.audit-summary-signatory span {
+    display: block;
+    margin-top: 8px;
+    color: #64748b;
+    font-size: 16px;
+}
+
+.register-batch {
+    padding: 9px 20px;
+    border: 1px solid #b8d5ff;
+    border-radius: 24px;
+    background: #f1f6ff;
+    color: #2563eb;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.invoice-register-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #dfe7f1;
+    border-radius: 12px;
+}
+
+.invoice-register-table {
+    width: 100%;
+    min-width: 980px;
+    border-collapse: collapse;
+    color: #26344a;
+    font-family: inherit;
+}
+
+.invoice-register-table th {
+    padding: 14px 12px;
+    background: #f1f5f9;
+    border-bottom: 1px solid #cbd8e6;
+    color: #52627a;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.invoice-register-table th:first-child,
+.invoice-register-table th:nth-child(2),
+.invoice-register-table th:nth-child(3),
+.invoice-register-table th:nth-child(4),
+.invoice-register-table td:first-child,
+.invoice-register-table td:nth-child(2),
+.invoice-register-table td:nth-child(3),
+.invoice-register-table td:nth-child(4) {
+    text-align: left;
+}
+
+.invoice-register-table td {
+    padding: 11px 12px;
+    border-bottom: 1px solid #e5ebf2;
+    font-size: 14px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.invoice-register-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.invoice-register-table tbody td:first-child {
+    color: #71829a;
+}
+
+.invoice-register-table tbody td:nth-child(2) {
+    color: #26344a;
+    font-weight: 600;
+}
+
+.invoice-register-table tbody td:last-child {
+    color: #26344a;
+    font-weight: 700;
+}
+
+@media (max-width: 700px) {
+    .register-meta {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px;
+        font-size: 15px;
+    }
+
+    .register-meta-details {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .register-meta-separator {
+        display: none;
+    }
 }
