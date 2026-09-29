@@ -610,6 +610,7 @@ const months = [
         0
     );
 
+    const NumberOfInvoices = monthInvoices.length;
     const totalTaxableAmount = monthInvoices.reduce(
         (sum, invoice) =>
             sum + Number(invoice.subtotal || 0),
@@ -645,6 +646,7 @@ const months = [
         TotalIgst,
         TotalTax,
         totalTaxableAmount,
+        NumberOfInvoices
     };
 });
 

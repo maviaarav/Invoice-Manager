@@ -67,7 +67,7 @@
     background-color: white;
     padding: 10px 30px 30px 30px;
 }
-.header{
+.header-annual{
     width: 100%;
     height: auto;
     display: flex;
@@ -814,4 +814,148 @@ margin: 0;
         font-size: 0.8em;
     }
 
+}
+
+.blocks-annual-2{
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+.box-annual-2{
+    width: auto;
+    height: auto;
+    border: 1px solid #E0E9F6;
+    border-radius: 12px;
+    background-color: #F8FAFF;
+    padding: 13px 16px 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.box-annual-2 p{
+    color: #64748B;
+    font-size: 14px;
+}
+.box-annual-2 h2{
+    color: #0F172A;
+    font-size: 21px;
+    font-weight: bolder;
+}
+#highest{
+    color: #2563EB
+}
+#lowest{
+    color: #64748B
+}
+.tableAnnualReport{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 22px;
+    border: 1px solid #E2E8F0;
+    flex-direction: column;
+    border-radius: 12px;
+}
+.tableAnnualReport h2{
+    font-size: 20px;
+    color: #0F172A;
+    font-weight: bold;
+}
+.monthly-revenue-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: inherit;
+    color: #1e293b;
+}
+
+/* Header */
+
+.monthly-revenue-table thead {
+    background: #f8fafc;
+}
+
+.monthly-revenue-table th {
+    padding: 18px;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 700;
+    color: #64748b;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.monthly-revenue-table th:first-child {
+    text-align: left;
+}
+
+/* Body */
+
+.monthly-revenue-table td {
+    padding: 18px;
+    text-align: right;
+    font-size: 18px;
+    border-bottom: 1px solid #e5eaf0;
+}
+
+.monthly-revenue-table td:first-child {
+    text-align: left;
+}
+
+/* Invoice column */
+
+.monthly-revenue-table th:nth-child(2),
+.monthly-revenue-table td:nth-child(2) {
+    text-align: center;
+}
+
+/* Revenue */
+
+.monthly-revenue-table td:last-child {
+    font-weight: 700;
+}
+
+/* Total row */
+
+.monthly-revenue-table .total-row {
+    background: #f7f9fc;
+}
+
+.monthly-revenue-table .total-row td {
+    font-weight: 700;
+    border-top: 2px solid #d5dee9;
+    border-bottom: none;
+}
+
+.monthly-revenue-table .total-row td:last-child {
+    color: #2563eb;
+}
+
+/* Column widths */
+
+.monthly-revenue-table th:nth-child(1),
+.monthly-revenue-table td:nth-child(1) {
+    width: 25%;
+}
+
+.monthly-revenue-table th:nth-child(2),
+.monthly-revenue-table td:nth-child(2) {
+    width: 15%;
+}
+
+.monthly-revenue-table th:nth-child(3),
+.monthly-revenue-table td:nth-child(3) {
+    width: 22%;
+}
+
+.monthly-revenue-table th:nth-child(4),
+.monthly-revenue-table td:nth-child(4) {
+    width: 17%;
+}
+
+.monthly-revenue-table th:nth-child(5),
+.monthly-revenue-table td:nth-child(5) {
+    width: 21%;
 }

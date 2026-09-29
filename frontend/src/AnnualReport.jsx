@@ -70,6 +70,20 @@ const fetchReport = async () => {
     if (!invoice || !report || !company) {
         return <h2>Loading...</h2>;
     }
+    const lowestInvoice = invoice.reduce(
+        (min, invoice) => {
+            return min < invoice.totalAmount ? min : invoice.totalAmount
+        }
+    )
+    const highestInvoice = invoice.reduce(
+        (max, invoice) => {
+            return max > invoice.totalAmount ? max : invoice.totalAmount
+        }
+    )
+    const averageInvoice = (report.totalRevenue) / report.totalInvoices
+
+
+
     const formatRevenue = (value) => {
         if (value >= 100000) {
             return (value / 100000).toFixed(2) + "L";
@@ -105,7 +119,7 @@ const fetchReport = async () => {
            
             
             <div className="annual-report">
-                <div className="header">
+                <div className="header-annual">
                     <div className="leftSide-annual">
                         <div className="logoA"></div>
                         <div className="textAnnual">
@@ -534,6 +548,67 @@ const fetchReport = async () => {
                 <h1>Financial <span>Analysis & Diagnostics</span></h1>
                 <p>Granular month-by-month financial ledger, benchmark invoice statistics, and client contribution analysis.</p>
             </div>
+            <div className="blocks-annual-2">
+                <div className="box-annual-2">
+                    <p>Average Invoice Value</p>
+                        <h2>₹{averageInvoice.toLocaleString('en-IN',{
+                            minimumFractionDigits: 1,
+                            maximumFractionDigits: 1
+                        })}</h2>
+                </div>
+                <div className="box-annual-2">
+                         <p>Highest Invoice</p>
+                        <h2 id="highest">₹{highestInvoice.toLocaleString('en-IN',{
+                            minimumFractionDigits: 1,
+                            maximumFractionDigits: 1
+                        })}</h2>
+                </div>
+                <div className="box-annual-2">
+                        <p>Lowest Invoice</p>
+                        <h2 id="lowest">₹{lowestInvoice.toLocaleString('en-IN',{
+                            minimumFractionDigits: 1,
+                            maximumFractionDigits: 1
+                        })}</h2>
+                </div>
+                <div className="box-annual-2">
+                        <p>Active Billing Months</p>
+                        <h2>12 Months</h2>
+
+                </div>
+            </div>
+           <div className="tableAnnualReport">
+    <h2>Monthly Revenue & Taxable Breakdown</h2>
+
+    <table className="monthly-revenue-table">
+        <thead>
+            <tr>
+                <th>MONTH</th>
+                <th>INVOICES</th>
+                <th>TAXABLE VALUE</th>
+                <th>GST</th>
+                <th>TOTAL REVENUE</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {report.months.map((min, index) => (
+                <tr key={index}>
+                    <td>{min.month}</td>
+                    <td>{min.invoiceCount || 0}</td>
+                    <td>
+                        ₹{Number(min.totalTaxableAmount || 0).toLocaleString("en-IN")}
+                    </td>
+                    <td>
+                        ₹{Number(min.TotalTax || 0).toLocaleString("en-IN")}
+                    </td>
+                    <td>
+                        ₹{Number(min.revenue || 0).toLocaleString("en-IN")}
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+</div>
             </div>
            </div>
              </div>
