@@ -959,3 +959,80 @@ margin: 0;
 .monthly-revenue-table td:nth-child(5) {
     width: 21%;
 }
+
+.clientContributionTable {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 22px;
+    border: 1px solid #E2E8F0;
+    flex-direction: column;
+    border-radius: 12px;
+}
+
+.clientContributionTable h2 {
+    font-size: 20px;
+    color: #0F172A;
+    font-weight: bold;
+}
+
+.client-contribution-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: inherit;
+    color: #1e293b;
+}
+
+.client-contribution-table thead {
+    background: #f8fafc;
+}
+
+.client-contribution-table th {
+    padding: 18px;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 700;
+    color: #64748b;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.client-contribution-table th:first-child,
+.client-contribution-table th:nth-child(2) {
+    text-align: left;
+}
+
+.client-contribution-table td {
+    padding: 18px;
+    text-align: right;
+    font-size: 18px;
+    border-bottom: 1px solid #e5eaf0;
+}
+
+.client-contribution-table td:first-child,
+.client-contribution-table td:nth-child(2) {
+    text-align: left;
+}
+
+.client-contribution-table td:first-child {
+    color: #2563eb;
+}
+
+.client-rank {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.client-contribution-table td:last-child {
+    font-weight: 700;
+    color: #2563eb;
+}

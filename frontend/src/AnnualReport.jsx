@@ -82,6 +82,29 @@ const fetchReport = async () => {
     )
     const averageInvoice = (report.totalRevenue) / report.totalInvoices
 
+    const topClients = Object.values(invoice.reduce((clients, currentInvoice) => {
+        const clientName = currentInvoice.customerName || "Unassigned Client";
+        const client = clients[clientName] || {
+            name: clientName,
+            invoiceCount: 0,
+            totalRevenue: 0,
+        };
+
+        client.invoiceCount += 1;
+        client.totalRevenue += Number(currentInvoice.totalAmount || 0);
+        clients[clientName] = client;
+
+        return clients;
+    }, {}))
+        .sort((firstClient, secondClient) => secondClient.totalRevenue - firstClient.totalRevenue)
+        .slice(0, 5)
+        .map((client) => ({
+            ...client,
+            share: report.totalRevenue
+                ? ((client.totalRevenue / report.totalRevenue) * 100).toFixed(1)
+                : "0.0",
+        }));
+
 
 
     const formatRevenue = (value) => {
@@ -609,6 +632,34 @@ const fetchReport = async () => {
         </tbody>
     </table>
 </div>
+
+<div className="clientContributionTable">
+    <h2>Top 5 Client Contribution</h2>
+
+    <table className="client-contribution-table">
+        <thead>
+            <tr>
+                <th>RANK</th>
+                <th>CLIENT NAME</th>
+                <th>INVOICES</th>
+                <th>TOTAL REVENUE</th>
+                <th>SHARE</th>
+            </tr>
+        </thead>
+        <tbody>
+            {topClients.map((client, index) => (
+                <tr key={`${client.name}-${index}`}>
+                    <td><span className="client-rank">{index + 1}</span></td>
+                    <td>{client.name}</td>
+                    <td>{client.invoiceCount}</td>
+                    <td>₹{client.totalRevenue.toLocaleString("en-IN")}</td>
+                    <td>{client.share}%</td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+</div>
+
             </div>
            </div>
              </div>
