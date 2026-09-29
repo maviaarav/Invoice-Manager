@@ -206,6 +206,32 @@ const updateCompany = async (req,res) =>{
         });
     }
 }
+
+const onlyCompanyAndOwnerDetails = async (req,res)=>{
+    try{
+        if(!req.user){
+            return res.status(401).json({
+                Msg: "Unauthorized"
+            })
+        
+        }
+        const userId = req.user.userId || req.user._id
+        const company = await CompanyModel.find(
+            {userId: userId},
+            {CompanyName: 1, OwnerName: 1, phoneNumber: 1, GSTNumber: 1, panNumber: 1, Address: 1, Email: 1, _id: 0}
+        )
+        return res.status(200).json({
+            success: true,
+            company
+        })
+    }catch(error){
+        console.log(error)
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+}
+
 const deleteCompany = async (req,res) =>{
     try{
         const email = req.params.email
@@ -236,5 +262,6 @@ module.exports = {
     createCompany,
     getCompany,
     updateCompany,
-    deleteCompany
+    deleteCompany,
+    onlyCompanyAndOwnerDetails
 }
