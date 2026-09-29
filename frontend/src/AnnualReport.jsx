@@ -11,11 +11,22 @@ import {
 const AnnualReport = () => {
     const [invoice, setInvoice] = useState(null);
     const [report, setReport] = useState(null)
+    const [company, setCompany] = useState(null)
     const { id } = useParams();
 
+
+    const fetchCompanyDetails = async () =>{
+        try{
+            const response = await instance.get('/company/only-company-and-owner-details')
+            setCompany(response.data.company)
+            console.log(response.data.company)
+        }catch(error){
+            console.log("error while fetching compnay details for annual", error)
+        }
+    }
     const fetchInvoice = async () => {
     try {
-        const response = await instance.get(`/invoice/year/${id}`);
+        const response = await instance.get(`/invoice/only-required-fields/${id}`);
 
 
         setInvoice(response.data);
@@ -35,8 +46,9 @@ const fetchReport = async () => {
     useEffect(() => {
         fetchInvoice();
         fetchReport();
+        fetchCompanyDetails();
     }, [id]);
-    if (!invoice) {
+    if (!invoice || !report || !company) {
         return <h2>Loading...</h2>;
     }
     return (
@@ -68,21 +80,21 @@ const fetchReport = async () => {
                         <div className="subject-annual">
                 <div className="left-subject">
                     <div className="leftUpper">
-                    <h2>{invoice?.invoices?.[0]?.companyId?.CompanyName ||
+                    <h2>{company.CompanyName ||
                     "Company name unavailable"}</h2>
                     <div className="activeGst">
                         <p>Active Regular GST</p>
                     </div>
                     </div>
-                    <p>GSTIN: <span>{invoice?.invoices?.[0]?.companyId?.GSTNumber || "GSTIN unavailable"}</span></p>
-                    <p>Address: <span>{invoice?.invoices?.[0]?.companyId?.Address || "Address unavailable"}</span></p>
+                    <p>GSTIN: <span>{company.GSTNumber || "GSTIN unavailable"}</span></p>
+                    <p>Address: <span>{company.Address || "Address unavailable"}</span></p>
                     <p className="contact-row">
                         Contact: <span>
-                            {invoice?.invoices?.[0]?.companyId?.phoneNumber
-                                ? `+91 ${invoice.invoices[0].companyId.phoneNumber}`
+                            {company.phoneNumber
+                                ? `+91 ${company.phoneNumber}`
                                 : "Contact unavailable"}
-                            {invoice?.invoices?.[0]?.companyId?.Email && (
-                                <> <span id="dot">•</span> {invoice.invoices[0].companyId.Email}</>
+                            {company.Email && (
+                                <> <span id="dot">•</span> {company.Email}</>
                             )}
                         </span>
                     </p>
