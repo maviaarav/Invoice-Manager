@@ -9,8 +9,8 @@
     margin: 12mm;
 }
 .annual-report-container {
-    width: auto;
-    flex: 1 1 auto;
+    width: 0;
+    flex: 1 1 0;
     min-width: 0;
     min-height: 100vh;
 
@@ -825,26 +825,241 @@ margin: 0;
     width: 21%;
 }
 
-.clientContributionTable {
+.quarterly-analysis {
     width: 100%;
-    height: auto;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 22px;
-    border: 1px solid #E2E8F0;
-    flex-direction: column;
-    border-radius: 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 20px;
 }
 
-.clientContributionTable h2 {
+.quarterly-breakdown,
+.quarterly-contribution {
+    min-width: 0;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8faff;
+}
+
+.quarterly-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.quarterly-heading h2 {
+    margin: 0;
+    color: #0f172a;
     font-size: 20px;
-    color: #0F172A;
-    font-weight: bold;
+    font-weight: 700;
+}
+
+.quarterly-heading p {
+    margin-top: 6px;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.quarterly-badge {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    border-radius: 20px;
+    background: #dff8f5;
+    color: #087f78;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.quarterly-table-wrap {
+    width: 100%;
+    overflow: hidden;
+}
+
+.quarterly-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    color: #334155;
+    font-size: 13px;
+}
+
+.quarterly-table th,
+.quarterly-table td {
+    padding: 11px 8px;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.quarterly-table th:first-child,
+.quarterly-table td:first-child {
+    text-align: left;
+}
+
+.quarterly-table th {
+    background: #eaf1ff;
+    color: #52627a;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+}
+
+.quarterly-table th:first-child {
+    border-radius: 7px 0 0 7px;
+}
+
+.quarterly-table th:last-child {
+    border-radius: 0 7px 7px 0;
+}
+
+.quarterly-table td {
+    border-bottom: 1px solid #e5ebf2;
+}
+
+.quarterly-table td:first-child {
+    color: #172033;
+    font-weight: 600;
+}
+
+.quarterly-table td:nth-child(3) {
+    color: #172033;
+    font-weight: 700;
+}
+
+.quarterly-total td {
+    border-bottom: none;
+    background: #e4efff;
+    color: #1454c4;
+    font-weight: 700;
+}
+
+.quarterly-total td:first-child {
+    border-radius: 7px 0 0 7px;
+    font-size: 18px;
+}
+
+.quarterly-total td:last-child {
+    border-radius: 0 7px 7px 0;
+}
+
+.quarterly-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.quarterly-bar-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.quarterly-bar-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: #172033;
+    font-size: 14px;
+}
+
+.quarterly-bar-label strong {
+    white-space: nowrap;
+}
+
+.quarterly-bar-label em {
+    color: #475569;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.quarterly-bar-track {
+    height: 10px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #dce8fb;
+}
+
+.quarterly-bar-fill {
+    display: block;
+    height: 100%;
+    min-width: 4px;
+    border-radius: inherit;
+}
+
+.quarterly-bar-fill-1 { background: #5b5ce2; }
+.quarterly-bar-fill-2 { background: #4849d5; }
+.quarterly-bar-fill-3 { background: #0759c9; }
+.quarterly-bar-fill-4 { background: #2c6de6; }
+
+.quarterly-note {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 24px;
+    padding: 13px 14px;
+    border-radius: 10px;
+    background: #edf3ff;
+    color: #475569;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.quarterly-note strong {
+    color: #334155;
+}
+
+.clientContributionTable {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    box-sizing: border-box;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8faff;
+}
+
+.client-contribution-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.client-contribution-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.client-contribution-title svg {
+    flex: 0 0 auto;
+    color: #0759c9;
+    font-size: 26px;
+}
+
+.client-contribution-heading h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.client-contribution-badge {
+    flex: 0 0 auto;
+    padding: 7px 12px;
+    border-radius: 7px;
+    background: #e4edff;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
 }
 
 .client-contribution-table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     font-family: inherit;
     color: #1e293b;
@@ -855,23 +1070,32 @@ margin: 0;
 }
 
 .client-contribution-table th {
-    padding: 18px;
+    padding: 13px 16px;
     text-align: right;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
-    color: #64748b;
-    border-bottom: 2px solid #e2e8f0;
+    color: #475569;
+    background: #e6edfc;
+    border-bottom: none;
 }
 
-.client-contribution-table th:first-child,
+.client-contribution-table th:first-child {
+    width: 84px;
+    border-radius: 7px 0 0 7px;
+}
+
 .client-contribution-table th:nth-child(2) {
     text-align: left;
 }
 
+.client-contribution-table th:last-child {
+    border-radius: 0 7px 7px 0;
+}
+
 .client-contribution-table td {
-    padding: 18px;
+    padding: 11px 16px;
     text-align: right;
-    font-size: 18px;
+    font-size: 16px;
     border-bottom: 1px solid #e5eaf0;
 }
 
@@ -882,6 +1106,11 @@ margin: 0;
 
 .client-contribution-table td:first-child {
     color: #2563eb;
+}
+
+.client-contribution-table td:last-child {
+    color: #0f172a;
+    font-weight: 700;
 }
 
 .client-rank {
@@ -897,9 +1126,16 @@ margin: 0;
     font-weight: 700;
 }
 
-.client-contribution-table td:last-child {
-    font-weight: 700;
-    color: #2563eb;
+.client-contribution-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    color: #475569;
+    font-size: 14px;
+}
+
+.client-contribution-footer strong:last-child {
+    color: #0759c9;
 }
 
 .register-meta {
@@ -1065,14 +1301,14 @@ margin: 0;
 
 .invoice-register-table-wrap {
     width: 100%;
-    overflow-x: auto;
+    overflow: hidden;
     border: 1px solid #dfe7f1;
     border-radius: 12px;
 }
 
 .invoice-register-table {
     width: 100%;
-    min-width: 980px;
+    table-layout: fixed;
     border-collapse: collapse;
     color: #26344a;
     font-family: inherit;
@@ -1094,19 +1330,33 @@ margin: 0;
 .invoice-register-table th:nth-child(2),
 .invoice-register-table th:nth-child(3),
 .invoice-register-table th:nth-child(4),
+.invoice-register-table th:nth-child(5),
 .invoice-register-table td:first-child,
 .invoice-register-table td:nth-child(2),
 .invoice-register-table td:nth-child(3),
-.invoice-register-table td:nth-child(4) {
+.invoice-register-table td:nth-child(4),
+.invoice-register-table td:nth-child(5) {
     text-align: left;
 }
 
 .invoice-register-table td {
-    padding: 11px 12px;
+    padding: 10px 6px;
     border-bottom: 1px solid #e5ebf2;
-    font-size: 14px;
+    font-size: 12px;
     text-align: right;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+}
+
+.invoice-register-table th {
+    padding: 12px 6px;
+    font-size: 11px;
+    white-space: normal;
+}
+
+.invoice-register-table th:nth-child(5),
+.invoice-register-table td:nth-child(5) {
+    font-size: 11px;
+    font-weight: bolder;
 }
 
 .invoice-register-table tbody tr:last-child td {
@@ -1128,6 +1378,18 @@ margin: 0;
 }
 
 @media (max-width: 700px) {
+    .client-contribution-heading,
+    .client-contribution-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .client-contribution-table th,
+    .client-contribution-table td {
+        padding: 10px 6px;
+        font-size: 12px;
+    }
+
     .register-meta {
         align-items: flex-start;
         flex-direction: column;

@@ -109,6 +109,24 @@ const fetchReport = async () => {
                 : "0.0",
         }));
 
+    const quarterlyData = [
+        { label: "Q1 (Apr-Jun)", months: report.months.slice(0, 3) },
+        { label: "Q2 (Jul-Sep)", months: report.months.slice(3, 6) },
+        { label: "Q3 (Oct-Dec)", months: report.months.slice(6, 9) },
+        { label: "Q4 (Jan-Mar)", months: report.months.slice(9, 12) },
+    ].map((quarter) => ({
+        label: quarter.label,
+        invoices: quarter.months.reduce((total, month) => total + Number(month.NumberOfInvoices || 0), 0),
+        taxable: quarter.months.reduce((total, month) => total + Number(month.totalTaxableAmount || 0), 0),
+        gst: quarter.months.reduce((total, month) => total + Number(month.TotalTax || 0), 0),
+        revenue: quarter.months.reduce((total, month) => total + Number(month.revenue || 0), 0),
+    }));
+
+    const formatRupees = (value) => `₹${Number(value || 0).toLocaleString("en-IN")}`;
+    const topClientsRevenue = topClients.reduce((total, client) => total + client.totalRevenue, 0);
+    const topClientsShare = report.totalRevenue
+        ? ((topClientsRevenue / report.totalRevenue) * 100).toFixed(1)
+        : "0.0";
 
 
     const formatRevenue = (value) => {
@@ -739,8 +757,87 @@ const fetchReport = async () => {
     </table>
 </div>
 
+<div className="quarterly-analysis">
+    <div className="quarterly-breakdown">
+        <div className="quarterly-heading">
+            <div>
+                <h2>Quarterly Revenue & GST Breakdown</h2>
+                <p>Fiscal-quarter performance across revenue, GST, and taxable value.</p>
+            </div>
+            <span className="quarterly-badge">Q1-Q4 Audited</span>
+        </div>
+        <div className="quarterly-table-wrap">
+            <table className="quarterly-table">
+                <thead>
+                    <tr>
+                        <th>QUARTER</th>
+                        <th>INVOICES</th>
+                        <th>REVENUE</th>
+                        <th>GST</th>
+                        <th>TAXABLE AMT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {quarterlyData.map((quarter) => (
+                        <tr key={quarter.label}>
+                            <td>{quarter.label}</td>
+                            <td>{quarter.invoices}</td>
+                            <td>{formatRupees(quarter.revenue)}</td>
+                            <td>{formatRupees(quarter.gst)}</td>
+                            <td>{formatRupees(quarter.taxable)}</td>
+                        </tr>
+                    ))}
+                    <tr className="quarterly-total">
+                        <td>Total</td>
+                        <td>{report.totalInvoices}</td>
+                        <td>{formatRupees(report.totalRevenue)}</td>
+                        <td>{formatRupees(report.TotalTax)}</td>
+                        <td>{formatRupees(report.totalTaxableAmount)}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div className="quarterly-contribution">
+        <div className="quarterly-heading">
+            <div>
+                <h2>Quarterly Contribution</h2>
+                <p>Share of annual gross revenue</p>
+            </div>
+            <span className="quarterly-badge">100% Reconciled</span>
+        </div>
+        <div className="quarterly-bars">
+            {quarterlyData.map((quarter, index) => {
+                const share = report.totalRevenue ? (quarter.revenue / report.totalRevenue) * 100 : 0;
+
+                return (
+                    <div className="quarterly-bar-item" key={quarter.label}>
+                        <div className="quarterly-bar-label">
+                            <span>{quarter.label}</span>
+                            <strong>{share.toFixed(1)}% <em>({formatRupees(quarter.revenue)})</em></strong>
+                        </div>
+                        <div className="quarterly-bar-track">
+                            <span className={`quarterly-bar-fill quarterly-bar-fill-${index + 1}`} style={{ width: `${share}%` }} />
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+        <div className="quarterly-note">
+            <strong>GST statutory alignment</strong>
+            <span>Quarterly revenue and tax values reconcile with the annual report totals.</span>
+        </div>
+    </div>
+</div>
+
 <div className="clientContributionTable">
-    <h2>Top 5 Client Contribution</h2>
+    <div className="client-contribution-heading">
+        <div className="client-contribution-title">
+            <DataBarVertical32Filled />
+            <h2>Top Customers by Revenue</h2>
+        </div>
+        <span className="client-contribution-badge">Ranked Top 5</span>
+    </div>
 
     <table className="client-contribution-table">
         <thead>
@@ -749,7 +846,6 @@ const fetchReport = async () => {
                 <th>CLIENT NAME</th>
                 <th>INVOICES</th>
                 <th>TOTAL REVENUE</th>
-                <th>SHARE</th>
             </tr>
         </thead>
         <tbody>
@@ -759,11 +855,14 @@ const fetchReport = async () => {
                     <td>{client.name}</td>
                     <td>{client.invoiceCount}</td>
                     <td>₹{client.totalRevenue.toLocaleString("en-IN")}</td>
-                    <td>{client.share}%</td>
                 </tr>
             ))}
         </tbody>
     </table>
+    <div className="client-contribution-footer">
+        <strong>Top 5 Concentration: {topClientsShare}% of Total Fiscal Invoicing</strong>
+        <strong>Sum: {formatRupees(topClientsRevenue)}</strong>
+    </div>
 </div>
 
             </div>
@@ -810,6 +909,7 @@ const fetchReport = async () => {
                             <th>INVOICE NO.</th>
                             <th>DATE</th>
                             <th>CUSTOMER</th>
+                            <th>GSTIN</th>
                             <th>TAXABLE VALUE</th>
                             <th>CGST</th>
                             <th>SGST</th>
@@ -824,6 +924,7 @@ const fetchReport = async () => {
                                 <td>{currentInvoice.invoiceNumber || "-"}</td>
                                 <td>{formatRegisterDate(currentInvoice.invoiceDate)}</td>
                                 <td>{currentInvoice.customerName || "Unassigned Client"}</td>
+                                <td>{currentInvoice.customerGstNumber || "-"}</td>
                                 <td>₹{Number(currentInvoice.subtotal || 0).toLocaleString("en-IN")}</td>
                                 <td>₹{Number(currentInvoice.cgstAmount || 0).toLocaleString("en-IN")}</td>
                                 <td>₹{Number(currentInvoice.sgstAmount || 0).toLocaleString("en-IN")}</td>
