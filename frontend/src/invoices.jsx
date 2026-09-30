@@ -3,9 +3,11 @@ import instance from "./api/axios";
 import {
   CalendarLtrFilled,
   DataBarVerticalAscendingFilled,
+  ArrowDownloadFilled,
   EyeFilled,
 } from "@fluentui/react-icons";
 import "./invoices.css";
+import financialYearTemplateSource from "./images/financial-year-template.svg?raw";
 
 const MONTHS = [
   "January",
@@ -341,6 +343,39 @@ const Invoices = () => {
     setCurrentPage(1);
   };
 
+  const handleDownloadTemplate = () => {
+    const financialYear = `${selectedYear}-${selectedYear + 1}`;
+    const templateSvg = financialYearTemplateSource.replace(
+      /2026-2027/g,
+      financialYear
+    );
+    const svgBlob = new Blob([templateSvg], {
+      type: "image/svg+xml;charset=utf-8",
+    });
+    const imageUrl = URL.createObjectURL(svgBlob);
+    const image = new Image();
+
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 768;
+      canvas.height = 1086;
+      const context = canvas.getContext("2d");
+
+      context.drawImage(image, 0, 0);
+      URL.revokeObjectURL(imageUrl);
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = canvas.toDataURL("image/png");
+      downloadLink.download = `financial-year-${financialYear}.png`;
+      downloadLink.style.display = "none";
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      downloadLink.remove();
+    };
+
+    image.src = imageUrl;
+  };
+
   /* =========================================================
      NORMALIZE INVOICES
   ========================================================= */
@@ -637,6 +672,15 @@ const Invoices = () => {
               </div>
             )}
           </div>
+          <button
+            className="inv-template-download"
+            type="button"
+            onClick={handleDownloadTemplate}
+            aria-label="Download financial year template"
+          >
+            <ArrowDownloadFilled />
+            <span>Download Template</span>
+          </button>
         </div>
 
         {/* =================================================
