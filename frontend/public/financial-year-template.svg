@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="1086" viewBox="0 0 768 1086">
+  <rect width="768" height="1086" fill="#fff"/>
+  <circle cx="-18" cy="-18" r="136" fill="#eff1ff"/>
+  <circle cx="-18" cy="-18" r="176" fill="none" stroke="#6260f5" stroke-width="1.5"/>
+  <circle cx="786" cy="1100" r="166" fill="#eff1ff"/>
+  <circle cx="786" cy="1100" r="210" fill="none" stroke="#6260f5" stroke-width="1.5"/>
+  <g fill="#d9ddff">
+    <circle cx="690" cy="47" r="3.5"/><circle cx="709" cy="47" r="3.5"/><circle cx="728" cy="47" r="3.5"/>
+    <circle cx="690" cy="67" r="3.5"/><circle cx="709" cy="67" r="3.5"/><circle cx="728" cy="67" r="3.5"/>
+    <circle cx="690" cy="87" r="3.5"/><circle cx="709" cy="87" r="3.5"/><circle cx="728" cy="87" r="3.5"/>
+    <circle cx="48" cy="972" r="3.5"/><circle cx="68" cy="972" r="3.5"/><circle cx="88" cy="972" r="3.5"/>
+    <circle cx="48" cy="992" r="3.5"/><circle cx="68" cy="992" r="3.5"/><circle cx="88" cy="992" r="3.5"/>
+    <circle cx="48" cy="1012" r="3.5"/><circle cx="68" cy="1012" r="3.5"/><circle cx="88" cy="1012" r="3.5"/>
+  </g>
+  <g font-family="Arial, sans-serif" text-anchor="middle" fill="#17266c">
+    <text x="384" y="103" font-size="18" font-weight="700" letter-spacing="5">SHREE LAXMI INFRATECH</text>
+    <path d="M274 146h92M402 146h92" stroke="#a3a8ff" stroke-width="2"/>
+    <circle cx="384" cy="146" r="7" fill="#504be7"/>
+    <text x="384" y="290" font-size="54" font-weight="700" letter-spacing="2">FINANCIAL YEAR</text>
+    <text x="384" y="404" font-size="111" font-weight="800" fill="#3731d9">2026-2027</text>
+    <text x="384" y="471" font-size="27" font-weight="700" letter-spacing="4" fill="#5f60df">BILLS  •  INVOICES  •  DOCUMENTS</text>
+    <path d="M108 542h105M555 542h105" stroke="#a3a8ff" stroke-width="2"/>
+    <rect x="228" y="523" width="312" height="38" rx="20" fill="#e8e9ff"/>
+    <text x="384" y="548" font-size="15" font-weight="700" letter-spacing="3" fill="#3731a8">START OF FINANCIAL YEAR</text>
+  </g>
+  <g transform="translate(274 631)">
+    <path d="M0 45l24-12v155l-24 12z" fill="#cfd2ff"/>
+    <path d="M22 24l24-12v155l-24 12z" fill="#b7bbff"/>
+    <path d="M48 0h115l38 38v145H48z" fill="#fff" stroke="#3f38d9" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M163 0v38h38" fill="#7772f2"/>
+    <path d="M163 0v38h38" fill="none" stroke="#3f38d9" stroke-width="6" stroke-linejoin="round"/>
+    <g stroke="#8f91f3" stroke-linecap="round" stroke-width="6">
+      <path d="M73 61h58M73 82h72M73 103h42M73 140h72M73 161h48"/>
+    </g>
+    <circle cx="154" cy="105" r="31" fill="#504be7"/>
+    <text x="154" y="116" text-anchor="middle" font-family="Arial, sans-serif" font-size="29" font-weight="700" fill="#fff">&#8377;</text>
+    <circle cx="199" cy="158" r="28" fill="#403ad8"/>
+    <path d="M185 158l10 10 19-21" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <ellipse cx="384" cy="819" rx="131" ry="13" fill="#eef0ff"/>
+  <g font-family="Arial, sans-serif" text-anchor="middle" fill="#3c4b9c">
+    <path d="M120 926h68M580 926h68" stroke="#a3a8ff" stroke-width="2"/>
+    <text x="384" y="932" font-size="16">Keep this sheet as a separator for FY 2026-2027</text>
+  </g>
+</svg>

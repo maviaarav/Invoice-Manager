@@ -296,6 +296,63 @@
             margin: 0;
         }
 
+        .feature-card-link {
+            display: inline-flex;
+            margin-top: 18px;
+            color: #1233ff;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .feature-card-link:hover {
+            text-decoration: underline;
+        }
+
+        .tools-section {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+            gap: 22px;
+            align-items: stretch;
+            padding: 28px;
+            border-radius: 30px;
+            background: #10233f;
+            color: #ffffff;
+            box-shadow: 0 24px 50px rgba(15, 35, 63, 0.18);
+        }
+
+        .tools-section .section-heading {
+            margin-bottom: 12px;
+        }
+
+        .tools-section .section-heading p,
+        .tools-section .section-copy {
+            color: #9edff0;
+        }
+
+        .tools-section .section-heading h3 {
+            color: #ffffff;
+        }
+
+        .tool-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tool-actions .secondary-button {
+            background: #ffffff;
+            color: #10233f;
+        }
+
+        .tool-actions .primary-button {
+            background: #78d7e7;
+            color: #10233f;
+            border: 3px solid #ffffff;
+            box-shadow: none;
+        }
+
         .highlight-section {
             padding: 28px 26px;
             border-radius: 30px;
@@ -534,6 +591,7 @@
             <nav class="nav-links" aria-label="Primary">
                 <a href="#home">Home</a>
                 <a href="#features">Features</a>
+                    <a href="#tools">Reports &amp; Tools</a>
                 <a href="#about">About</a>
                 <a href="#privacy">Privacy Policy</a>
                 <a href="#terms">Terms</a>
@@ -626,8 +684,30 @@
                         <h4>Track invoice history</h4>
                         <p>Review invoice status, history, and customer activity from one place.</p>
                     </article>
+                        <article class="feature-card">
+                            <div class="feature-icon" aria-hidden="true">📈</div>
+                            <h4>Annual business reports</h4>
+                            <p>Review yearly revenue, tax, and invoice performance in one clear report.</p>
+                            <a class="feature-card-link" href="/login">View reports after signing in</a>
+                        </article>
                 </div>
             </section>
+
+                <section class="content-section tools-section" id="tools">
+                    <div>
+                        <div class="section-heading">
+                            <p>Useful Tools</p>
+                            <h3>Plan your financial year with confidence</h3>
+                        </div>
+                        <p class="section-copy">
+                            Download a clean financial-year template for planning and record keeping, or sign in to view your live annual report.
+                        </p>
+                    </div>
+                    <div class="tool-actions">
+                        <a class="secondary-button" href="/login">View Annual Report</a>
+                        <button class="primary-button" id="download-template" type="button">Download Template</button>
+                    </div>
+                </section>
 
             <section class="content-section highlight-section" id="privacy">
                 <div class="section-heading">
@@ -726,5 +806,22 @@
             </div>
         </footer>
     </div>
+    <script>
+        const downloadButton = document.getElementById("download-template");
+
+        downloadButton.addEventListener("click", async () => {
+            const currentYear = new Date().getFullYear();
+            const financialYear = `${currentYear}-${currentYear + 1}`;
+            const templateResponse = await fetch("/financial-year-template.svg");
+            const templateSvg = (await templateResponse.text()).replace(/2026-2027/g, financialYear);
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(new Blob([templateSvg], { type: "image/svg+xml" }));
+            link.download = `financial-year-${financialYear}.svg`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(link.href);
+        });
+    </script>
 </body>
 </html>
